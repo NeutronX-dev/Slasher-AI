@@ -1,4 +1,4 @@
-# Slasher-AI
+# Slasher AI
 The best cell-like games Bots.
 
 As soon as you install it, make sure you run the file '[ Slasher AI ] Installer.bat' else the console will just crash.
