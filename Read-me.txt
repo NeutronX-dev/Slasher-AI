@@ -21,3 +21,4 @@ Terms of Service / Terms and Conditions :
         This tool / exploit is not meant for any kind of commercial use,
         and any kind of content made with this tool / exploit should have
         it respective credits to the creators of this bot.
+- AnonDevs
