@@ -1,0 +1,297 @@
+// ==UserScript==
+// @name         Slasher AI
+// @namespace    agocell.eu
+// @version      1.5
+// @description  The best cell games Bots.
+// @author       Slasher, yaxeldragon, Cabotrez
+// @match        *://de.agar.bio/*
+// @match        *.pok.ist/*
+// @match        *.agar.cc/*
+// @match        *.bomb.agar.bio/*
+// @match        *.powerline.io/*
+// @match        *.army.ovh/web/*
+// @match        *.mogar.io/*
+// @match        *.ogar.be/*
+// @match        *.cellcraft.io/*
+// @grant        none
+// @run-at       document-start
+// ==/UserScript==
+'use strict';
+var observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+        mutation.addedNodes.forEach(function (node) {
+            if (/main\.js/i.test(node.src)) {
+                observer.disconnect();
+                node.parentNode.removeChild(node);
+                var request = new XMLHttpRequest();
+                request.open("get", node.src, true);
+                request.send();
+                request.onload = function () {
+                    var coretext = this.responseText;
+                    var newscript = document.createElement("script");
+                    newscript.type = "text/javascript";
+                    newscript.async = true;
+                    newscript.textContent = replaceCore(coretext);
+                    document.body.appendChild(newscript);
+                };
+            }
+        });
+    });
+});
+observer.observe(document, {
+    attributes: true,
+    characterData: true,
+    childList: true,
+    subtree: true
+});
+const replaceCore = (core) => {
+    core = core.replace(/(\w+=new.Web\w+).......(\w+..\w+..'').........(\w+)=(\w+)\)/i, `console.log("SERVER IP", $4); $&`);
+    core = core.replace(/\w+\((\w+)\){if\(!\w+\)\w+;/i, `$& let buf = $1; let newBuf = null; if(buf._b) { newBuf = buf._b } else { newBuf = buf }; console.log(newBuf);`);
+    return core;
+};
+function modifyCore(core) {
+    return core
+        .replace(/if\(\w+\.MC&&\w+\.MC\.onPlayerSpawn\)/, `
+            $&
+            window.user.isAlive = true
+            if(window.user.startedBots) window.connection.send(new Uint8Array([5, Number(window.user.isAlive)]).buffer)
+        `)
+        .replace(/if\(\w+\.MC&&\w+\.MC\.onPlayerDeath\)/, `
+            $&
+            window.user.isAlive = false
+            if(window.user.startedBots) window.connection.send(new Uint8Array([5, Number(window.user.isAlive)]).buffer)
+        `)
+        .replace(/new\s+WebSocket\((\w+\(\w+\))\)/, `
+            $&
+            if(window.user.startedBots) window.connection.send(new Uint8Array([1]).buffer)
+            window.game.url = $1
+            window.user.isAlive = false
+            window.user.macroFeedInterval = null
+        `).replace(/(\w+)=~~\(\+\w+\[\w+\+\d+>>3]\+\s+\+\(\(\w+\[\w+\+\d+>>2]\|0\)-\(\(\w+\[\d+]\|0\)\/2\|0\)\|0\)\/\w+\);(\w+)=~~\(\+\w+\[\w+\+\d+>>3]\+\s+\+\(\(\w+\[\w+\+\d+>>2]\|0\)-\(\(\w+\[\d+]\|0\)\/2\|0\)\|0\)\/\w+\)/, `
+            $&
+            window.user.mouseX = $1 - window.user.offsetX
+            window.user.mouseY = $2 - window.user.offsetY
+            if(window.user.startedBots && window.user.isAlive) window.connection.send(window.buffers.mousePosition(window.user.mouseX, window.user.mouseY))
+        `)
+        .replace(/\w+\[\w+\+272>>3]=(\w+);\w+\[\w+\+280>>3]=(\w+);\w+\[\w+\+288>>3]=(\w+);\w+\[\w+\+296>>3]=(\w+)/, `
+            $&
+            if(~~($3 - $1) === 14142 && ~~($4 - $2) === 14142){
+                window.user.offsetX = ($1 + $3) / 2
+                window.user.offsetY = ($2 + $4) / 2
+            }
+        `)
+        .replace(/\(\.9,/, '(window.ZOOM_SPEED,')
+        .replace(/;if\((\w+)<1\.0\)/, ';if($1 < (!getOption("EXTENDED_ZOOM")))')
+        .replace(/(\w+\(\d+,\w+\|0,\.5,\.5\)\|0);(\w+\(\d+,\w+\|0,\.5,50\.5\)\|0);(\w+\(\d+,\w+\|0,\.5,\.5\)\|0);(\w+\(\d+,\w+\|0,50\.5,\.5\)\|0)/, `
+            $1
+            if(window.getOption("DRAW_MAP_GRID")) $2
+            $3
+            if(window.getOption("DRAW_MAP_GRID")) $4
+        `)
+        .replace(/while\(0\);(\w+)=\(\w+\|0\)!=\(\w+\|0\);/, `
+            $&
+            if(window.getOption("SHOW_ALL_PLAYERS_MASS")) $1 = true
+        `)
+}
+const owbserver = new MutationObserver(mutations => {
+    mutations.forEach(({
+        addedNodes
+    }) => {
+        addedNodes.forEach(node => {
+            if (node.nodeType === 1 && node.tagName === 'SCRIPT') {
+                const src = node.src || '';
+                if (src.includes('assets/js/ext.js')) {
+                    node.src = '';
+                    window.playnow = () => {
+                        setNick(document.getElementById('nick').value);
+                        return false;
+                    }
+                }
+                if (src.includes('minimap.js') || src.includes('map1.js') || src.includes('master.js') || node.innerHTML.toString().includes('cicklow_XcVCCW')) {
+                    node.type = 'javascript/blocked';
+                    node.parentElement.removeChild(node);
+                }
+            }
+        });
+    });
+});
+owbserver.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+});
+class User {
+    constructor() {
+        this.wsIp = 'ws://127.0.0.1:3000';
+        this.started = false;
+        this.mouseInt = -1;
+        this.byteLen = 0;
+        this.server = '';
+        this.ws = null;
+        this.connect();
+        this.addUI();
+    }
+    connect() {
+        this.ws = new WebSocket(this.wsIp);
+        this.ws.binaryType = 'arraybuffer'
+        this.ws.onmessage = this.onmessage.bind(this);
+        this.ws.onerror = this.onerror.bind(this);
+        this.ws.onclose = this.onclose.bind(this);
+        this.ws.onopen = this.onopen.bind(this);
+        console.log(this.ws);
+        console.log();
+    }
+    onopen() {
+        this.startMouseInt();
+        this.started = false;
+    }
+    startMouseInt() {
+        this.mouseInt = setInterval(() => {
+            let json = {};
+            json.type = "updatePos";
+            json.x = this.x;
+            json.y = this.y;
+            json.byteLen = this.byteLen;
+            this.send(json);
+        }, 50);
+    }
+    sendChat(message) {
+        let json = {};
+        json.type = "chat";
+        json.msg = message;
+        this.send(json);
+    }
+    onmessage(message) {
+        message = JSON.parse(message.data);
+        switch (message.type) {
+            case 'botCount':
+                document.getElementById('botCount').innerText = `${message.connected} / ${message.maxBots}`;
+                break;
+        }
+    }
+    onclose() {
+        setTimeout(this.connect(), 2000);
+        clearInterval(this.mouseInt);
+    }
+    startBots() {
+        let json = {};
+        json.type = "start";
+        json.ip = this.server;
+        this.send(json);
+    }
+    addUI() {
+        let ui = document.createElement('div');
+        ui.id = 'botcanvas';
+        ui.style['background'] = 'linear-gradient(90deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)';
+        ui.style['top'] = '125px';
+        ui.style['left'] = '20px';
+        ui.style['display'] = 'block';
+        ui.style['position'] = 'absolute';
+        ui.style['text-align'] = 'center';
+        ui.style['font-size'] = '15px';
+        ui.style['color'] = '#FFFFFF';
+        ui.style['padding'] = '14px';
+        ui.style['padding-top'] = '8px';
+        ui.style['padding-bottom'] = '7px';
+        ui.style['margin'] = '1%';
+        ui.style['z-index'] = '1000000';
+        ui.style['border-radius'] = '12px';
+        ui.innerHTML += '𝕊𝕝𝕒𝕤𝕙𝕖𝕣 𝔸𝕀 𝕧𝟚 | <small><a href="http://agocell.eu/">Website</a></small>';
+        ui.innerHTML += '<br><br><small>Click to Start</small><br>[ X ] | s ᴘ ʟ ɪ ᴛ <br>[ C ] | ᴇ ᴊ ᴇ ᴄ ᴛ <br>[ P ] | ᴘ ᴇ ʟ ʟ ᴇ ᴛ <br>[ V ] | s ᴘ ᴀ ᴍ</br><br>';
+        let count = document.createElement('span');
+        count.id = 'botCount';
+        count.innerHTML = '𝓦𝓪𝓲𝓽𝓲𝓷𝓰';
+        ui.appendChild(count);
+        document.body.appendChild(ui);
+        document.getElementById('botcanvas').onclick = () => {
+            if (!this.started)
+                this.startBots();
+        };
+    }
+    onerror() {}
+    send(message) {
+        if (this.ws && this.ws.readyState == 1) this.ws.send(JSON.stringify(message));
+    }
+    get isTyping() {
+        return document.querySelectorAll('input:focus').length;
+    }
+    keyDown(event) {
+        if (this.isTyping || !event.key) return;
+        switch (event.key.toLowerCase()) {
+            case 'x':
+                this.send({
+                    type: 'split'
+                });
+                break;
+            case 'c':
+                this.send({
+                    type: 'eject'
+                });
+                break;
+            case 'p':
+                this.send({
+                    type: 'pellets'
+                });
+                break;
+            case 's':
+                this.send({
+                    type: 'stop'
+                });
+                break;
+            case 'v': {
+                let msg = prompt('What do you want the bots spam?', ' ');
+                if (msg) this.sendChat(msg);
+                break;
+            }
+        }
+    }
+}
+window.addEventListener("load", () => {
+    if (!window.client) window.client = new User();
+    document.addEventListener('keydown', window.client.keyDown.bind(window.client));
+});
+WebSocket.prototype.realSend = WebSocket.prototype.send;
+WebSocket.prototype.send = function (pkt) {
+    this.realSend(pkt);
+    if (typeof pkt == 'string') return;
+    if (this.url.includes('localhost')) return;
+    if (pkt instanceof ArrayBuffer) pkt = new DataView(pkt);
+    else if (pkt instanceof DataView) pkt = pkt;
+    else pkt = new DataView(pkt.buffer);
+    if ((pkt.byteLength > 0) && (pkt.getUint8(0) != 16)) {
+        var f = "";
+        for (var i = 0; i < pkt.byteLength; i++) {
+            var a = pkt.getUint8(i);
+            f = f + a + " ";
+        }
+        var realbuffers = f.split(' ');
+        var minusrealbuffermassiv = realbuffers.length;
+        var drr = realbuffers.splice(i, minusrealbuffermassiv);
+        console.log("Detected new package: " + realbuffers);
+    }
+    switch (pkt.getUint8(0, true)) {
+        case 16:
+            window.client.byteLen = pkt.byteLength;
+            switch (pkt.byteLength) {
+                case 13:
+                case 9:
+                    window.client.x = pkt.getInt32(1, true);
+                    window.client.y = pkt.getInt32(5, true);
+                    break;
+                case 21:
+                    window.client.x = pkt.getFloat64(1, true);
+                    window.client.y = pkt.getFloat64(9, true);
+                    break;
+                case 17: // update position
+                    posX = msg.getFloat32(offset, true);
+                    offset += 4;
+                    posY = msg.getFloat32(offset, true);
+                    offset += 4;
+                    posSize = msg.getFloat32(offset, true);
+                    offset += 4;
+                    break;
+            }
+    }
+    //  if (window.client.server !== this.url) {
+    window.client.server = this.url;
+    // }
+};

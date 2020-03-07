@@ -1,0 +1,23 @@
+Information :
+|  This version of Slasher AI was made
+|  Optimized so there is no need of going
+|_ Into any internal file.
+
+Files
+    [+]  assets                        -   Do not Touch (could mess up)
+    [ ]  [ Slasher AI ] Installer.bat  -   Run this at first ( No need to run twice )
+    [ ]  [ Slasher AI ] Config.bat     -   Configurate the Bot ( Max. Bots | Bots Name )
+    [ ]  [ Slasher AI ] Run.bat        -   Runs the Bots
+    [ ]  [ Slasher AI ] UserScript.js  -   UserScript ( Copy and Paste to Tampermonkey )
+
+Credits :
+    Slasher     : Coded the Bots.
+    yaxeldragon : Optimized the Bots.
+    Cabotrez    : Promotion of the Bots.
+        - The Team  |  agocell.eu
+
+Terms of Service / Terms and Conditions :
+    When you run any of the files you understand the following :
+        This tool / exploit is not meant for any kind of commercial use,
+        and any kind of content made with this tool / exploit should have
+        it respective credits to the creators of this bot.

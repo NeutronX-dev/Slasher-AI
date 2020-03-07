@@ -1,0 +1,16 @@
+{ 
+	"botNames": [ 
+		"AnonDevs", 
+		"AnonDevs" 
+	], 
+    "accounts": [ 
+      "nxeqCZE6iXsWvaLFvEXTxq3PMexCpGDHYAgS5x8YPgGvOVRg9vSWhdHuqgXqgeIR", 
+      "lEFjVNsCKgkWLMM6rlYLuZm0fz7uLywCcY52Sp3aSYf7LGPFhX1G19c0OXfrPuNo", 
+      "eKzaBvuV2RuoJX1A1Nj9OFB2qsK7UHDe9Dhxrk0Sbu65zqXr2JAU9sye7wlXGPFq" 
+	], 
+	"useAccount": false, 
+	"useProxyApi": true, 
+	"useCaptcha": true, 
+	"encryptMainKey": true, 
+	"maxBots": 75 
+} 

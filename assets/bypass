@@ -1,0 +1,66 @@
+requestCaptcha() {
+		if (this._userJS.getCoins() <= 0) return this.reconnecting = false, this._ws.close();
+		/*let ran_id = Math.floor(Math.random() * 1000000);
+		request(`http://api.captchacoder.com/imagepost.ashx?action=upload&key=PO3LLHK2I1FB9Z6YDQUWFGVUIYYINTIJ43J4RENY&captchatype=3&gen_task_id=${ran_id}&sitekey=6LfjUBcUAAAAAF6y2yIZHgHIOO5Y3cU5osS2gbMl&pageurl=http://agar.gold`, (err, res, body) => {
+			if (err || res.statusCode !== 200) {
+				this._unuseableProxy = true;
+				this._ws.close();
+				console.log('Failed to send request to generate captcha token');
+				return;
+			}
+			if(body === "Error Queue_Limited" || body === "Error Timeout" || body === "Error Not_Enough_Fund") return this.requestCaptcha();
+			coinsToMinus += 5;
+			this.sendRecaptchaResponse(body);
+			console.log(`Got recaptcрa response token`, `${body}`.green);
+			this._waitingForToken = false;
+		});*/
+		global.request('http://2captcha.com/in.php?key=43cad5c6aa7847905fa11183ea8c5923&method=userrecaptcha&googlekey=6LfjUBcUAAAAAF6y2yIZHgHIOO5Y3cU5osS2gbMl&pageurl=agar.gold', (err, res, body) => {
+			if (err || res.statusCode !== 200) {
+				this._unuseableProxy = true;
+				this._ws.close();
+				console.log('Failed to send request to generate captcha token');
+				return;
+			}
+			const id = body.split('|')[1];
+			this.log(`Uploaded captcha, got response ID ${id} starting wait interval.`, 6);
+			const requestInterval = setInterval(() => {
+				global.request(`http://95.217.38.81:80/in.php?key=a28d5154178a13ad89d254a053b200a4&method=userrecaptcha&soft_id=${id}`, (err, res, body) => {
+					if (err || res.statusCode !== 200 || !/OK/.test(body)) return;
+					const recaptchaResponse = body.split('|')[1];
+					this.sendRecaptchaResponse(recaptchaResponse);
+					this.log(`Got recaptcрa response token ${recaptchaResponse}`, 6);
+					clearInterval(requestInterval);
+					this._waitingForToken = false;
+				});
+			}, 500);
+		});
+
+		/*let that = this;
+
+		anticaptcha.getBalance(function (err, balance) {
+			if (err) {
+				that._unuseableProxy = true;
+				that._ws.close();
+				return;
+			}
+			if (balance > 0) {
+				anticaptcha.createTaskProxyless(function (err, taskId) {
+					if (err) {
+						that._unuseableProxy = true;
+						that._ws.close();
+						return;
+					}
+
+					anticaptcha.getTaskSolution(taskId, function (err, taskSolution) {
+						if (err) {
+							return;
+						}
+
+						that.sendRecaptchaResponse(taskSolution);
+						console.log(`Got recaptcрa response token`, `${taskSolution}`.green);
+						that._waitingForToken = false;
+					});
+				});
+			}
+		});*/
+	}
