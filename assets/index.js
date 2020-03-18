@@ -7,7 +7,9 @@ const encryption = require('./encryption');
 const proxyAgent = require('proxy-agent');
 const murmur2 = require('murmurhash-js');
 const Protocol = require('./Protocol');
-const { readFileSync } = require('fs');
+const {
+	readFileSync
+} = require('fs');
 console.log(readFileSync('credits.txt', 'utf8'.blue).toString())
 const request = require('request');
 const Reader = require('./reader');
@@ -17,7 +19,7 @@ const WebSocket = require('ws');
 const chalk = require('chalk');
 const http = require('http');
 const fs = require('fs');
-const userAY = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36';
+const userAY = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36';
 setTimeout(function () {
 	process.exit(1);
 }, 15 * 60 * 1000); // 15 minutes
@@ -85,7 +87,7 @@ if (fs.existsSync('./config.json')) {
 	_default._0x431f = true;
 	_default.maxBots = 100;
 	_default.usecapchasolve = true;
-	fs.writeFile('config.json', Buffer.from(JSON.stringify(_default, null, 20)), () => { });
+	fs.writeFile('config.json', Buffer.from(JSON.stringify(_default, null, 20)), () => {});
 	config = _default;
 }
 const dataBot = {
@@ -320,7 +322,7 @@ class Bot {
 		}
 		//this.sendMoveTo(clientX, clientY);
 	}
-	function(useCaptcha) {
+	function (useCaptcha) {
 		if (config.useCaptcha)
 			var buf = new Buffer(1 + (token.length + 1));
 		buf.writeUInt8(100, 0);
@@ -333,7 +335,7 @@ class Bot {
 		let ws = new WebSocket('wss://bubble.am/', {
 			agent: this.proxy
 		});
-		ws.onclose = ws.onerror = ws.onopen = () => { };
+		ws.onclose = ws.onerror = ws.onopen = () => {};
 		ws.onmessage = msg => {
 			msg = JSON.parse(msg.data);
 			switch (msg[0]) {
@@ -539,13 +541,16 @@ class Bot {
 				inits = Buffer.alloc(5);
 				inits.writeUInt8(255, 0);
 				break;
-			case 'agar.lol':
+			case 'agar-pro.club':
 				inits = Buffer.alloc(5);
 				inits.writeUInt8(254, 0);
 				inits.writeUInt32LE(5, 1, true);
 				inits = Buffer.alloc(5);
 				inits.writeUInt8(255, 0);
 				inits.writeUInt32LE(2200049715, 1, true);
+				this.send(inits);
+				//*inits = createDataView(1 + name.length);
+				inits.writeUInt8(80, 0);
 				this.send(inits);
 				break;
 			case 'agarabi.com':
@@ -1006,10 +1011,15 @@ class Bot {
 					this.send(Buffer.from([80]));
 				}.bind(this), 1750 * 2)
 				break;
+			case 'agar-pro.club':
+				this.send(Buffer.from([254, 5, 0, 0, 0]))
+				this.send(Buffer.from([255, 51, 24, 34, 131]))
+				this.send(Buffer.from([19]))
+				break;
 			case 'popsplit.us':
 				var a = this;
 				this["send"](Buffer.from([32, 0]));
-				setInterval(function () { }.bind(this), 1750 * 2)
+				setInterval(function () {}.bind(this), 1750 * 2)
 				break;
 			case 'agario-here.com':
 				var a = this;
@@ -1259,7 +1269,7 @@ class Bot {
 				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
 				spawnBuffer.write(name, 1, 'utf16le');
 				break;
-			case 'agar.lol':
+			case 'agar-pro.club':
 			case 'play.agario0.com':
 			case 'ultrex.io':
 			case 'agar.live':
@@ -1875,7 +1885,7 @@ class Bot {
 			case 16:
 				try {
 					this.handleWorldUpdate(msg);
-				} catch (e) { }
+				} catch (e) {}
 				break;
 			case 22:
 				if (!this.gotKey || !this.settings.minionEnableERTPControls) break;
@@ -1902,7 +1912,7 @@ class Bot {
 		if (this.ip)
 			this.connect(this.ip);
 	}
-	onerror(error) { }
+	onerror(error) {}
 	/*	send(buffer) {
 			if (this.ws && this.ws.readyState == 1)
 				this.ws.send(buffer);
@@ -2062,7 +2072,7 @@ class Client {
 		});
 		this.started = true;
 	}
-	onerror() { }
+	onerror() {}
 	send(message) {
 		if (this.ws && this.ws.readyState == 1) this.ws.send(JSON.stringify(message));
 	}
