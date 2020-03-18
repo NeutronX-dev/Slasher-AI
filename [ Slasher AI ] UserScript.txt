@@ -13,6 +13,7 @@
 // @match        *.mogar.io/*
 // @match        *.ogar.be/*
 // @match        *.cellcraft.io/*
+// @match        *.agar-pro.club/*
 // @grant        none
 // @run-at       document-start
 // ==/UserScript==
