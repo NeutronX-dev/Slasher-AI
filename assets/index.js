@@ -19,10 +19,11 @@ const WebSocket = require('ws');
 const chalk = require('chalk');
 const http = require('http');
 const fs = require('fs');
-const userAY = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36';
+var userAY = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36';
+let proxyTimeoutAPI = '10000';
 setTimeout(function () {
 	process.exit(1);
-}, 15 * 60 * 1000); // 15 minutes
+}, 15 * 60 * 1000);
 figlet('                     Bots-Client', (err, data) => {
 	console.log(data.magenta);
 	console.log('					AI v2 Slasher'.cyan)
@@ -38,9 +39,9 @@ const game = {
 let bufKey = 8 ^ 0x146124 >>> Math.imul(12376123678123, 6) >>> 0x12673718723;
 let sBuf = 8 ^ (12371928736123871 ^ 125230845723) >>> Math.imul(1123123, 2183123) ^ 12345623478;
 const compatProtocolVersion = 6;
-const initKey1 = new Buffer([254, compatProtocolVersion, 0, 0, 0]); // First init key changes with the protocol version.
-let initKey2 = new Buffer([255, 114, 97, 103, 79]); // Got by our phantom server, changes hourly.
-const defaultBorders = { // Default map borders
+const initKey1 = new Buffer([254, compatProtocolVersion, 0, 0, 0]);
+let initKey2 = new Buffer([255, 114, 97, 103, 79]);
+const defaultBorders = {
 	minX: -7071.067811865475,
 	minY: -7071.067811865475,
 	maxX: 7071.067811865475,
@@ -65,6 +66,7 @@ let id = Math.floor(Math.random() * 1000);
 var clientX = 0,
 	clientY = 0,
 	aiMode = false;
+
 function getProxy() {
 	if (proxyAgents.length == 0) proxyAgents = allProxyAgents;
 	return proxyAgents.shift();
@@ -130,15 +132,15 @@ const dataBot = {
 		}
 	},
 }
+
 function getProxys() {
 	if (config.useProxyApi) {
-		request('https://api.proxyscrape.com?request=getproxies&proxytype=socks5&timeout=10000&country=all', (err, req, body) => {
+		request(`https://api.proxyscrape.com?request=getproxies&proxytype=socks5&timeout=${proxyTimeoutAPI}&country=all`, (err, req, body) => {
 			let proxies = body.replace(/\r/g, '').split('\n');
 			proxies.forEach(proxy => {
 				allProxyAgents.push(new proxyAgent(`socks://${proxy}`));
 			});
 			console.log(`				       Got ${proxies.length} proxies!`.green);
-			console.log(` User Agent : ${userAY}`);
 		});
 	} else {
 		fs.readFile('./Sproxies.txt', (err, data) => {
@@ -322,6 +324,7 @@ class Bot {
 		}
 		//this.sendMoveTo(clientX, clientY);
 	}
+
 	function (useCaptcha) {
 		if (config.useCaptcha)
 			var buf = new Buffer(1 + (token.length + 1));
@@ -768,7 +771,7 @@ class Bot {
 				inits.writeUInt32LE(154669603, 1, true);
 				this.send(inits);
 				break;
-			case 'agar,yt':
+			case 'agar.yt':
 				inits = Buffer.alloc(5); + global.ProtocolVersion;
 				inits.writeUInt8(254, 0);
 				inits.writeUInt32LE(5, 1, 0);
@@ -951,7 +954,7 @@ class Bot {
 			case 'germs.io':
 				this.send(Buffer.from([255]));
 				this.send(Buffer.from([123]));
-				break
+				break;
 			case 'powerline.io':
 				this.send(Buffer.from([191, 160, 0, 78, 0]));
 				this.send(Buffer.from([0]));
@@ -1050,7 +1053,7 @@ class Bot {
 			case 'cellzio.website':
 				this.send(Buffer.from([17]));
 				this.send(Buffer.from([21]));
-				break
+				break;
 			case 'www.ogarion.com':
 			case 'mk-agario.glitch.me':
 			case 'dummyclient.glitch.me':
@@ -1312,7 +1315,7 @@ class Bot {
 				name = this.nameBypass() + '&' + name;
 				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
 				spawnBuffer.write(name, 3, 'utf16le');
-				break
+				break;
 			case 'agarx.biz':
 				name = name + id;
 				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf8'));
@@ -1323,7 +1326,7 @@ class Bot {
 				name = name + Math.floor(Math.random() * 1000);
 				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'ucs2'));
 				spawnBuffer.write(name, 1, 'ucs2');
-				break
+				break;
 			case 'www.agar-kicoo.tk':
 				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
 				spawnBuffer.writeUInt16LE(59, 1);
@@ -1333,16 +1336,16 @@ class Bot {
 				name = name + Math.floor(Math.random() * 1000);
 				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'ucs2'));
 				spawnBuffer.write(name, 1, 'ucs2');
-				break
+				break;
 			case 'agariomachos.com':
 				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
 				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'ucs2'));
 				spawnBuffer.write(name, 3, 'ucs2');
-				break
+				break;
 				name = name + Math.floor(Math.random() * 900);
 				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'ucs2'));
 				spawnBuffer.write(name, 1, 'ucs2');
-				break
+				break;
 			case 'bubble.am':
 				name = name;
 				spawnBuffer = Buffer.alloc(1 + Buffer.byteLength(name, 'utf16le'));
@@ -1358,13 +1361,13 @@ class Bot {
 				name = name + id;
 				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'ucs2'));
 				spawnBuffer.write(name, 1, 'ucs2');
-				break
+				break;
 			case 'agario-here.com':
 				name = name + id;
 				name = name + Math.floor(Math.random() * 900);
 				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'ucs2'));
 				spawnBuffer.write(name, 1, 'ucs2');
-				break
+				break;
 			case 'studio.tialight.com':
 				name = name + id;
 				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
@@ -1962,10 +1965,28 @@ class Client {
 	}
 	onmessage(message) {
 		const json = JSON.parse(message);
+		const SAiUser = JSON.parse(message);
 		switch (json.type) {
 			case 'start':
-				this.startBots(json.ip, this.origin);
-				console.log('	User started bots on '.red, this.origin.cyan, json.ip.yellow)
+				this.startBots(json.ip, this.origin, SAiUser.agent);
+				// userAY = SAiUser.agent;
+				// defaultHeaders["User-Agent"] = SAiUser.agent;
+				console.log('	User started bots on '.red, this.origin.cyan, json.ip.yellow);
+				// if(userAY){
+				// 	console.log(colors.bold.cyan('            Got an ') + colors.bold.cyan('User Agent') + '!');
+				// }
+				break;
+			case 'stop':
+				setTimeout(function () {
+					process.on("exit", function () {
+						require("child_process").spawn(process.argv.shift(), process.argv, {
+							cwd: process.cwd(),
+							detached: true,
+							stdio: "inherit"
+						});
+					});
+					process.exit();
+				}, 1000);
 				break;
 			case 'updatePos':
 				var offset = true;
@@ -2067,7 +2088,7 @@ class Client {
 			this.botConnectInt.push(setTimeout(() => {
 				if (!this.started) return;
 				bot.connect(serverip.replace('https', 'wss'));
-				//	console.log(serverip);
+				// console.log(serverip);
 			}, 70 * i));
 		});
 		this.started = true;
@@ -2118,39 +2139,6 @@ if (useSSL) {
 					for (let i = 0; i < clients.length; i++) {
 						clients[i].sendMitosis();
 					}
-					break;
-				case 0x21:
-					for (let i = 0; i < clients.length; i++) {
-						clients[i].sendEject();
-					}
-					break;
-				case 0x22:
-					aiMode = !aiMode;
-					break;
-				case 0xff:
-					if (clients.length > 0) {
-						break;
-					}
-					let ip = '',
-						ch = 0;
-					let amount = 0;
-					amount = Math.min(message.readUInt16LE(off), 500);
-					off += 2;
-					while (true) {
-						ch = message.readUInt16LE(off);
-						off += 2;
-						if (!ch) break;
-						ip += String.fromCharCode(ch);
-					}
-					console.log(ip, amount);
-					for (let i = 0; i < amount; i++) {
-						let c = new Client();
-						c.connect(ip);
-						clients.push(c);
-					}
-					break;
-				case 0xfe:
-					clients = [];
 					break;
 			}
 		});
