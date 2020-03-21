@@ -1,19 +1,16 @@
 // ==UserScript==
 // @name         Slasher AI
 // @namespace    agocell.eu
-// @version      1.5
+// @version      2.3
 // @description  The best cell games Bots.
 // @author       Slasher, yaxeldragon, Cabotrez
 // @match        *://de.agar.bio/*
 // @match        *.pok.ist/*
-// @match        *.agar.cc/*
 // @match        *.bomb.agar.bio/*
 // @match        *.powerline.io/*
 // @match        *.army.ovh/web/*
 // @match        *.mogar.io/*
 // @match        *.ogar.be/*
-// @match        *.cellcraft.io/*
-// @match        *.agar-pro.club/*
 // @grant        none
 // @run-at       document-start
 // ==/UserScript==
@@ -165,7 +162,12 @@ class User {
         message = JSON.parse(message.data);
         switch (message.type) {
             case 'botCount':
-                document.getElementById('botCount').innerText = `${message.connected} / ${message.maxBots}`;
+                this.connectedBotsPercentage = Math.floor(message.connected*100/message.maxBots);
+if(message.connected == 0){
+    document.getElementById('botCount').innerHTML = `<small><small>Wating for Bots...</small></small>`;
+} else {
+    document.getElementById('botCount').innerHTML = `<kbd><b>${message.connected}</b></kbd> / <kbd>${message.maxBots}</kbd><br><small><b>${this.connectedBotsPercentage}%</b> <small>of bots Connected</small></small>`;
+}
                 break;
         }
     }
@@ -174,12 +176,26 @@ class User {
         clearInterval(this.mouseInt);
     }
     startBots() {
+        let userAgentAAA = navigator.userAgent;
+        let userAgent = userAgentAAA.toString();
         let json = {};
+        let SAiUser = {};
         json.type = "start";
+        json.ip = this.server;
+        json.agent = userAgent;
+        SAiUser.agent = userAgent;
+        this.send(json);
+        this.send(SAiUser);
+    }
+    stopBotsA() {
+        let json = {};
+        json.type = "stop";
         json.ip = this.server;
         this.send(json);
     }
     addUI() {
+        let uiBtnSwitch = 0;
+        let cssStyles = document.createElement('head');
         let ui = document.createElement('div');
         ui.id = 'botcanvas';
         ui.style['background'] = 'linear-gradient(90deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)';
@@ -191,21 +207,28 @@ class User {
         ui.style['font-size'] = '15px';
         ui.style['color'] = '#FFFFFF';
         ui.style['padding'] = '14px';
+        ui.style['padding-right'] = '25px';
         ui.style['padding-top'] = '8px';
-        ui.style['padding-bottom'] = '7px';
+        ui.style['padding-bottom'] = '9px';
         ui.style['margin'] = '1%';
         ui.style['z-index'] = '1000000';
         ui.style['border-radius'] = '12px';
-        ui.innerHTML += '𝕊𝕝𝕒𝕤𝕙𝕖𝕣 𝔸𝕀 𝕧𝟚 | <small><a href="http://agocell.eu/">Website</a></small>';
-        ui.innerHTML += '<br><br><small>Click to Start</small><br>[ X ] | s ᴘ ʟ ɪ ᴛ <br>[ C ] | ᴇ ᴊ ᴇ ᴄ ᴛ <br>[ P ] | ᴘ ᴇ ʟ ʟ ᴇ ᴛ <br>[ V ] | s ᴘ ᴀ ᴍ</br><br>';
+        ui.style['.sides'] = '12px';
+        let currentSiteTitle = window.document.title;
+        window.document.title = 'Slasher AI - ' + currentSiteTitle;
+        cssStyles.innerHTML += '<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">';
+        ui.innerHTML += '<b>AnonDevs</b> Presents<br><small>Slasher AI <small><b>v2.8</b></small></small>';
+        ui.innerHTML += '<br><br><kbd>X</kbd> | <small>S P L I T</small><br><kbd>C</kbd> | <small>E J E C T</small> <br><kbd>P</kbd> | <small>F R E E Z E</small> <br><kbd>V</kbd> | <small>S P A M</small></br></br><div class="sides" id="startstopbtn"><button type="button" class="btn btn-success" id="SlasherAIStartBtn">Start</button></div><br>';
         let count = document.createElement('span');
         count.id = 'botCount';
         count.innerHTML = '𝓦𝓪𝓲𝓽𝓲𝓷𝓰';
         ui.appendChild(count);
         document.body.appendChild(ui);
-        document.getElementById('botcanvas').onclick = () => {
-            if (!this.started)
+        var container = document.getElementById('startstopbtn');
+        document.getElementById('startstopbtn').onclick = () => {
+            if (!this.started) {
                 this.startBots();
+            }
         };
     }
     onerror() {}
