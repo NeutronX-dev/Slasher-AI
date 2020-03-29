@@ -1,15 +1,13 @@
 // ==UserScript==
 // @name         Slasher AI
-// @namespace    agocell.eu
-// @version      2.3
-// @description  The best cell games Bots.
+// @namespace    yaxeldragon.rf.gd
+// @version      2.8
+// @description  The best cell-like games Bots.
 // @author       Slasher, yaxeldragon, Cabotrez
 // @match        *://de.agar.bio/*
-// @match        *.pok.ist/*
 // @match        *.bomb.agar.bio/*
 // @match        *.powerline.io/*
 // @match        *.army.ovh/web/*
-// @match        *.mogar.io/*
 // @match        *.ogar.be/*
 // @grant        none
 // @run-at       document-start
