@@ -1,2146 +1,2109 @@
-const SocksProxyAgent = require('socks-proxy-agent');
-const HttpProxyAgent = require('http-proxy-agent');
-const LegacyProtocol = require('./LegacyProtocol');
+var a_0x23a7 = ['c2VuZFNwZWN0YXRl', 'YWMtY2xhbi5nbGl0Y2gubWU=', 'YmxvYmdhbWUuaW8=', 'YWdhcmFiaS5jb20=', 'YmF0', 'Ym90cw==', 'X2Jlc3RDZWxs', 'YWdhci50ZWFt', 'YXN0ci5pbw==', 'cGln', 'YWdhcmlvLm9yZy51aw==', 'dXRmOA==', 'YWdhcnouY29t', 'aGFuZGxlV29ybGRVcGRhdGU=', 'YWdhcmlveC5uZXQ=', 'X2Jlc3REaXN0YW5jZQ==', 'YW1teQ==', 'Y2VsbHMuZ2E=', 'bWluaW9ucw==', 'c3R1ZGlvLnRpYWxpZ2h0LmNvbQ==', 'X3NwYXduZWQ=', 'b25jbG9zZQ==', 'YWdhci5wcm8=', 'YWdhcmNlbGwubWw=', 'YWdpeC5wdw==', 'aXNDb25uZWN0ZWQ=', 'L3Jvb3QvY2VydC5wZW0=', 'ZHJhZ29u', 'Li9yZWFkZXI=', 'Q1JBU0hFUg==', 'ZmxhZ3M=', 'YWdhcmltYWNob3MuY29t', 'bW9vbW9vLmlv', 'Y3JlZGl0cy50eHQ=', 'YmlvYm90cy50aw==', 'ZW5jcnlwdGlvbktleQ==', 'YnVtaWU=', 'cHJvdG9jb2xWZXJzaW9u', 'Y295b3Rl', 'Li9MZWdhY3lQcm90b2NvbA==', 'dWx0cmV4Lmlv', 'a2luZ19saW9u', 'cG9zZWlkb24=', 'd3JpdGVVSW50MTZMRQ==', 'ZHVtbXljbGllbnQuZ2xpdGNoLm1l', 'X2tleTI0MQ==', 'cHJvc3BsaXQuaW8=', 'Z29hdA==', 'YWdhci55dA==', 'Y2xpZW50LmJsb2JnYW1lLmlv', 'YWdhcmlvcy5vcmc=', 'd3d3LmFnYXJzZXJ2LmNvbS8=', 'YWdhci5saXZl', 'b2N0b3B1cw==', 'cHJveHk=', 'bGlzdGVu', 'YXJteS5vdmg=', 'Y29sb3I=', 'U2VydmVy', 'YmxhY2tjYXQ=', 'YnVi', 'dXNlUHJveHlBcGk=', 'UHJvdG9jb2xWZXJzaW9u', 'X2xlYWRlcmJvYXJk', 'b25vcGVu', 'a2VtcG9fdGlnZXI=', 'X19jZmR1aWQ9ZDU1N2Q5M2JkYzkxNmM5OTc1YjlhNTZhODgzZTQyNTAyMTUzMzM0MjAzMTsgX2dhPUdBMS4yLjExNTc3MDU3NS4xNTMzOTUwODk5', 'X2xhc3RCb3JkZXJUaW1l', 'cmVhZEludDE2TEU=', 'Ym90Q29ubmVjdEludA==', 'TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzgwLjAuMzk4Ny4xMzIgU2FmYXJpLzUzNy4zNg==', 'Ymx1ZQ==', 'aHR0cDovL2FnYXIud2lraQ==', 'bW91c2U=', 'YWdhcmlvc2VydmVyLmNsdWI=', 'YWdhci5vbmU=', 'YWdhci5zY2hvb2w=', 'ZnJvbUNoYXJDb2Rl', 'Y29sb3Jz', 'ZWplY3Q=', 'd3d3Lm9nYXJpb24uY29t', 'YmVzdGFnYXJpby5vcmc=', 'bWF4Qm90cw==', 'bXVybXVyaGFzaC1qcw==', 'Y2FycA==', 'aGVhZGVycw==', 'YWdhci5yZWQ=', 'cG9wc3BsaXQudXM=', 'cmVkX2ZpZW5k', 'YWdhcmlvLmNhZmU=', 'YmFzaWxpc2s=', 'ICAgICAgICAgICAgICAgICAgICAgQm90cy1DbGllbnQ=', 'dG9TdHJpbmc=', 'c2l6ZQ==', 'amFja2Fs', 'cmVhZEZpbGU=', 'Z29kemlsbGE=', 'cGFycm90', 'Y2hhckNvZGVBdA==', 'Z2FyLnBybw==', 'YWdhcmlvLWhlcmUuY29t', 'ZXhpdA==', 'Y2xpZW50WA==', 'cmVhZEludDMy', 'c3BsaXRBdHRlbXB0cw==', 'YmluZA==', 'c2VhbA==', 'bW92ZVRv', 'bWFnZW50YQ==', 'c0lk', 'cmVhZERvdWJsZUxF', 'ZG9n', 'Y29uZmlnLmpzb24=', 'cGxheWVyTm9kZUlkcw==', 'dHlwZQ==', 'd3JpdGVJbnQzMkxF', 'YWdhci5jeA==', 'R290IGtleTI0MT0=', 'Y2F0', 'YmVhc3Q=', 'YmFseg==', 'Y291Z2Fy', 'Ynl0ZUxlbg==', 'cmVhZEludDMyTEU=', 'cGVsbGV0c01vZGU=', 'amhpbg==', 'aGFzT3duUHJvcGVydHk=', 'd3JpdGVEb3VibGVMRQ==', 'YWdhcmlvZ2FtZS5jbHVi', 'MjUw', 'YXJp', 'ZnVyeV9jYXQ=', 'c2lsdmVyX3R1c2s=', 'd3JpdGVJbkRvdWJsZUxF', 'cGxheWVyTm9kZXM=', 'YWdhcmlvLmlvc2Nob29sLnNwYWNl', 'IHNldCBkZWNyeXB0aW9uS2V5PQ==', 'Y2xpZW50VmVyc2lvbg==', 'bG9n', 'cmVhZFVJbnQ4', 'aHVza3k=', 'cG93ZXJsaW5lLmlv', 'dXBkYXRlUG9z', 'aXhnYXIubmV0', 'c29ja3MtcHJveHktYWdlbnQ=', 'YWdhcnguYml6', 'Y29sb3NzdXM=', 'ZXhpc3RzU3luYw==', 'Zmxvb3I=', 'Z3JlZW4=', 'bWVzc2FnZQ==', 'cmVhZFN0cmluZw==', 'c2xsaWcuaW8=', 'cm90YXRlRW5jcnlwdGlvbktleQ==', 'cmVzZXQ=', 'ZGF0YQ==', 'MTAw', 'bmFtZUludGVydmFs', 'am90dW4=', 'P3Nlc3Npb249', 'aHR0cA==', 'YWJz', 'U2VjLVdlYlNvY2tldC1FeHRlbnNpb25z', 'cG9rZXJwcm8=', 'cmVhZFVJbnQzMkxF', 'Zm9yRWFjaA==', 'YWdhci5saWZl', 'emdhci5nbGl0Y2gubWU=', 'X3VudXNlYWJsZVByb3h5', 'YmVoZW1vdGg=', 'YXl1c2hyZWFs', 'c3hvbGQuZ2xpdGNoLm1l', 'ZmlyZWJpcmQ=', 'cGVuZ3Vpbg==', 'cmVhcGVy', 'c3BpZGVy', 'b3ds', 'Y2xpZW50', 'dXNlQ2FwdGNoYQ==', 'ZmFuaXguaW8=', 'Y29sbGVjdFBlbGxldHM=', 'CVVzZXIgc3RhcnRlZCBib3RzIG9uIA==', 'YnVmZmVyc0tleQ==', 'c3F1aXJyZWw=', 'Y3JvY29kaWxl', 'CQkJCS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ==', 'Li9Qcm90b2NvbA==', 'Q2xpZW50', 'cm90YXRlQnVmZmVyQnl0ZXM=', 'Li9TcHJveGllcy50eHQ=', 'c3RhcnRCb3Rz', 'CQkgICAgICAgICAgQSB1c2VyIGhhcyBkaXNjb25uZWN0ZWQhIENvbm5lY3RlZCB1c2Vyczog', 'd29sZg==', 'cGFuZGE=', 'cGxheS5taXRvcy5pcw==', 'cmFiYml0', 'b3JjX2dydW50', 'Y3lhbg==', 'YmxlbmRlcmJvdHM=', 'c3RyaW5naWZ5', 'X29mZnNldFg=', 'YmFsei5pbw==', 'c2FiZXJ0b290aA==', 'c3Bhd24=', 'c2VuZE1pdG9zaXM=', 'Z290S2V5', 'dGFyZy5pbw==', 'Z2F2ZXIuaW8=', 'd29sZmY=', 'YmVhcg==', 'YmV0dGVyYWdhcmlvLmNvbQ==', 'CQkJCSAgICAgICBHb3Qg', 'Y2xpZW50WQ==', 'Ym90c2tpbg==', 'Y2hhbGs=', 'dXNlY2FwY2hhc29sdmU=', 'bmFnYXIuZXU=', 'Z29waGVy', 'Y2xvc2U=', 'X2tleTI1NQ==', 'bWluaW9ucy52aW4=', 'YWxleGlzbQ==', 'a3J1bmtlci5pbw==', 'Y2VsbGNyYWZ0Lmlv', 'YWdhcmlvYm94Lm9yZw==', 'X2JvcmRlcnM=', 'cGxheS5hZ2FyaW8wLmNvbQ==', 'Ym90TmFtZXM=', 'JmNvdW50cnk9YWxs', 'YWdhci5ycw==', 'bXlhZ2FyLnBybw==', 'c29ja3M6Ly8=', 'YWdhcg==', 'YWdhcnByaXZhdGVzZXJ2ZXJzLm5ldA==', 'YWdhcmlvLnRvcA==', 'cGFyc2U=', 'b25tZXNzYWdl', 'd3JpdGVVSW50MzJMRQ==', 'YWdhcmlvLnVz', 'UHJhZ21h', 'cmVk', 'bmF0c3U=', 'bWFw', 'bWVkdXNh', 'X2VuY3J5cHRpb25LZXk=', 'b3JpZ2lu', 'dXRmMTZsZQ==', 'Zm94', 'YWlz', 'RmFpbGVkIHRvIGdldCBjb3JyZWN0IDI0MWtleSwgY2xvc2luZyBXZWJTb2NrZXQgY29ubmVjdGlvbiE=', 'YWdhci5pc3Q=', 'YWdhcmlvaHViLmNsdWI=', 'Q29ubmVjdGlvbg==', 'd3JpdGVVSW50OA==', 'IHRva2VuIQ==', 'c2hhcms=', 'c21hbGxfY2hpY2s=', 'Y3V0ZV9wYW5kYQ==', 'YWdhcmlvY2l0eS5wcm8=', 'Li9jb25maWcuanNvbg==', 'aHR0cHM=', 'YWdhci5zdHlsZQ==', 'bG9ic3Rlcg==', 'd3NzOi8vYnViYmxlLmFtLw==', 'Y2VsbC5zaA==', 'd3JpdGVJbnREb3VibGVMRQ==', 'b3JpZ2luU3BsaXQ=', 'd3JpdGU=', 'X2RlY3J5cHRpb25LZXk=', 'T3JpZ2lu', 'YnVsbGtpbmc=', 'WzFd', 'aHR0cC1wcm94eS1hZ2VudA==', 'YWdlbnQ=', 'YmlyZGll', 'dmFuaXMuaW8=', 'Y3JvYw==', 'XzB4NDMxZg==', 'YWdhci1wcm8uY2x1Yg==', 'YWdhcmZsaXguY29t', 'c2hpZnQ=', 'bWstYWdhcmlvLmdsaXRjaC5tZQ==', 'dF9yZXg=', 'CQkgICAgICAgICAgQSB1c2VyIGhhcyBjb25uZWN0ZWQhIENvbm5lY3RlZCB1c2Vyczog', 'c2VuZENoYXQ=', 'Y2VsbHNib3guaW8=', 'YWdhcmlvLnNl', 'ZGVzZXJ0X2ZveA==', 'Y2hpY2s=', 'cGxheS5hZ2FyLmJsYWNr', 'aHR0cDovL2FnYXJpby50ZWNoLw==', 'Z3ppcCwgZGVmbGF0ZQ==', 'Ynl0ZUxlbmd0aA==', 'cHJleQ==', 'Y2VsbHouaW8=', 'cmFuZG9t', 'cmVhZFVJbnQxNkxF', 'bWluaW9uRW5hYmxlRVJUUENvbnRyb2xz', 'd3d3LmFnYXIta2ljb28udGs=', 'ZXJyb3I=', 'c25ha2U=', 'cGxheWVyc0Ftb3VudA==', 'Y2VsbHppby53ZWJzaXRl', 'c3RvcHBlZA==', 'X2FnYXJWaWV3Qm90SUQ=', 'cmVhZHlTdGF0ZQ==', 'ZWF0aW5nRXZlbnRz', 'Y3Jvdw==', 'd2VuZGlnbw==', 'Li9Qcm90b2NvbFN0b3Jl', 'IHNldCBlbmNyeXB0aW9uS2V5PQ==', 'bXNn', 'YWdhcmlvLmJsdWU=', 'U2x4c2hlcg==', 'c2V0dXA=', 'YWdhci52aW4=', 'dXNlQWNjb3VudA==', 'VXBncmFkZQ==', 'Q29va2ll', 'c3RvcEJvdENvdW50', 'YWdhcmlvcHZwLm9yZw==', 'YWxsb2M=', 'eW95b3dhcnMuaW8=', 'W1NFUlZFUl0gRGF0YUJvdCBkaXNjb25uZWN0ZWQ=', 'IHByb3hpZXMh', 'YWdhcnByaXZhdGVzZXJ2ZXJzLm9yZw==', 'bGlvbg==', 'Z2VybXMuaW8=', 'aW5mZXJubw==', 'bGVuZ3Ro', 'cmFwdG9y', 'c2xpZy5pbw==', 'VXNlci1BZ2VudA==', 'X29mZnNldFk=', 'YWdvY2VsbC5ldQ==', 'X2NlbGxz', 'ZGV2aWw=', 'd3Nz', 'aHR0cDovL3RhcmcuaW8v', 'YWdhci5pbw==', 'YmVhcl8=', 'CQkJCQlBSSB2MiBTbGFzaGVy', 'cGFwZXItaW8uY29t', 'a3Jha2Vu', 'aXhhZ2FyLm5ldA==', 'YWdhcmlvdGltZS5zcGFjZQ==', 'Ym90Q291bnRJbnQ=', 'ZGVlcg==', 'dXJs', 'c2VudGluZWw=', 'cHJveHktYWdlbnQ=', 'My44LjEzMy4xNzM=', 'ZGFya193aW5ncw==', 'bWluaW9uc0Zyb3plbg==', 'QWNjZXB0LUxhbmd1YWdl', 'YWdhcmlvLndlYnNpdGU=', 'ZHVhbC1hZ2FyLm1l', 'bmFtZUJ5cGFzcw==', 'ZmlnbGV0', 'c2x5', 'bm8tY2FjaGU=', 'c2V0dGluZ3M=', 'Y2hpaHVhaHVh', 'ZnJvbQ==', 'cm91bmQ=', 'Y29ubmVjdGlvbg==', 'L3Jvb3Qva2V5LnBlbQ==', 'X3dhaXRpbmdGb3JUb2tlbg==', 'YWdhci5jYw==', 'Li9lbmNyeXB0aW9u', 'YmluYXJ5VHlwZQ==', 'c3RhcnQ=', 'YXNzaWdu', 'Ym9tYi5hZ2FyLmJpbw==', 'YmVycnk=', 'YWdhcml4LnJ1', 'cHVzaA==', 'UHJvdG9jb2xrZXk=', 'aHR0cHM6Ly9hcGkucHJveHlzY3JhcGUuY29tP3JlcXVlc3Q9Z2V0cHJveGllcyZwcm94eXR5cGU9c29ja3M1JnRpbWVvdXQ9', 'YWdhcmlvLmZ1bg==', 'c3Bpcnhv', 'bmFtZQ==', 'Ym90Q291bnQ=', 'cG9rLmlzdA==', 'dWNzMg==', 'YnViYmxlLmFt', 'YWdhci5vdmg=', 'c2hlZXA=', 'ZW4tQ0EsZW4tR0I7cT0wLjksZW4tVVM7cT0wLjgsZW47cT0wLjc=', 'dXRmOGxl', 'X3Vua25vd25QYWNrZXRz', 'c2VuZEJvdFBvcw==', 'ZGVjcnlwdGlvbktleQ==', 'Y2VsbGFnYXIubWw=', 'MTMz', 'aW11bA==', 'aW5jaWFnYXJpby5uZXQ=', 'ZW5jcnlwdE1haW5LZXk=', 'c2xpY2U=', 'YWdhcmlvMi5zcGFjZQ==', 'bW9nYXIuaW8=', 'YWdhci5yaXA=', 'MTAwMDA=', 'cmVwbGFjZQ==', 'cmVhZEZpbGVTeW5j', 'Q2FjaGUtQ29udHJvbA==', 'c2VuZA==', 'YWxsTm9kZXM=', 'Y3JlYXRlU2VydmVy', 'aHR0cHM6Ly9mYW5peC5pby8=', 'bm93', 'bS5hZ2FyLmJpbw==', 'X3dz', 'Z290YS5pbw==', 'ZGUuYWdhci5iaW8=', 'T1BFTg==', 'Z2FtZS5leC1zY3JpcHQuY29t', 'Y29ubmVjdGVk', 'c3BsaXQ=', 'YWdhci5zcGFjZQ==', 'YWdhcmlvbWFjaG9zLmNvbQ==', 'dGF1cnVz', 'c2VhX3R1cnRsZQ==', 'bGFzdFBsYXllcnNBbW91bnQ=', 'S2V5', 'c3RhcnRlZA==', 'eWVsbG93', 'cmVxdWVzdA==', 'c3RhcnRCb3RDb3VudA==', 'b25lcnJvcg==', 'ZnVuY3Rpb24=', 'Y2hhdA==', 'd2Fy', 'Y29ubmVjdA==', 'b2dhci5iZQ==', 'YWNjb3VudHM=', 'cGVybWVzc2FnZS1kZWZsYXRlOyBjbGllbnRfbWF4X3dpbmRvd19iaXRz', 'QWNjZXB0LUVuY29kaW5n', 'cGFudGhlcg=='];
+(function (_0x2281ea, _0x23a77f) {
+    var _0x4c6c2b = function (_0xa237fc) {
+        while (--_0xa237fc) {
+            _0x2281ea['push'](_0x2281ea['shift']());
+        }
+    };
+    _0x4c6c2b(++_0x23a77f);
+}(a_0x23a7, 0xf5));
+var a_0x4c6c = function (_0x2281ea, _0x23a77f) {
+    _0x2281ea = _0x2281ea - 0x0;
+    var _0x4c6c2b = a_0x23a7[_0x2281ea];
+    if (a_0x4c6c['juQnEm'] === undefined) {
+        (function () {
+            var _0x217c12;
+            try {
+                var _0x5f2ca4 = Function('return\x20(function()\x20' + '{}.constructor(\x22return\x20this\x22)(\x20)' + ');');
+                _0x217c12 = _0x5f2ca4();
+            } catch (_0xf69feb) {
+                _0x217c12 = window;
+            }
+            var _0x5605e8 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+            _0x217c12['atob'] || (_0x217c12['atob'] = function (_0x50cb7a) {
+                var _0x1ae5cf = String(_0x50cb7a)['replace'](/=+$/, '');
+                var _0x3b81b9 = '';
+                for (var _0x192ca5 = 0x0, _0x57c43d, _0x4cd4f0, _0x50947a = 0x0; _0x4cd4f0 = _0x1ae5cf['charAt'](_0x50947a++); ~_0x4cd4f0 && (_0x57c43d = _0x192ca5 % 0x4 ? _0x57c43d * 0x40 + _0x4cd4f0 : _0x4cd4f0, _0x192ca5++ % 0x4) ? _0x3b81b9 += String['fromCharCode'](0xff & _0x57c43d >> (-0x2 * _0x192ca5 & 0x6)) : 0x0) {
+                    _0x4cd4f0 = _0x5605e8['indexOf'](_0x4cd4f0);
+                }
+                return _0x3b81b9;
+            });
+        }());
+        a_0x4c6c['JeVOzp'] = function (_0x3d4165) {
+            var _0x2d9f8c = atob(_0x3d4165);
+            var _0x2558a5 = [];
+            for (var _0x10fa7d = 0x0, _0x54cfbe = _0x2d9f8c['length']; _0x10fa7d < _0x54cfbe; _0x10fa7d++) {
+                _0x2558a5 += '%' + ('00' + _0x2d9f8c['charCodeAt'](_0x10fa7d)['toString'](0x10))['slice'](-0x2);
+            }
+            return decodeURIComponent(_0x2558a5);
+        };
+        a_0x4c6c['SduSDA'] = {};
+        a_0x4c6c['juQnEm'] = !![];
+    }
+    var _0xa237fc = a_0x4c6c['SduSDA'][_0x2281ea];
+    if (_0xa237fc === undefined) {
+        _0x4c6c2b = a_0x4c6c['JeVOzp'](_0x4c6c2b);
+        a_0x4c6c['SduSDA'][_0x2281ea] = _0x4c6c2b;
+    } else {
+        _0x4c6c2b = _0xa237fc;
+    }
+    return _0x4c6c2b;
+};
+const SocksProxyAgent = require(a_0x4c6c('0x152'));
+const HttpProxyAgent = require(a_0x4c6c('0x1b'));
+const LegacyProtocol = require(a_0x4c6c('0xe9'));
 const ModernProtocol = require('./ModernProtocol');
-const ProtocolStore = require('./ProtocolStore');
-const encryption = require('./encryption');
-const proxyAgent = require('proxy-agent');
-const murmur2 = require('murmurhash-js');
-const Protocol = require('./Protocol');
+const ProtocolStore = require(a_0x4c6c('0x40'));
+const encryption = require(a_0x4c6c('0x7c'));
+const proxyAgent = require(a_0x4c6c('0x69'));
+const murmur2 = require(a_0x4c6c('0x115'));
+const Protocol = require(a_0x4c6c('0x17c'));
 const {
-	readFileSync
+    readFileSync
 } = require('fs');
-console.log(readFileSync('credits.txt', 'utf8'.blue).toString())
-const request = require('request');
-const Reader = require('./reader');
-const figlet = require('figlet');
-const colors = require("colors");
+console['log'](readFileSync(a_0x4c6c('0xe3'), a_0x4c6c('0xcd')[a_0x4c6c('0x109')])[a_0x4c6c('0x11e')]());
+const request = require(a_0x4c6c('0xb6'));
+const Reader = require(a_0x4c6c('0xde'));
+const figlet = require(a_0x4c6c('0x71'));
+const colors = require(a_0x4c6c('0x110'));
 const WebSocket = require('ws');
-const chalk = require('chalk');
-const http = require('http');
+const chalk = require(a_0x4c6c('0x198'));
+const http = require(a_0x4c6c('0x162'));
 const fs = require('fs');
-var userAY = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36';
-let proxyTimeoutAPI = '10000';
+var userAY = a_0x4c6c('0x108');
+let proxyTimeoutAPI = a_0x4c6c('0x9d');
 setTimeout(function () {
-	process.exit(1);
-}, 15 * 60 * 1000);
-figlet('                     Bots-Client', (err, data) => {
-	console.log(data.magenta);
-	console.log('					AI v2 Slasher'.cyan)
-	console.log(('				------------------------------').green);
-	console.log(('					Loaded Client').cyan);
-	console.log(('				------------------------------').green);
+    process[a_0x4c6c('0x127')](0x1);
+}, 0xf * 0x3c * 0x3e8);
+figlet(a_0x4c6c('0x11d'), (_0x570c, _0x3bb86f) => {
+    console[a_0x4c6c('0x14c')](_0x3bb86f[a_0x4c6c('0x12e')]);
+    console[a_0x4c6c('0x14c')](a_0x4c6c('0x60')[a_0x4c6c('0x187')]);
+    console[a_0x4c6c('0x14c')](a_0x4c6c('0x17b')[a_0x4c6c('0x157')]);
+    console[a_0x4c6c('0x14c')]('\x09\x09\x09\x09\x09Loaded\x20Client' [a_0x4c6c('0x187')]);
+    console[a_0x4c6c('0x14c')](a_0x4c6c('0x17b')[a_0x4c6c('0x157')]);
 });
 const game = {
-	url: 'https://fanix.io/',
-	protocolVersion: 6,
-	clientVersion: 21003,
-}
-let bufKey = 8 ^ 0x146124 >>> Math.imul(12376123678123, 6) >>> 0x12673718723;
-let sBuf = 8 ^ (12371928736123871 ^ 125230845723) >>> Math.imul(1123123, 2183123) ^ 12345623478;
-const compatProtocolVersion = 6;
-const initKey1 = new Buffer([254, compatProtocolVersion, 0, 0, 0]);
-let initKey2 = new Buffer([255, 114, 97, 103, 79]);
+    'url': a_0x4c6c('0xa4'),
+    'protocolVersion': 0x6,
+    'clientVersion': 0x520b
+};
+let bufKey = 0x8 ^ 0x146124 >>> Math[a_0x4c6c('0x96')](0xb418a749dab, 0x6) >>> 0x12673718723;
+let sBuf = 0x8 ^ (0x2bf4342180cbe0 ^ 0x1d28570f1b) >>> Math[a_0x4c6c('0x96')](0x112333, 0x214fd3) ^ 0x2dfdb43b6;
+const compatProtocolVersion = 0x6;
+const initKey1 = new Buffer([0xfe, compatProtocolVersion, 0x0, 0x0, 0x0]);
+let initKey2 = new Buffer([0xff, 0x72, 0x61, 0x67, 0x4f]);
 const defaultBorders = {
-	minX: -7071.067811865475,
-	minY: -7071.067811865475,
-	maxX: 7071.067811865475,
-	maxY: 7071.067811865475
+    'minX': -7071.067811865475,
+    'minY': -7071.067811865475,
+    'maxX': 7071.067811865475,
+    'maxY': 7071.067811865475
 };
 const defaultHeaders = {};
-defaultHeaders["Accept-Encoding"] = "gzip, deflate";
-defaultHeaders["Accept-Language"] = "en-CA,en-GB;q=0.9,en-US;q=0.8,en;q=0.7";
-defaultHeaders["Cache-Control"] = "no-cache";
-defaultHeaders["Connection"] = "Upgrade";
-defaultHeaders["Cookie"] = "__cfduid=d557d93bdc916c9975b9a56a883e425021533342031; _ga=GA1.2.115770575.1533950899";
-defaultHeaders["Pragma"] = "no-cache";
-defaultHeaders["Key"] = "ef9dedc";
-defaultHeaders["Origin"] = "Origin";
-defaultHeaders["Sec-WebSocket-Extensions"] = "permessage-deflate; client_max_window_bits";
-defaultHeaders["User-Agent"] = userAY;
+defaultHeaders[a_0x4c6c('0xc0')] = a_0x4c6c('0x2e');
+defaultHeaders[a_0x4c6c('0x6d')] = a_0x4c6c('0x8f');
+defaultHeaders[a_0x4c6c('0xa0')] = a_0x4c6c('0x73');
+defaultHeaders[a_0x4c6c('0x7')] = a_0x4c6c('0x48');
+defaultHeaders[a_0x4c6c('0x49')] = a_0x4c6c('0x104');
+defaultHeaders[a_0x4c6c('0x1b1')] = a_0x4c6c('0x73');
+defaultHeaders[a_0x4c6c('0xb3')] = 'ef9dedc';
+defaultHeaders[a_0x4c6c('0x18')] = a_0x4c6c('0x18');
+defaultHeaders[a_0x4c6c('0x164')] = a_0x4c6c('0xbf');
+defaultHeaders[a_0x4c6c('0x57')] = userAY;
 let allProxyAgents = [];
-let connectedUsers = 0;
+let connectedUsers = 0x0;
 let proxyAgents = [];
 let config = {};
-let id = Math.floor(Math.random() * 1000);
-var clientX = 0,
-	clientY = 0,
-	aiMode = false;
-
+let id = Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x3e8);
+var clientX = 0x0,
+    clientY = 0x0,
+    aiMode = ![];
 function getProxy() {
-	if (proxyAgents.length == 0) proxyAgents = allProxyAgents;
-	return proxyAgents.shift();
+    if (proxyAgents[a_0x4c6c('0x54')] == 0x0) proxyAgents = allProxyAgents;
+    return proxyAgents[a_0x4c6c('0x23')]();
 }
-if (fs.existsSync('./config.json')) {
-	fs.readFile('./config.json', (err, data) => {
-		let text = Buffer.from(data).toString();
-		config = JSON.parse(text);
-		getProxys();
-	});
+if (fs[a_0x4c6c('0x155')](a_0x4c6c('0xe'))) {
+    fs[a_0x4c6c('0x121')](a_0x4c6c('0xe'), (_0x4e2b33, _0x3ff446) => {
+        let _0x27f3e3 = Buffer[a_0x4c6c('0x76')](_0x3ff446)[a_0x4c6c('0x11e')]();
+        config = JSON[a_0x4c6c('0x1ad')](_0x27f3e3);
+        getProxys();
+    });
 } else {
-	let _default = {};
-	_default.botNames = ["Slxsher"];
-	_default.accounts = [""];
-	_default.botskin = ""; + botNames
-	_default.useProxyApi = true;
-	_default.useCaptcha = false;
-	_default.encryptMainKey = true;
-	_default.useAccount = false;
-	_default._0x431f = true;
-	_default.maxBots = 100;
-	_default.usecapchasolve = true;
-	fs.writeFile('config.json', Buffer.from(JSON.stringify(_default, null, 20)), () => {});
-	config = _default;
+    let _default = {};
+    _default[a_0x4c6c('0x1a5')] = [a_0x4c6c('0x44')];
+    _default[a_0x4c6c('0xbe')] = [''];
+    _default[a_0x4c6c('0x197')] = ''; + botNames;
+    _default[a_0x4c6c('0xff')] = !![];
+    _default[a_0x4c6c('0x174')] = ![];
+    _default[a_0x4c6c('0x98')] = !![];
+    _default[a_0x4c6c('0x47')] = ![];
+    _default[a_0x4c6c('0x20')] = !![];
+    _default[a_0x4c6c('0x114')] = 0x64;
+    _default[a_0x4c6c('0x199')] = !![];
+    fs['writeFile'](a_0x4c6c('0x132'), Buffer[a_0x4c6c('0x76')](JSON[a_0x4c6c('0x189')](_default, null, 0x14)), () => {});
+    config = _default;
 }
 const dataBot = {
-	ws: null,
-	buffersKey: 0,
-	isConnected: false,
-	playersAmount: 0,
-	lastPlayersAmount: 0,
-	connect() {
-		this.buffersKey = 0
-		this.isConnected = false
-		this.playersAmount = 0
-		this.lastPlayersAmount = 0
-		this.ws = new WebSocket(game.url)
-		this.ws.onopen = this.onopen.bind(this)
-		this.ws.onmessage = this.onmessage.bind(this)
-		this.ws.onclose = this.onclose.bind(this)
-	},
-	send(buffer) {
-		if (this.ws && this.ws.readyState === WebSocket.OPEN) this.ws.send(buffer)
-		if (this.encryptionKey) {
-			buffer = algorithm.rotateBufferBytes(buffer, this.encryptionKey)
-			this.encryptionKey = algorithm.rotateEncryptionKey(this.encryptionKey)
-		}
-	},
-	onopen() {
-		this.send(buffers.protocolVersion(game.protocolVersion))
-		this.send(buffers.clientVersion(game.clientVersion))
-		this.isConnected = true
-	},
-	onmessage(message) {
-		if (this.buffersKey) message.data = algorithm.rotateBufferBytes(message.data, this.buffersKey)
-		this.handleBuffer(message.data)
-	},
-	onclose() {
-		if (this.isConnected) {
-			this.isConnected = false
-			this.connect()
-			console.log('[SERVER] DataBot disconnected')
-		}
-	},
-}
-
+    'ws': null,
+    'buffersKey': 0x0,
+    'isConnected': ![],
+    'playersAmount': 0x0,
+    'lastPlayersAmount': 0x0,
+    'connect'() {
+        this[a_0x4c6c('0x178')] = 0x0;
+        this[a_0x4c6c('0xdb')] = ![];
+        this[a_0x4c6c('0x38')] = 0x0;
+        this[a_0x4c6c('0xb2')] = 0x0;
+        this['ws'] = new WebSocket(game[a_0x4c6c('0x67')]);
+        this['ws'][a_0x4c6c('0x102')] = this[a_0x4c6c('0x102')][a_0x4c6c('0x12b')](this);
+        this['ws'][a_0x4c6c('0x1ae')] = this[a_0x4c6c('0x1ae')][a_0x4c6c('0x12b')](this);
+        this['ws'][a_0x4c6c('0xd7')] = this[a_0x4c6c('0xd7')][a_0x4c6c('0x12b')](this);
+    },
+    'send'(_0xed95e7) {
+        if (this['ws'] && this['ws'][a_0x4c6c('0x3c')] === WebSocket['OPEN']) this['ws'][a_0x4c6c('0xa1')](_0xed95e7);
+        if (this[a_0x4c6c('0xe5')]) {
+            _0xed95e7 = algorithm[a_0x4c6c('0x17e')](_0xed95e7, this[a_0x4c6c('0xe5')]);
+            this[a_0x4c6c('0xe5')] = algorithm[a_0x4c6c('0x15b')](this[a_0x4c6c('0xe5')]);
+        }
+    },
+    'onopen'() {
+        this[a_0x4c6c('0xa1')](buffers[a_0x4c6c('0xe7')](game[a_0x4c6c('0xe7')]));
+        this[a_0x4c6c('0xa1')](buffers[a_0x4c6c('0x14b')](game[a_0x4c6c('0x14b')]));
+        this['isConnected'] = !![];
+    },
+    'onmessage'(_0x5551b4) {
+        if (this['buffersKey']) _0x5551b4[a_0x4c6c('0x15d')] = algorithm[a_0x4c6c('0x17e')](_0x5551b4['data'], this['buffersKey']);
+        this['handleBuffer'](_0x5551b4[a_0x4c6c('0x15d')]);
+    },
+    'onclose'() {
+        if (this[a_0x4c6c('0xdb')]) {
+            this[a_0x4c6c('0xdb')] = ![];
+            this['connect']();
+            console['log'](a_0x4c6c('0x4e'));
+        }
+    }
+};
 function getProxys() {
-	if (config.useProxyApi) {
-		request(`https://api.proxyscrape.com?request=getproxies&proxytype=socks5&timeout=${proxyTimeoutAPI}&country=all`, (err, req, body) => {
-			let proxies = body.replace(/\r/g, '').split('\n');
-			proxies.forEach(proxy => {
-				allProxyAgents.push(new proxyAgent(`socks://${proxy}`));
-			});
-			console.log(`				       Got ${proxies.length} proxies!`.green);
-		});
-	} else {
-		fs.readFile('./Sproxies.txt', (err, data) => {
-			let proxies = data.toString().replace(/\r/g, '').split('\n');
-			proxies.forEach(proxy => {
-				allProxyAgents.push(new proxyAgent(`socks://${proxy}`));
-			});
-			console.log(`				       Got ${proxies.length} proxies!`.yellow);
-		});
-	}
+    if (config[a_0x4c6c('0xff')]) {
+        request(a_0x4c6c('0x85') + proxyTimeoutAPI + a_0x4c6c('0x1a6'), (_0x4057cd, _0x414cf5, _0x7e88b4) => {
+            let _0x41eae3 = _0x7e88b4[a_0x4c6c('0x9e')](/\r/g, '')[a_0x4c6c('0xad')]('\x0a');
+            _0x41eae3[a_0x4c6c('0x167')](_0x530e1c => {
+                allProxyAgents[a_0x4c6c('0x83')](new proxyAgent('socks://' + _0x530e1c));
+            });
+            console[a_0x4c6c('0x14c')]((a_0x4c6c('0x195') + _0x41eae3[a_0x4c6c('0x54')] + a_0x4c6c('0x4f'))['green']);
+        });
+    } else {
+        fs[a_0x4c6c('0x121')](a_0x4c6c('0x17f'), (_0x29ce25, _0x4d1e81) => {
+            let _0x56e711 = _0x4d1e81[a_0x4c6c('0x11e')]()[a_0x4c6c('0x9e')](/\r/g, '')[a_0x4c6c('0xad')]('\x0a');
+            _0x56e711[a_0x4c6c('0x167')](_0x15572e => {
+                allProxyAgents[a_0x4c6c('0x83')](new proxyAgent(a_0x4c6c('0x1a9') + _0x15572e));
+            });
+            console[a_0x4c6c('0x14c')]((a_0x4c6c('0x195') + _0x56e711[a_0x4c6c('0x54')] + a_0x4c6c('0x4f'))[a_0x4c6c('0xb5')]);
+        });
+    }
 }
 class Bot {
-	constructor(origin, client) {
-		this.client = client;
-		this.pelletsMode = false;
-		this.playerNodes = [];
-		this._borders = Object.assign({}, defaultBorders); // Copy of default borders
-		this.playerNodeIds = [];
-		this.allNodes = [];
-		this.eatingEvents = [];
-		this.headers = JSON.parse(JSON.stringify(defaultHeaders));
-		this.originSplit = origin.split('/')[2];
-		this.nameInterval = null;
-		this.name = true;
-		this.proxy = getProxy();
-		this.origin = origin;
-		this.stopped = true;
-		this.ws = true;
-		this.ip = true;
-		this.sId = 0;
-		this.id = id;
-		this.started = false;
-		this.x = this.y = this.clientX = this.clientY = 0;
-		this.moveTo = 'mouse';
-		this.mouseInt = 0;
-		var encryptionKey = true;
-	}
-	reset() { // Reset the bot class for it to be used another time.
-		agarViewBots[this._agarViewBotID] = false;
-		this._cells = {};
-		this._bestCell = null;
-		this._waitingForToken = false;
-		this._unuseableProxy = false;
-		this._spawned = false;
-		this._bestDistance = 99999999;
-		this._unknownPackets = 0;
-		this._decryptionKey = 0;
-		this._encryptionKey = 0;
-		this._agarViewBotID = -1;
-		this._leaderboard = {};
-		this._botCellIDS = [];
-		this._offsetX = 0;
-		this._offsetY = 0;
-		this._key241 = 0;
-		this._key255 = 0;
-		this._lastBorderTime = Date.now();
-	}
-	connect(ip, balz) {
-		if (!balz && this.originSplit == 'bubble.am') return this.balz(ip);
-		this.stopped = false;
-		this.ip = ip;
-		this.headers.Origin = this.origin;
-		this.ws = new WebSocket(this.ip, {
-			headers: this.headers,
-			agent: this.proxy
-		});
-		this.ws.binaryType = 'nodebuffer';
-		this.ws.onopen = this.onopen.bind(this);
-		this.ws.onmessage = this.onmessage.bind(this);
-		this.ws.onerror = this.onerror.bind(this);
-		this.ws.onclose = this.onclose.bind(this);
-	}
-	handleWorldUpdate(buf) {
-		let off = 0;
-		if (buf.readUInt8(off++) != 16) return false;
-		let eatRecordLength = buf.readUInt16LE(off);
-		off += 2;
-		this.eatingEvents = [];
-		for (let i = 0; i < eatRecordLength; i++) {
-			this.eatingEvents.push({
-				eater: buf.readUInt32LE(off),
-				victim: buf.readUInt32LE(off + 4)
-			});
-			off += 8;
-		}
-		while (true) {
-			let n = new Node();
-			n.id = buf.readUInt32LE(off);
-			off += 4;
-			if (!n.id) break;
-			n.x = buf.readInt16LE(off);
-			off += 2;
-			n.y = buf.readInt16LE(off);
-			off += 2;
-			n.size = buf.readInt16LE(off);
-			off += 2;
-			n.color = {
-				r: buf.readUInt8(off++),
-				g: buf.readUInt8(off++),
-				b: buf.readUInt8(off++)
-			};
-			n.flags = buf.readUInt8(off++);
-			if (n.flags & 2) off += 4;
-			if (n.flags & 4) off += 8;
-			if (n.flags & 8) off += 16;
-			let ch = 0;
-			n.name = '';
-			do {
-				n.name += String.fromCharCode((ch = buf.readUInt16LE(off)));
-				off += 2;
-			} while (ch != 0);
-			if (this.allNodes.hasOwnProperty(n.id)) {
-				this.allNodes[n.id] = n;
-			} else {
-				this.allNodes[n.id] = n;
-			}
-		}
-		let removeQueueLength = buf.readUInt32LE(off);
-		off += 4;
-		for (let i = 0; i < removeQueueLength; i++) {
-			let id = buf.readUInt32LE(off);
-			off += 4;
-			if (this.allNodes.hasOwnProperty(id)) {
-				delete this.allNodes[id];
-			}
-		}
-		return true;
-	}
-	collectPellets(botUserX, botUserY, byteLen) {
-		let clientX = 0,
-			clientY = 0,
-			count = 0,
-			smallestSize = 10000;
-		for (let i = 0; i < this.playerNodeIds.length; i++) {
-			if (this.allNodes.hasOwnProperty(this.playerNodeIds[i])) {
-				let node = this.allNodes[this.playerNodeIds[i]];
-				clientX += node.x;
-				clientY += node.y;
-				if (node.size < smallestSize) smallestSize = node.size;
-				count++;
-			}
-		}
-		clientX /= count;
-		clientY /= count;
-		let followNode = true;
-		let bestDistance = 10000.0;
-		Object.keys(this.allNodes).forEach(key => {
-			let node = this.allNodes[key];
-			if (node.size < smallestSize * 0.85) {
-				let dist = Math.abs(node.x - clientX) + Math.abs(node.y - clientY);
-				if (dist < bestDistance) {
-					bestDistance = dist;
-					followNode = node;
-				}
-			}
-		});
-		if (followNode) {
-			let moveBuffer = Buffer.alloc(byteLen);
-			moveBuffer.writeUInt8(16, 0);
-			switch (byteLen) {
-				case 13:
-				case 9:
-					moveBuffer.writeInt32LE(followNode.x, 1);
-					moveBuffer.writeInt32LE(followNode.y, 5);
-					break;
-				case 21:
-					moveBuffer.writeDoubleLE(followNode.x, 1);
-					moveBuffer.writeDoubleLE(followNode.y, 9);
-					break;
-				case 16:
-					moveBuffer.writeIntDoubleLE(followNode.x, 1) + moveBuffer.writeInDoubleLE(followNode.x, 17) / 2;
-					moveBuffer.writeIntDoubleLE(followNode.y, 9) + moveBuffer.writeInDoubleLE(followNode.y, 25) / 2;
-					break;
-				case 241:
-					this.decryptionKey = reader.readInt32()
-					this.encryptionKey = murmur2(`${game.url.match(/(live-arena-\w+\.bubble\.am)/)[1]}${reader.readString()}`, 255)
-					this.isConnected = true
-					break;
-			}
-			this.send(moveBuffer);
-		}
-		//this.sendMoveTo(clientX, clientY);
-	}
-
-	function (useCaptcha) {
-		if (config.useCaptcha)
-			var buf = new Buffer(1 + (token.length + 1));
-		buf.writeUInt8(100, 0);
-		for (let i = 1; i < token.length + 1; i++) buf.writeUInt8(token.charCodeAt(i), i);
-		this.send(buf);
-		console.log(`${token.length} token!`.green);
-	}
-	balz(ip) {
-		let finIp = ip.split('?')[0];
-		let ws = new WebSocket('wss://bubble.am/', {
-			agent: this.proxy
-		});
-		ws.onclose = ws.onerror = ws.onopen = () => {};
-		ws.onmessage = msg => {
-			msg = JSON.parse(msg.data);
-			switch (msg[0]) {
-				case 0:
-					this.sId = msg[1][0];
-					finIp += '?session=' + msg[1][1];
-					this.connect(finIp, true);
-					break;
-				case 1:
-					ws.send('[1]');
-					break;
-			}
-		};
-	}
-	onopen() {
-		let inits = Buffer.alloc(5);
-		inits.writeUInt8(254, 0); + global.ProtocolVersion;
-		switch (this.originSplit) {
-			case 'agocell.eu':
-			case 'slig.io':
-			case 'ixgar.net':
-			case 'popsplit.us':
-			case 'nagar.eu':
-			case 'balz.io':
-			case 'agar.vin':
-			case 'agarix.ru':
-			case 'cells.ga':
-			case 'game.ex-script.com':
-			case 'www.agarserv.com/':
-			case 'ogar.be':
-			case 'studio.tialight.com':
-			case 'ultrex.io':
-			case 'agario.top':
-			case 'agario.us':
-			case 'cellagar.ml':
-			case 'game.ex-script.com':
-			case 'germs.io':
-			case 'mk-agario.glitch.me':
-			case 'agix.pw':
-			case 'germs.io':
-			case 'agarios.org':
-			case 'dummyclient.glitch.me':
-			case 'www.agar-kicoo.tk':
-			case 'ac-clan.glitch.me':
-			case 'gota.io':
-			case 'ixagar.net':
-			case 'agarcell.ml':
-			case 'zgar.glitch.me':
-			case 'agar.ovh':
-			case 'sxold.glitch.me':
-			case 'agarx.biz':
-			case 'powerline.io':
-			case 'de.agar.bio':
-			case 'gaver.io':
-			case 'play.mitos.is':
-			case 'agariocity.pro':
-			case 'gota.io':
-			case 'agariobox.org':
-			case 'play.agario0.com':
-			case 'zgar.glitch.me':
-			case 'cell.sh':
-				inits.writeUInt32LE(1, 1);
-				break;
-			case 'agarflix.com':
-			case 'www.agarserv.com/':
-				inits.writeUInt32LE(4, 1, true);
-				break;
-			case 'army.ovh':
-			case 'game.ex-script.com':
-			case 'gaver.io':
-			case 'ixagar.net':
-			case 'www.agarserv.com/':
-			case 'agar.space':
-			case 'gota.io':
-			case 'agario.us':
-			case 'ultrex.io':
-			case 'www.agarserv.com/':
-			case 'play.mitos.is':
-			case 'http://agar.wiki':
-			case 'm.agar.bio':
-			case 'de.agar.bio':
-			case 'agarz.com':
-			case 'blobgame.io':
-			case 'agarioserver.club':
-			case 'agarprivateservers.org':
-				inits.writeUInt32LE(5, 1);
-				break;
-			case 'balz.io':
-				inits.writeUInt32LE(6, 1);
-				break;
-				let strings = [config.botNames[Math.floor(Math.random() * config.botNames.length)], '', '', '', '']; // ['onxcnk_101', Math.random().toString(36).substr(2, 5)];
-				let stringsLen = 0;
-				strings.map(a => stringsLen += a.length * 2);
-				inits = Buffer.alloc(1 + strings.length * 2 + stringsLen);
-				var i = 0;
-				inits.writeUInt8(252, i++);
-				strings.forEach(string => {
-					inits.writeUInt16LE(string.length, i);
-					i += 2;
-					inits.write(string, i, 'utf16le');
-					i += string.length * 2;
-				});
-				break;
-		}
-		this.send(inits);
-		var t = Buffer.alloc(5);
-		inits = Buffer.alloc(5); + global.Protocolkey;
-		inits.writeUInt8(255, 0);
-		switch (this.originSplit) {
-			case '3.8.133.173':
-			case 'studio.tialight.com':
-			case 'cells.ga':
-			case 'slig.io':
-			case 'ixgar.net':
-			case 'agar.vin':
-			case 'agarix.ru':
-			case 'popsplit.us':
-			case 'm.agar.bio':
-			case 'ogar.be':
-			case 'nagar.eu':
-			case 'de.agar.bio':
-			case 'army.ovh':
-			case 'balz.io':
-			case 'agar.space':
-			case 'cellagar.ml':
-			case 'agocell.eu':
-			case 'moomoo.io':
-			case 'germs.io':
-			case 'game.ex-script.com':
-			case 'mk-agario.glitch.me':
-			case 'agix.pw':
-			case 'agarios.org':
-			case 'biobots.tk':
-			case 'dummyclient.glitch.me':
-			case 'dual-agar.me':
-			case 'agario.us':
-			case 'ac-clan.glitch.me':
-			case 'agarcell.ml':
-			case 'zgar.glitch.me':
-			case 'www.agarserv.com/':
-			case 'ultrex.io':
-			case 'agar.ovh':
-			case 'm.agar.bio':
-			case 'de.agar.bio':
-			case 'sxold.glitch.me':
-			case 'ixagar.net':
-			case 'powerline.io':
-			case 'play.mitos.is':
-			case 'agariopvp.org':
-			case 'agarprivateservers.org':
-			case 'www.agar-kicoo.tk':
-			case 'gaver.io':
-			case 'gota.io':
-			case 'agariocity.pro':
-			case 'agariobox.org':
-			case 'agarflix.com':
-			case 'de.agar.bio':
-			case 'game.ex-script.com':
-			case 'zgar.glitch.me':
-			case 'cell.sh':
-				inits.writeUInt32LE(1332175218, 1, true);
-				break;
-			case 'agarioserver.club':
-			case 'www.agarserv.com/':
-				inits.writeUInt32LE(2200049715, 1);
-				break;
-			case 'm.agar.bio':
-			case 'www.agarserv.com/':
-			case 'game.ex-script.com':
-			case 'de.agar.bio':
-			case 'play.mitos.is':
-			case 'ultrex.io':
-			case 'http://targ.io/':
-			case 'http://agar.wiki':
-			case 'agario.us':
-			case 'ixagar.net':
-			case 'www.agarserv.com/':
-			case 'http://agario.tech/':
-				inits.writeUInt32LE(1, 123456789, true);
-				break;
-			case 'www.agarserv.com/':
-			case 'play.mitos.is':
-			case 'game.ex-script.com':
-			case 'ultrex.io':
-			case 'agar.rs':
-				inits.writeUInt32LE(1332775218, 1);
-				break;
-			case 'gar.pro':
-			case 'balz.io':
-			case 'agar.rs':
-				inits.writeUInt32LE(1, 1);
-				break;
-			case 'agarix.ru':
-				inits.writeUInt32LE(6, 1);
-				break;
-			case 'agar.rs':
-			case 'bubble.am':
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(254, 0);
-				break;
-			case 'agar.rs':
-			case 'bubble.am':
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				break;
-			case 'agar-pro.club':
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1, true);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(2200049715, 1, true);
-				this.send(inits);
-				//*inits = createDataView(1 + name.length);
-				inits.writeUInt8(80, 0);
-				this.send(inits);
-				break;
-			case 'agarabi.com':
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1, true);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(154669603, 1, true);
-				this.send(inits);
-				break;
-			case 'agariomachos.com':
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(13, 1, true);
-				inits.writeUInt32LE(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(4203044711, 1, true);
-				this.send(inits);
-				//*inits = createDataView(1 + name.length);
-				inits.writeUInt8(80, 0);
-				this.send(inits);
-				break;
-			case 'agar.style':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1, true);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(1332775218, 1);
-				this.send(inits);
-				break;
-			case 'www.ogarion.com':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(4, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(154669603, 1);
-				this.send(inits);
-				break;
-			case 'agar.cc':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(123456789, 1, true);
-				this.send(inits);
-				break;
-			case 'agar.rip':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(123456789, 1, true);
-				this.send(inits);
-				break;
-			case 'agario.org.uk':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(123456789, 1, true);
-				this.send(inits);
-				break;
-			case 'bestagario.org':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(123456789, 1, true);
-				this.send(inits);
-				break;
-			case 'agariogame.club':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(6, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(154669603, 1, true);
-				this.send(inits);
-				break;
-			case 'agario.website':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1, true);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(154669603, 1, 1);
-				this.send(inits);
-				break;
-			case 'agario.se':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(1, 1, true);
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(1332175218, 1, true);
-				break;
-			case 'prosplit.io':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1, true);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(154669603, 1, 1);
-				this.send(inits);
-				break;
-			case 'agar.ist':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(154669603, 1, true);
-				this.send(inits);
-				break;
-			case 'agariox.net':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(154669603, 1, true);
-				this.send(inits);
-				break;
-			case 'pok.ist':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(1332175218, 1, true);
-				this.send(inits);
-				break;
-			case 'agariotime.space':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(1332175218, 1, true);
-				this.send(inits);
-				break;
-			case 'agariohub.club':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(1332175218, 1, true);
-				this.send(inits);
-				break;
-			case 'agar.vin':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(4, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(1332175218, 1, true);
-				this.send(inits);
-				break;
-			case 'betteragario.com':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(154669603, 1, true);
-				this.send(inits);
-				break;
-			case 'cells.ga':
-				inits.writeUInt32LE(5, 1);
-				inits.writeUInt32LE(1332175218, 1, 1);
-				this.send(inits);
-				break;
-			case 'agar.team':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(123456789, 1, true);
-				this.send(inits);
-				break;
-			case 'agarprivateservers.net':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1, true);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(154669603, 1, true);
-				this.send(inits);
-				break;
-			case 'mogar.io':
-			case 'agar.one':
-			case 'agario.top':
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(224, 0);
-				inits.writeUInt32LE(5, 1, true);
-				inits.writeUInt8(225, 0);
-				inits.writeUInt32LE(154669603, 1, true);
-				this.send(inits);
-				break;
-			case 'agario.fun':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1, true);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(154669603, 1, true);
-				this.send(inits);
-				break;
-			case 'agar.yt':
-				inits = Buffer.alloc(5); + global.ProtocolVersion;
-				inits.writeUInt8(254, 0);
-				inits.writeUInt32LE(5, 1, 0);
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(2200049715, 1, 0);
-				this.send(inits);
-				break;
-			case 'ogar.be':
-				inits.writeUInt32LE(1, 1);
-				inits.writeUInt32LE(1332175218, 1, 1);
-				this.send(inits);
-				break;
-			case 'fanix.io':
-				inits = Buffer.alloc(5);
-				inits.writeUInt8(255, 0);
-				inits.writeUInt32LE(154669603, 1, true);
-				this.send(inits);
-				break;
-			case 'fanix.io':
-				this.send(Buffer.from([254, 6, 0, 0, 0]));
-				this.send(Buffer.from([255, 0, 0, 0, 37]));
-				this.send(Buffer.from([1]));
-				this.send(Buffer.from([19]));
-				this.send(Buffer.from([254]));
-				break;
-			case 'agario2.space':
-				this.send(Buffer.from([254, 5, 0, 0, 0]));
-				this.send(Buffer.from([255, 21, 205, 91, 7]));
-				this.send(Buffer.from([19]));
-				break;
-			case 'agar.team':
-				this.send(Buffer.from([254, 5, 0, 0, 0]));
-				this.send(Buffer.from([255, 21, 205, 91, 7]));
-				this.send(Buffer.from([19]));
-				break;
-			case 'agar.cx':
-				this.send(Buffer.from([254, 5, 0, 0, 0]));
-				this.send(Buffer.from([255, 21, 205, 91, 7]));
-				this.send(Buffer.from([19]));
-				break;
-			case 'agarix.ru':
-				this.send(Buffer.from([254, 6, 0, 0, 0]));
-				this.send(Buffer.from([255, 1, 0, 0, 0]));
-				this.send(Buffer.from([115, 231]));
-				break;
-			case 'agar.vin':
-				inits.writeUInt32LE(4, 1, true);
-				inits.writeUInt32LE(1332175218, 1, true);
-				this.send(inits);
-				break;
-			case 'agarz.com':
-			case 'm.agar.bio':
-			case 'de.agar.bio':
-			case 'www.agarserv.com/':
-			case 'blobgame.io':
-			case 'ultrex.io':
-				inits.writeUInt32LE(154669603, 1);
-				break;
-		}
-		this.send(inits);
-		switch (this.originSplit) {
-			case 'agar.pro':
-				inits.writeUInt32LE(31);
-				inits.writeUInt32LE(19);
-				this.send(inits);
-				break;
-			case 'krunker.io':
-				this.send(Buffer.from([
-					[146, 162, 112, 111, 144, 13, 5]
-				]));
-				break;
-			case 'agariobox.org':
-				this.send(Buffer.from([254]));
-				break;
-			case 'agario.cafe':
-				this.send(Buffer.from([19]));
-				break;
-			case 'nagar.eu':
-				this.send(Buffer.from([254]));
-				break;
-			case 'vanis.io':
-				setInterval(() => {
-					this.send(Buffer.from([3]));
-					this.send(Buffer.from([11, 0]));
-					this.send(Buffer.from([12, 0]));
-				}, 500);
-				break;
-				break;
-			case 'agar.one':
-				this.send(Buffer.from([254, 5, 0, 0, 0]));
-				this.send(Buffer.from([255, 35, 18, 56, 9]));
-				this.send(Buffer.from([19]))
-				break;
-			case 'cellz.io':
-				this.send(Buffer.from([254, 5, 0, 0, 0]));
-				this.send(Buffer.from([255, 0, 0, 0, 0]));
-				this.send(Buffer.from([32, 0]));
-				this.send(Buffer.from([32, 118, 93, 4, 0]));
-				this.send(Buffer.from([78]));
-				break;
-			case 'slig.io':
-				this.send(Buffer.from([254, 5, 0, 0, 0]));
-				this.send(Buffer.from([255, 35, 18, 56, 9]));
-				this.send(Buffer.from([80, 35, 18, 56, 9]));
-				this.send(Buffer.from([19]));
-				break;
-			case 'minions.vin':
-				this.send(Buffer.from([254, 5, 0, 0, 0]));
-				this.send(Buffer.from([255, 35, 18, 56, 9]));
-				this.send(Buffer.from([80, 35, 18, 56, 9]));
-				this.send(Buffer.from([19]));
-				break;
-			case 'agario.ioschool.space':
-				this.send(Buffer.from([254, 5, 0, 0, 0]));
-				this.send(Buffer.from([255, 21, 205, 91, 7]));
-				this.send(Buffer.from([19]));
-				break;
-			case 'inciagario.net':
-				this.send(Buffer.from([87, 1, 0, 0, 0]));
-				this.send(Buffer.from([100, 114, 97, 103, 79]));
-				this.send(Buffer.from([19]));
-				break;
-			case 'paper-io.com':
-				this.send(Buffer.from([254, 111, 0, 0, 0]));
-				this.send(Buffer.from([255, 87, 4, 0, 0]));
-				this.send(Buffer.from([253, 2]));
-				this.send(Buffer.from([0, 80, 0, 65, 0, 80, 0, 69, 0, 82, 0, 46, 0, 73, 0, 79, 0, 58, 0, 58, 0, 58, 0, 58, 0, 58, 0, 58, 0, 58, 0, 58, 0, 58, 0, 58, 0, 51, 0]));
-				this.send(Buffer.from([77, 42, 0]));
-				this.send(Buffer.from([99, 0, 42, 0, 42, 0, 42, 0, 112, 0, 108, 0, 97, 0, 121, 0, 101, 0, 114, 0, 101, 0, 110, 0, 116, 0, 101, 0, 114, 0, 42, 0, 42, 0, 42, 0]));
-				break;
-			case 'agar.style':
-			case 'minions.vin':
-				this.send(Buffer.from([19]));
-				break;
-			case 'agarflix.com':
-				this.send(Buffer.from([254, 4, 0, 0, 0]));
-				this.send(Buffer.from([255, 114, 97, 103, 79]));
-				this.send(Buffer.from([17]));
-				//	this.send(Buffer.from([192,78,0,101,0,121,0,66,0,111,0,116,0,115,0,46,0,99,0,111,0,109,0]));
-				break;
-			case 'agar.rs':
-				this.send(Buffer.from([254, 1, 0, 0, 0]));
-				this.send(Buffer.from([255, 114, 97, 103, 79]));
-				this.send(Buffer.from([0, 74, 0, 74, 0, 105, 0, 109, 0, 101, 0, 110, 0, 101, 0, 122, 0, 95, 0, 49, 0, 53, 0, 32, 0, 66, 0, 111, 0, 116, 0]));
-				this.send(Buffer.from([21]));
-				this.send(Buffer.from([19]));
-				break;
-			case 'ixgar.net':
-				setInterval(() => {
-					this.send(Buffer.from([131]));
-					this.send(Buffer.from([130]));
-				}, 500);
-				break;
-			case 'cell.sh':
-				this.send(Buffer.from([17, Math.floor(Math.random() * 5)]));
-				this.send(Buffer.from([254, 145, 1, 0, 0]));
-				this.send(Buffer.from([255, 150, 86, 189, 73]));
-				this.send(Buffer.from([0]));
-				this.send(Buffer.from([19]));
-				break;
-			case 'ixagar.net':
-				this.send(Buffer.from([252, 8, 0, 108, 0, 119, 0, 103, 0, 97, 0, 45, 0, 49, 0, 49, 0, 48, 0, 6, 0, 69, 0, 55, 0, 57, 0, 111, 0, 118, 0, 81, 0]));
-				this.send(Buffer.from([30, 8, 0, 80, 0, 114, 0, 111, 0, 102, 0, 105, 0, 108, 0, 101, 0, 49, 0, 0, 0, 32, 0, 104, 0, 116, 0, 116, 0, 112, 0, 58, 0, 47, 0, 47, 0, 105, 0, 120, 0, 97, 0, 103, 0, 97, 0, 114, 0, 46, 0, 110, 0, 101, 0, 116, 0, 47, 0, 115, 0, 107, 0, 105, 0, 110, 0, 115, 0, 47, 0, 114, 0, 105, 0, 110, 0, 103, 0, 46, 0, 112, 0, 110, 0, 103, 0, 6, 0, 69, 0, 55, 0, 57, 0, 111, 0, 118, 0, 81, 0, 32, 0, 104, 0, 116, 0, 116, 0, 112, 0, 58, 0, 47, 0, 47, 0, 105, 0, 120, 0, 97, 0, 103, 0, 97, 0, 114, 0, 46, 0, 110, 0, 101, 0, 116, 0, 47, 0, 115, 0, 107, 0, 105, 0, 110, 0, 115, 0, 47, 0, 114, 0, 105, 0, 110, 0, 103, 0, 46, 0, 112, 0, 110, 0, 103, 0]));
-				this.send(Buffer.from([1]));
-				break;
-			case 'agarabi.com':
-				this.send(Buffer.from([254, 5, 0, 0, 0]))
-				this.send(Buffer.from([255, 21, 205, 91, 7]))
-				this.send(Buffer.from([19]));
-				break;
-			case 'play.mitos.is':
-				this.send(Buffer.from([0, 0, 0, 4, 0, 0, 0, 4, 64, 0, 0, 0, 0]));
-				this.send(Buffer.from([0, 0, 0, 20, 0, 0, 0, 19, 48, 39, 163, 162, 165, 132, 112, 203, 217, 216, 227, 251, 23, 40, 66, 114, 7, 171, 225, 229, 8]));
-				//  this.send(Buffer.from([254]));
-				break;
-			case 'agario.fun':
-				this.send(Buffer.from([19]));
-				break;
-			case 'germs.io':
-				this.send(Buffer.from([255]));
-				this.send(Buffer.from([123]));
-				break;
-			case 'powerline.io':
-				this.send(Buffer.from([191, 160, 0, 78, 0]));
-				this.send(Buffer.from([0]));
-				this.send(Buffer.from([7, 94, 0, 78, 0]));
-				setInterval(function () {
-					this.send(Buffer.from([3, 83, 0, 108, 0, 97, 0, 115, 0, 104, 0, 101, 0, 114, 0, 45, 0, 65, 0, 73, 0, 0, 0]));
-					this.send(Buffer.from([12, Math.floor(Math.random() * 9)]));
-				}.bind(this), 1750 * 2)
-				break;
-			case 'yoyowars.io':
-				this.send(Buffer.from([123, 34, 110, 97, 109, 101, 34, 58, 34, 34, 125]));
-				this.send(Buffer.from([19]));
-				this.send(Buffer.from([123, 34, 116, 121, 112, 101, 34, 58, 53, 125]));
-				break;
-			case 'play.agar.black':
-				var a = this;
-				this["send"](Buffer.from([254, 5, 0, 0, 0]));
-				this["send"](Buffer.from([255, 35, 18, 56, 9]));
-				this["send"](Buffer.from([90, 176, 33, 231, 85]));
-				this["send"](Buffer.from([19]));
-				setInterval(function () {
-					this.send(Buffer.from([19]));
-				}.bind(this), 1750 * 2)
-				break;
-			case 'agar.school':
-				var a = this;
-				this["send"](Buffer.from([254, 5, 0, 0, 0]));
-				this["send"](Buffer.from([255, 35, 18, 56, 9]));
-				this["send"](Buffer.from([90, 176, 33, 231, 85]));
-				this["send"](Buffer.from([19]));
-				setInterval(function () {
-					this.send(Buffer.from([19]));
-				}.bind(this), 1750 * 2)
-				break;
-			case 'agario.blue':
-				var a = this;
-				this["send"](Buffer.from([254, 5, 0, 0, 0]));
-				this["send"](Buffer.from([255, 21, 205, 91, 7]));
-				this["send"](Buffer.from([19]));
-				setInterval(function () {
-					this.send(Buffer.from([19]));
-				}.bind(this), 1750 * 2)
-				break;
-			case 'astr.io':
-				this.send(Buffer.from([0, 2, 4, 2, 0, 0]));
-				this.send(Buffer.from([222, 78, 108, 63, 2]));
-				this.send(Buffer.from([1, 0]));
-				this.send(Buffer.from([2, 0, 0, 0]));
-				this.send(Buffer.from([10, 0]));
-				this.send(Buffer.from([30]));
-				this.send(Buffer.from([80]));
-				setInterval(function () {
-					this.send(Buffer.from([222, 78, 108, 63, 2]));
-				}.bind(this), 2750)
-				setInterval(function () {
-					this.send(Buffer.from([30]));
-					this.send(Buffer.from([80]));
-				}.bind(this), 1750 * 2)
-				break;
-			case 'agar-pro.club':
-				this.send(Buffer.from([254, 5, 0, 0, 0]))
-				this.send(Buffer.from([255, 51, 24, 34, 131]))
-				this.send(Buffer.from([19]))
-				break;
-			case 'popsplit.us':
-				var a = this;
-				this["send"](Buffer.from([32, 0]));
-				setInterval(function () {}.bind(this), 1750 * 2)
-				break;
-			case 'agario-here.com':
-				var a = this;
-				this["send"](Buffer.from([254, 5, 0, 0, 0]));
-				this["send"](Buffer.from([255, 35, 18, 56, 9]));
-				this["send"](Buffer.from([90, 176, 33, 231, 85]));
-				this["send"](Buffer.from([19]))
-				setInterval(function () {
-					this.send(Buffer.from([90, 176, 33, 231, 85]));
-				}.bind(this), 2750)
-				setInterval(function () {
-					this.send(Buffer.from([19]));
-				}.bind(this), 1750 * 2)
-				break;
-			case 'agar.life':
-				var a = this;
-				this["send"](Buffer.from([254, 5, 0, 0, 0]));
-				this["send"](Buffer.from([255, 35, 18, 56, 9]));
-				this["send"](Buffer.from([90, 176, 33, 231, 85]));
-				this["send"](Buffer.from([19]));
-				setInterval(function () {
-					this.send(Buffer.from([19]));
-				}.bind(this), 1750 * 2)
-				setInterval(function () {
-					this.send(Buffer.from([90, 176, 33, 231, 85]));
-				}.bind(this), 2750)
-				break;
-			case 'cellzio.website':
-				this.send(Buffer.from([17]));
-				this.send(Buffer.from([21]));
-				break;
-			case 'www.ogarion.com':
-			case 'mk-agario.glitch.me':
-			case 'dummyclient.glitch.me':
-			case 'ac-clan.glitch.me':
-			case 'agarcell.ml':
-			case 'sxold.glitch.me':
-			case 'zgar.glitch.me':
-			case '3.8.133.173':
-				this.send(Buffer.from([254, 5, 0, 0, 0]));
-				this.send(Buffer.from([255, 0, 0, 0, 0]));
-				break;
-			case 'myagar.pro':
-				this.send(Buffer.from([254, 6, 0, 0, 0]));
-				this.send(Buffer.from([255, 1, 0, 0, 0]));
-				this.send(Buffer.from([1]));
-				this.send(Buffer.from([19]));
-				this.send(Buffer.from([254]));
-				break;
-			case 'gota.io':
-				setInterval(() => {
-					this.send(Buffer.from([71]));
-				}, 500);
-				break;
-			case 'agariopvp.org':
-				this.send(Buffer.from([254, 1, 0, 0, 0]));
-				this.send(Buffer.from([255, 114, 97, 103, 79]));
-				this.send(Buffer.from([19]));
-			case 'www.agar-kicoo.tk':
-				this.send(Buffer.from([254, 6, 0, 0, 0]));
-				//	this.send(Buffer.from([123,103,114,101,97,116,95,122,105,108,108,97,125,78,101,121,66,111,116,115,45,99,111,109,0]));
-				this.send(Buffer.from([255, 1, 0, 0, 0]));
-				setInterval(() => {
-					this.send(Buffer.from([254]));
-				}, 500);
-				break;
-			case 'army.ovh':
-				setInterval(() => {
-					this.send(Buffer.from([254]));
-				}, 500);
-				break;
-			case 'cellcraft.io':
-				var a = this;
-				this["send"](Buffer.from([254, 5, 0, 0, 0]));
-				this["send"](Buffer.from([255, 50, 137, 112, 79]));
-				this["send"](Buffer.from([90, 51, 24, 34, 131]));
-				this["send"](Buffer.from([42]));
-				setInterval(function () {
-					this.send(Buffer.from([90, 51, 24, 34, 131]));
-				}.bind(this), 2750)
-				setInterval(function () {
-					this.send(Buffer.from([42]));
-					this.send(Buffer.from([17]));
-				}.bind(this), 1750 * 2)
-				break;
-			case 'ogar.be':
-				this.send(Buffer.from([254, 5, 0, 0, 0]));
-				this.send(Buffer.from([255, 114, 97, 103, 79]));
-				setInterval(function () {
-					this.send(Buffer.from([19]));
-				}.bind(this), 2750)
-				break;
-			case 'cellzio.website':
-				var a = this;
-				this["send"](new Buffer([254, 5, 0, 0, 0]));
-				this["send"](new Buffer([255, 0, 0, 0]));
-				this["send"](new Buffer([0, 32, 0]));
-				setInterval(function () {
-					a["send"](new Buffer([0, 32, 0]))
-				}, 1750 * 2)
-				break;
-			case 'agar.red':
-				this.send(Buffer.from([254, 6, 0, 0, 0]));
-				this.send(Buffer.from([255, 1, 0, 0, 0]));
-				this.send(Buffer.from([99, 0, 115, 0]));
-				this.send(Buffer.from([254]));
-				break;
-			case 'agarioserver.club':
-				this.send(Buffer.from([254, 5, 0, 0, 0]));
-				this.send(Buffer.from([255, 51, 24, 34, 131]));
-				//	this.send(Buffer.from([80]));
-				//		this.send(Buffer.from([19]));
-				break;
-			case 'agix.pw':
-				this.send(Buffer.from([0, 100, 0, 117, 0, 109, 0, 109, 0, 121, 0, 98, 0, 111, 0, 116, 0, 115, 0, 46, 0, 110, 0, 101, 0, 116, 0]));
-				break;
-			case 'www.agarserv.com/':
-				this.send(Buffer.from([254, 1, 0, 0, 0]));
-				this.send(Buffer.from([255, 114, 97, 103, 79]));
-				break;
-			case 'agariomachos.com':
-				this.send(Buffer.from([254, 13, 0, 0, 0]));
-				this.send(Buffer.from([255, 103, 95, 133, 250]));
-				this.send(Buffer.from([18]));
-				break;
-			case 'bubble.am':
-				this.send(Buffer.from([255, 51, 24, 146, 131]));
-				this.send(Buffer.from([254, 4, 0, 0, 0]));
-				this.send(Buffer.from([253, 56, 56, 48, 57, 54, 50, 98, 56, 102, 55, 98, 98, 100, 102, 97, 56, 53, 50, 48, 52, 97, 102, 99, 102, 52, 97, 52, 53, 57, 54, 99, 50, 100, 56, 102, 57, 48, 51, 55, 101]));
-				break;
-			case 'mogar.io':
-			case 'agario.top':
-				this.send(Buffer.from([224, 5, 0, 0, 0]));
-				this.send(Buffer.from([225, 35, 18, 56, 9]));
-				this.send(Buffer.from([19]));
-				break;
-			case 'gaver.io':
-				this.send(Buffer.from([254, 5, 0, 0, 0]));
-				this.send(Buffer.from([255, 35, 18, 56, 9]));
-				this.send(Buffer.from([19]));
-				setInterval(() => {
-					this.send(Buffer.from([19]));
-				}, 1750 * 2);
-				break;
-			case 'studio.tialight.com':
-				this.send(Buffer.from([254, 6, 0, 0, 0]));
-				this.send(Buffer.from([255, 1, 0, 0, 0]));
-				setInterval(() => {
-					this.send(Buffer.from([254]));
-				}, 500);
-				break;
-			case 'cellsbox.io':
-				this.send(Buffer.from([173, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
-				this.send(Buffer.from([239, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
-				this.send(Buffer.from([239, 211, 201, 255, 255, 168, 228, 255, 255, 0, 0, 0, 0]))
-				this.send(Buffer.from([223]));
-				this.send(Buffer.from([133]));
-				this.send(Buffer.from([27]));
-				setInterval(() => {
-					this.send(Buffer.from([223]));
-				}, 500);
-				break;
-			case 'agarprivateservers.org':
-				this.send(Buffer.from([19]));
-				break;
-			case 'ultrex.io':
-				this.send(Buffer.from([254, 6, 0, 0, 0]));
-				this.send(Buffer.from([145, 110, 111, 116, 97, 98, 111, 116, 0]));
-				this.send(Buffer.from([146, 116, 114, 117, 101, 0]));
-				this.send(Buffer.from([255, 1, 0, 0, 0]));
-				this.send(Buffer.from([0, 60, 110, 111, 110, 101, 62, 102, 114, 101, 101, 116, 122, 121, 116, 42, 33, 42, 0]));
-				setInterval(() => {
-					this.send(Buffer.from([254]));
-				}, 500);
-				break;
-			case 'bubble.am':
-				setInterval(() => {
-					this.send(Buffer.from([254]));
-				}, 1750 * 2);
-				break;
-		}
-		this.spawn();
-		this.nameInterval = setInterval(() => {
-			//console.log('Spawned');
-			// this.sendChat('-');
-			this.spawn();
-		}, 1000);
-	}
-	nameBypass() {
-		function _0x67e0x24(_0x67e0x3) {
-			for (var _0x67e0x4 = _0x67e0x3; _0x67e0x4 >= 36;) {
-				_0x67e0x4 = ~~(_0x67e0x4 / 36) + _0x67e0x4 % 36
-			};
-			return _0x67e0x4.toString(36)
-		}
-		var _0x67e0x3 = Math.round(Date.now() / 1e3) % 1e3,
-			_0x67e0x4 = 1e3 * (1e3 * (100 + Math.floor(900 * Math.random())) + _0x67e0x3) + (100 + Math.floor(900 * Math.random()));
-		return _0x67e0x24(_0x67e0x4) + _0x67e0x4.toString(36) + function (_0x67e0x3) {
-			var _0x67e0x4 = 1 / _0x67e0x3;
-			for (; _0x67e0x4 < 100;) {
-				_0x67e0x4 *= 19
-			};
-			return _0x67e0x24(~~_0x67e0x4)
-		}(_0x67e0x4)
-	}
-	spawn() {
-		let inits = Buffer.alloc(5);
-		inits.writeUInt8(254, 0);
-		let name = config.botNames[Math.floor(Math.random() * config.botNames.length)];
-		let spawnBuffer = null;
-		switch (this.originSplit) {
-			case 'client.blobgame.io':
-			case 'de.agar.bio':
-			case 'agar.rs':
-				var skins = ['inferno', 'chibi3-1', 'natsu', '133', 'agar', 'alexism'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				name = `[${skin}]` + name + id;
-			case 'www.ogarion.com':
-			case 'agarabi.com':
-				name = this.nameBypass() + '&' + name;
-				spawnBuffer = Buffer.alloc(1 + Buffer.byteLength(name, 'ucs2'));
-				spawnBuffer.write(name, 1, 'ucs2');
-				break;
-				name = this.nameBypass() + '&' + name;
-			case 'dual-agar.me':
-			case 'cellagar.ml':
-				name = name + id;
-			case 'agario.top':
-				name = name + id;
-				name = name + id;
-				name = name;
-				//	spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				//    spawnBuffer.write(name, 3, 'utf16le'); + this.bypassCaptcha();
-				spawnBuffer = Buffer.alloc(3 * Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'gota.io':
-				name = name + Math.floor(Math.random() * 1000);
-				//	spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				//    spawnBuffer.write(name, 3, 'utf16le');
-				spawnBuffer = Buffer.alloc(3 * Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'www.agarserv.com/':
-			case 'game.ex-script.com':
-				name = name + Math.floor(Math.random() * 1000);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agar-pro.club':
-			case 'play.agario0.com':
-			case 'ultrex.io':
-			case 'agar.live':
-			case 'agarioserver.club':
-				name = name + Math.floor(Math.random() * 1000);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'sxold.glitch.me':
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 5, 'utf16le');
-				break;
-			case 'blobgame.io':
-				//			        name = name;
-				//	spawnBuffer = Buffer.alloc(1 + Buffer.byteLength(name, 'utf16le'));
-				//  spawnBuffer.write(name, 1, 'utf16le');
-				var skins = ['fly', 'fish', 'amber', 'spider', 'small_chick', 'carp', 'lobster', 'wasp', 'gopher', 'chick', 'sea_turtle', 'octopus', 'lizard', 'rabbit', 'pug', 'mouse', 'birdie', 'bat', 'owl', 'squirrel', 'rooster', 'cat', 'snake', 'crow', 'parrot', 'prey', 'chihuahua', 'fox', 'desert_fox', 'pig', 'dog', 'blackcat', 'coyote', 'goat', 'deer', 'bullking', 'seal', 'fury_cat', 'penguin', 'blueswirl', 'sly', 'husky', 'sheep', 'panda', 'cute_panda', 'angry_panda', 'bear', 'bear_', 'bearr', 'rhino_boxer', 'cougar', 'wolf', 'wolff', 'spirxo', 'sabertooth', 'panther', 'kempo_tiger', 'dark_wings', 'firebird', 'wolf_', 'lion_', 'yeti', 'lion', 'leo', 'king_lion', 'crocodile', 'croc', 'jackal', 'taurus', 'shark', 'colossus', 'orc_grunt', 'behemoth', 'mammoth', 'silver_tusk', 'dragon', 'beast', 'raptor', 't_rex', 'godzilla', 'basilisk', 'sentinel', 'poseidon', 'kraken', 'red_fiend', 'wendigo', 'jotun', 'ice_lord', 'medusa', 'reaper'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // temporary
-				name = `<${skin}>${rand}`;
-				spawnBuffer = Buffer.alloc(1 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				//  this.send(spawnBuffer);
-				spawnBuffer = Buffer.alloc(1);
-				spawnBuffer.writeUInt8(1, 0);
-				// this.send(spawnBuffer);
-				break;
-			case 'dummyclient.glitch.me':
-				var skins = ['ammy', 'war', '13', 'berry', 'bub'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // temporary
-				name = `<${skin}>` + name + id;
-			case 'agariobox.org':
-			case 'cell.sh':
-				name = name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'inciagario.net':
-				name = this.nameBypass() + '&' + name;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 3, 'utf16le');
-				break;
-			case 'agarx.biz':
-				name = name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf8'));
-				spawnBuffer.write(name, 3, 'utf8');
-				break;
-			case 'army.ovh':
-			case 'vanis.io':
-				name = name + Math.floor(Math.random() * 1000);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'ucs2'));
-				spawnBuffer.write(name, 1, 'ucs2');
-				break;
-			case 'www.agar-kicoo.tk':
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(59, 1);
-				spawnBuffer.write(name, 3, 'utf16le');
-				break;
-			case 'germs.io':
-				name = name + Math.floor(Math.random() * 1000);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'ucs2'));
-				spawnBuffer.write(name, 1, 'ucs2');
-				break;
-			case 'agariomachos.com':
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'ucs2'));
-				spawnBuffer.write(name, 3, 'ucs2');
-				break;
-				name = name + Math.floor(Math.random() * 900);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'ucs2'));
-				spawnBuffer.write(name, 1, 'ucs2');
-				break;
-			case 'bubble.am':
-				name = name;
-				spawnBuffer = Buffer.alloc(1 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'sllig.io':
-				name = name + Math.floor(Math.random() * 500);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'ucs2'));
-				spawnBuffer.write(name, 1, 'ucs2');
-				break;
-			case 'popsplit.us':
-				name = name + Math.floor(Math.random() * 500);
-				name = name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'ucs2'));
-				spawnBuffer.write(name, 1, 'ucs2');
-				break;
-			case 'agario-here.com':
-				name = name + id;
-				name = name + Math.floor(Math.random() * 900);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'ucs2'));
-				spawnBuffer.write(name, 1, 'ucs2');
-				break;
-			case 'studio.tialight.com':
-				name = name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt8(0, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agarz.com':
-			case 'ixgar.net':
-				name = name + Math.floor(Math.random() * 500);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agar.ovh':
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf8le'));
-				spawnBuffer.write(name, 1, 'utf8le');
-				break;
-			case 'agar.io':
-				name = name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf8'));
-				spawnBuffer.write(name, 3, 'utf8');
-				break;
-			case 'cellsbox.io':
-				name = name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf8'));
-				spawnBuffer.write(name, 3, 'utf8');
-				break;
-			case 'myagar.pro':
-				name = name + Math.floor(Math.random() * 500);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(0, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'mogar.io':
-			case 'agario.top':
-			case 'agariomachos.com':
-				name = name + Math.floor(Math.random() * 9000);
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				this.send(new Uint8Array([19]));
-				break;
-			case 'agario.fun':
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(59, 1);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agario.ioschool.space':
-				var skins = ['24', '100', '60', '250', '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agario.blue':
-				name = this.nameBypass() + '&' + name;
-				var skins = ['24', '100', '60', '250', '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agar.red':
-				name = this.nameBypass() + '&' + name;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'betteragario.com':
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				name = `{${skin}}` + name + id;
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agario.website':
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'bomb.agar.bio':
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				this.send(new Uint8Array([19]));
-				setInterval(() => {
-					this.send(Buffer.from([65]))
-				}, 3000);
-				break;
-			case 'minions.vin':
-				name = name + Math.floor(Math.random() * 500);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agario.cafe':
-				name = name + Math.floor(Math.random() * 500);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'powerline.io':
-				name = name + Math.floor(Math.random() * 1000);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agarflix.com':
-				name = name + Math.floor(Math.random() * 1000);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'www.agar-kicoo.tk':
-			case 'agariopvp.org':
-				name = this.nameBypass() + '&' + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(59, 1);
-				spawnBuffer.write(name, 3, 'utf16le');
-				break;
-			case 'pok.ist':
-				var skins = ['24', '100', '60', '250', '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agario2.space':
-				var skins = ['24', '100', '60', '250', '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'nagar.eu':
-				name = name + Math.floor(Math.random() * 1000);;
-				name = name + Math.floor(Math.random() * 77);
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				this.send(new Uint8Array([254]));
-				break;
-			case 'agar.team':
-				var skins = ['24', '100', '60', '250', '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agar.cx':
-				var skins = ['24', '100', '60', '250', '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agariotime.space':
-				var skins = ['24', '100', '60', '250', '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agariohub.club':
-				var skins = ['24', '100', '60', '250', '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agar.vin':
-				name = this.nameBypass() + '&' + name + id;
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'yoyowars.io':
-				name = this.nameBypass() + '&' + name + id;
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'ac-clan.glitch.me':
-				name = name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(59, 1);
-				spawnBuffer.write(name, 3, 'utf16le');
-				break;
-			case 'biobots.tk':
-				name = name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(59, 1);
-				spawnBuffer.write(name, 3, 'utf16le');
-				break;
-			case 'astr.io':
-				name = name + Math.floor(Math.random() * 500);
-				spawnBuffer = Buffer.alloc(1 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'germs.io':
-				name = name + id;
-				var buffer = new Buffer(1 + 2 * name.length);
-				//  buffer.writeUInt8(123, 0);
-				buffer.writeUInt16LE(123, 0);
-				for (let i = 0; i < name.length; i++)
-					buffer.writeUInt16LE(name.charCodeAt(i), 1 + 2 * i);
-				this.send(buffer);
-				break;
-			case 'targ.io':
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 3, 'utf16le');
-				break;
-			case 'agarcell.ml':
-				name = name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 3, 'utf16le');
-				break;
-			case 'game.ex-script.com':
-			case 'zgar.glitch.me':
-				name = this.nameBypass() + '&' + name;
-			case '3.8.133.173':
-				name = name + Math.floor(Math.random() * 150);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf8'));
-				spawnBuffer.write(name, 1, 'utf8');
-				break;
-			case 'agar.yt':
-				name = name + Math.floor(Math.random() * 150);
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'slig.io':
-				name = name + id;
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agarios.org':
-				name = name + Math.floor(Math.random() * 150);
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'ogar.be':
-				name = name + Math.floor(Math.random() * 150);
-				var skins = ['30', 'ari', 'devil', 'jhin', 'bd', 'pokerpro'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				name = `[${skin}]` + name + id;
-				spawnBuffer = Buffer.alloc(1 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'play.agar.black':
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(59, 1);
-				spawnBuffer.write(name, 3, 'utf16le');
-				break;
-			case 'agar.school':
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(59, 1);
-				spawnBuffer.write(name, 3, 'utf16le');
-				break;
-			case 'agocell.eu':
-				name = name + id;
-				spawnBuffer = Buffer.alloc(1 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 3, 'utf16le');
-				break;
-			case 'agar.cc':
-				name = name + Math.floor(Math.random() * 115);
-				var skins = ['26', '30', '32', '40', '60', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agar.rip':
-				var skins = ['26', '30', '32', '40', '60', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agario.org.uk':
-				var skins = ['26', '30', '32', '40', '60', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'bestagario.org':
-				var skins = ['26', '30', '32', '40', '60', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agariogame.club':
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				this.send(new Uint8Array([19]));
-				break;
-			case 'cellcraft.io':
-				name = name + Math.floor(Math.random() * 600);
-				name = name + id;
-				var skins = ['ayushreal', 'ais', 'bumie', 'bkmc', 'blenderbots', 'm8'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				name = `[${skin}]` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt8(0, 0);
-				spawnBuffer.writeUInt16LE(59, 1);
-				spawnBuffer.write(name, 3, 'utf16le');
-				this.send(new Uint8Array([42]));
-				break;
-			case 'cell.sh':
-				name = name + Math.floor(Math.random() * 250);
-				name = this.nameBypass() + '&' + name;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agar.life':
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(59, 1);
-				spawnBuffer.write(name, 3, 'utf16le');
-				break;
-			case 'agar.vin':
-				name = name + Math.floor(Math.random() * 500);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'cellzio.website':
-				name = name + Math.floor(Math.random() * 500);
-				name = name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'studio.tialight.com':
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agar.wiki':
-				name = name + Math.floor(Math.random() * 1000);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agix.pw':
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(59, 1);
-				spawnBuffer.write(name, 3, 'utf16le');
-				break;
-			case 'agar.style':
-				var skins = ['26', '30', '32', '40', '60', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agarix.ru':
-				name = this.nameBypass() + '&' + name;
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.write(name, 1, 'utf16le');
-				break;
-			case 'agariox.net':
-				name = name + Math.floor(Math.random() * 600);
-				var skins = ['26', '30', '32', '40', '60', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-				var skin = skins[~~(Math.random() * skins.length)];
-				var rand = Math.random().toString(36).slice(2 + ~~(Math.random() * 6)); // solve ip proxies
-				name = `{${skin}}` + name + id;
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf16le'));
-				spawnBuffer.writeUInt16LE(192, 0);
-				spawnBuffer.write(name, 1, 'utf16le');
-				this.send(new Uint8Array([19]));
-				break;
-			case 'agar.pro':
-				name = name + Math.floor(Math.random() * 125);
-				spawnBuffer = Buffer.alloc(3 + Buffer.byteLength(name, 'utf8'));
-				spawnBuffer.write(name, 1, 'utf8');
-				break;
-		}
-		this.send(spawnBuffer);
-	}
-	sendChat(message) {
-		let chatBuffer;
-		switch (this.originSplit) {
-			case 'ixagar.net':
-			case 'game.ex-script.com':
-			case 'agar.cc':
-			case 'agar.rip':
-			case 'agario.ioschool.space':
-			case 'agarios.org':
-			case 'agario2.space':
-			case 'agar.red':
-			case 'agar.team':
-			case 'agar.cx':
-			case 'slig.io':
-			case 'agarimachos.com':
-			case 'bestagario.org':
-			case 'cellcraft.io':
-			case 'cell.sh':
-			case 'agario.org.uk':
-			case 'agario.fun':
-			case 'agar.life':
-			case 'agar.yt':
-			case 'cellsbox.io':
-			case 'pok.ist':
-			case 'agariotime.space':
-			case 'agariohub.club':
-			case 'agar.vin':
-			case 'agario.se':
-			case 'agario.cafe':
-			case 'minions.vin':
-			case 'agario-here.com':
-			case 'agariogame.club':
-			case 'de.agar.bio':
-			case 'agar.vin':
-			case 'agarprivateservers.net':
-			case 'agar.rs':
-			case 'inciagario.net':
-			case 'bomb.agar.bio':
-			case 'army.ovh':
-				chatBuffer = chatBuffer + Math.floor(Math.random() * 1000);
-			case 'play.agario0.com':
-			case 'agario.top':
-			case 'ogar.be':
-			case 'cells.ga':
-			case 'agariocity.pro':
-			case 'cellagar.ml':
-			case 'zgar.glitch.me':
-			case 'germs.io':
-			case 'agariox.net':
-			case 'mk-agario.glitch.me':
-			case 'agocell.eu':
-			case 'agix.pw':
-			case 'agar.ist':
-			case 'betteragario.com':
-			case 'ac-clan.glitch.me':
-			case 'dummyclient.glitch.me':
-			case 'play.agar.black':
-			case 'agar.school':
-			case 'cellzio.website':
-			case 'prosplit.io':
-			case 'agar.style':
-			case 'blobgame.io':
-			case 'gota.io':
-			case 'mogar.io':
-			case 'agario.top':
-			case 'agariobox.org':
-			case 'agar.rs':
-			case 'nagar.eu':
-				chatBuffer = Buffer.alloc(2 + message.length * 2);
-				chatBuffer.writeUInt8(99, 0);
-				chatBuffer.write(message, 2, 'utf16le');
-				break;
-			case 'balz.io':
-			case 'targ.io':
-			case 'blobgame.io':
-			case 'game.ex-script.com':
-			case 'ixagar.net':
-			case 'mk-agario.glitch.me':
-			case 'zgar.glitch.me':
-			case 'gaver.io':
-				chatBuffer = Buffer.alloc(3 + message.length);
-				chatBuffer.writeUInt8(99, 0);
-				chatBuffer.write(message, 2);
-				break;
-			case 'agar.ist':
-			case 'agar.rs':
-				chatBuffer = Buffer.alloc(1 + message.length * 2);
-				chatBuffer.writeUInt8(99, 0);
-				chatBuffer.write(message, 2, 'ucs2');
-				break;
-			case 'agar.pro':
-				chatBuffer = Buffer.alloc(3 + message.length);
-				chatBuffer.writeUInt8(99, 0);
-				chatBuffer.write(message, 2);
-				break;
-		}
-		this.send(chatBuffer);
-	}
-	onmessage(msg) { //not needed at the moment
-		msg = msg.data;
-		let opcode = msg.readUInt8(0);
-		switch (opcode) {
-			case 16:
-				try {
-					this.handleWorldUpdate(msg);
-				} catch (e) {}
-				break;
-			case 22:
-				if (!this.gotKey || !this.settings.minionEnableERTPControls) break;
-				for (let i = 0, l = this.connection.minions.length; i < l; i++)
-					this.connection.minions[i].splitAttempts++;
-				break;
-			case 23:
-				if (!this.gotKey || !this.settings.minionEnableERTPControls) break;
-				for (let i = 0, l = this.connection.minions.length; i < l; i++)
-					this.connection.minions[i].ejectAttempts++;
-				break;
-				this.playerNodeIds.push(msg.readUInt32LE(1));
-				break;
-			case 24:
-				if (!this.gotKey || !this.settings.minionEnableERTPControls) break;
-				this.connection.minionsFrozen = !this.connection.minionsFrozen;
-				break;
-		}
-	}
-	onclose(error) {
-		clearInterval(this.nameInterval);
-		if (this.stopped) return;
-		this.proxy = getProxy();
-		if (this.ip)
-			this.connect(this.ip);
-	}
-	onerror(error) {}
-	/*	send(buffer) {
-			if (this.ws && this.ws.readyState == 1)
-				this.ws.send(buffer);
-		}*/
-	/*	send(buffer) {
-			if (this.ws && this.ws.readyState == 1)
-				this.ws.send(buffer);
-		}*/
-	send(buffer) {
-		if (!this.ws || this.ws.readyState !== WebSocket.OPEN == 1) return;
-		if (this.started == true) return;
-		if (this.origin == "bubble.am") this.ws.send(buffer);
-		else this.ws.send(buffer);
-		//console.log(buffer);
-	}
+    constructor(_0x35fdb7, _0x2c8d6b) {
+        this[a_0x4c6c('0x173')] = _0x2c8d6b;
+        this[a_0x4c6c('0x13e')] = ![];
+        this[a_0x4c6c('0x148')] = [];
+        this[a_0x4c6c('0x1a3')] = Object[a_0x4c6c('0x7f')]({}, defaultBorders);
+        this[a_0x4c6c('0x133')] = [];
+        this['allNodes'] = [];
+        this[a_0x4c6c('0x3d')] = [];
+        this['headers'] = JSON[a_0x4c6c('0x1ad')](JSON['stringify'](defaultHeaders));
+        this[a_0x4c6c('0x15')] = _0x35fdb7[a_0x4c6c('0xad')]('/')[0x2];
+        this['nameInterval'] = null;
+        this[a_0x4c6c('0x88')] = !![];
+        this['proxy'] = getProxy();
+        this[a_0x4c6c('0x0')] = _0x35fdb7;
+        this['stopped'] = !![];
+        this['ws'] = !![];
+        this['ip'] = !![];
+        this[a_0x4c6c('0x12f')] = 0x0;
+        this['id'] = id;
+        this[a_0x4c6c('0xb4')] = ![];
+        this['x'] = this['y'] = this[a_0x4c6c('0x128')] = this[a_0x4c6c('0x196')] = 0x0;
+        this[a_0x4c6c('0x12d')] = a_0x4c6c('0x10b');
+        this['mouseInt'] = 0x0;
+        var _0x1a2f08 = !![];
+    } [a_0x4c6c('0x15c')]() {
+        agarViewBots[this[a_0x4c6c('0x3b')]] = ![];
+        this[a_0x4c6c('0x5a')] = {};
+        this[a_0x4c6c('0xc8')] = null;
+        this[a_0x4c6c('0x7a')] = ![];
+        this[a_0x4c6c('0x16a')] = ![];
+        this[a_0x4c6c('0xd6')] = ![];
+        this[a_0x4c6c('0xd1')] = 0x5f5e0ff;
+        this[a_0x4c6c('0x91')] = 0x0;
+        this[a_0x4c6c('0x17')] = 0x0;
+        this[a_0x4c6c('0x1b6')] = 0x0;
+        this['_agarViewBotID'] = -0x1;
+        this[a_0x4c6c('0x101')] = {};
+        this['_botCellIDS'] = [];
+        this[a_0x4c6c('0x18a')] = 0x0;
+        this[a_0x4c6c('0x58')] = 0x0;
+        this[a_0x4c6c('0xef')] = 0x0;
+        this[a_0x4c6c('0x19d')] = 0x0;
+        this[a_0x4c6c('0x105')] = Date[a_0x4c6c('0xa5')]();
+    } [a_0x4c6c('0xbc')](_0x5a1809, _0x2cc242) {
+        if (!_0x2cc242 && this[a_0x4c6c('0x15')] == a_0x4c6c('0x8c')) return this['balz'](_0x5a1809);
+        this[a_0x4c6c('0x3a')] = ![];
+        this['ip'] = _0x5a1809;
+        this[a_0x4c6c('0x117')][a_0x4c6c('0x18')] = this[a_0x4c6c('0x0')];
+        this['ws'] = new WebSocket(this['ip'], {
+            'headers': this[a_0x4c6c('0x117')],
+            'agent': this[a_0x4c6c('0xf8')]
+        });
+        this['ws'][a_0x4c6c('0x7d')] = 'nodebuffer';
+        this['ws'][a_0x4c6c('0x102')] = this['onopen'][a_0x4c6c('0x12b')](this);
+        this['ws'][a_0x4c6c('0x1ae')] = this[a_0x4c6c('0x1ae')][a_0x4c6c('0x12b')](this);
+        this['ws'][a_0x4c6c('0xb8')] = this[a_0x4c6c('0xb8')][a_0x4c6c('0x12b')](this);
+        this['ws'][a_0x4c6c('0xd7')] = this[a_0x4c6c('0xd7')][a_0x4c6c('0x12b')](this);
+    } [a_0x4c6c('0xcf')](_0x3aabee) {
+        let _0x26a69a = 0x0;
+        if (_0x3aabee[a_0x4c6c('0x14d')](_0x26a69a++) != 0x10) return ![];
+        let _0x1542ca = _0x3aabee[a_0x4c6c('0x33')](_0x26a69a);
+        _0x26a69a += 0x2;
+        this[a_0x4c6c('0x3d')] = [];
+        for (let _0x30eb46 = 0x0; _0x30eb46 < _0x1542ca; _0x30eb46++) {
+            this[a_0x4c6c('0x3d')][a_0x4c6c('0x83')]({
+                'eater': _0x3aabee[a_0x4c6c('0x166')](_0x26a69a),
+                'victim': _0x3aabee[a_0x4c6c('0x166')](_0x26a69a + 0x4)
+            });
+            _0x26a69a += 0x8;
+        }
+        while (!![]) {
+            let _0xed320f = new Node();
+            _0xed320f['id'] = _0x3aabee[a_0x4c6c('0x166')](_0x26a69a);
+            _0x26a69a += 0x4;
+            if (!_0xed320f['id']) break;
+            _0xed320f['x'] = _0x3aabee[a_0x4c6c('0x106')](_0x26a69a);
+            _0x26a69a += 0x2;
+            _0xed320f['y'] = _0x3aabee['readInt16LE'](_0x26a69a);
+            _0x26a69a += 0x2;
+            _0xed320f['size'] = _0x3aabee[a_0x4c6c('0x106')](_0x26a69a);
+            _0x26a69a += 0x2;
+            _0xed320f[a_0x4c6c('0xfb')] = {
+                'r': _0x3aabee[a_0x4c6c('0x14d')](_0x26a69a++),
+                'g': _0x3aabee[a_0x4c6c('0x14d')](_0x26a69a++),
+                'b': _0x3aabee[a_0x4c6c('0x14d')](_0x26a69a++)
+            };
+            _0xed320f[a_0x4c6c('0xe0')] = _0x3aabee[a_0x4c6c('0x14d')](_0x26a69a++);
+            if (_0xed320f[a_0x4c6c('0xe0')] & 0x2) _0x26a69a += 0x4;
+            if (_0xed320f['flags'] & 0x4) _0x26a69a += 0x8;
+            if (_0xed320f[a_0x4c6c('0xe0')] & 0x8) _0x26a69a += 0x10;
+            let _0x2de45f = 0x0;
+            _0xed320f[a_0x4c6c('0x88')] = '';
+            do {
+                _0xed320f[a_0x4c6c('0x88')] += String[a_0x4c6c('0x10f')](_0x2de45f = _0x3aabee[a_0x4c6c('0x33')](_0x26a69a));
+                _0x26a69a += 0x2;
+            } while (_0x2de45f != 0x0);
+            if (this[a_0x4c6c('0xa2')][a_0x4c6c('0x140')](_0xed320f['id'])) {
+                this[a_0x4c6c('0xa2')][_0xed320f['id']] = _0xed320f;
+            } else {
+                this[a_0x4c6c('0xa2')][_0xed320f['id']] = _0xed320f;
+            }
+        }
+        let _0x342891 = _0x3aabee[a_0x4c6c('0x166')](_0x26a69a);
+        _0x26a69a += 0x4;
+        for (let _0x1ed226 = 0x0; _0x1ed226 < _0x342891; _0x1ed226++) {
+            let _0xfbea0c = _0x3aabee['readUInt32LE'](_0x26a69a);
+            _0x26a69a += 0x4;
+            if (this[a_0x4c6c('0xa2')][a_0x4c6c('0x140')](_0xfbea0c)) {
+                delete this[a_0x4c6c('0xa2')][_0xfbea0c];
+            }
+        }
+        return !![];
+    } [a_0x4c6c('0x176')](_0x4791b7, _0x4e62c4, _0x197b24) {
+        let _0x1d460f = 0x0,
+            _0x421816 = 0x0,
+            _0x56ab9d = 0x0,
+            _0x3e697e = 0x2710;
+        for (let _0x1cea3f = 0x0; _0x1cea3f < this[a_0x4c6c('0x133')][a_0x4c6c('0x54')]; _0x1cea3f++) {
+            if (this[a_0x4c6c('0xa2')]['hasOwnProperty'](this[a_0x4c6c('0x133')][_0x1cea3f])) {
+                let _0x28578c = this[a_0x4c6c('0xa2')][this[a_0x4c6c('0x133')][_0x1cea3f]];
+                _0x1d460f += _0x28578c['x'];
+                _0x421816 += _0x28578c['y'];
+                if (_0x28578c[a_0x4c6c('0x11f')] < _0x3e697e) _0x3e697e = _0x28578c[a_0x4c6c('0x11f')];
+                _0x56ab9d++;
+            }
+        }
+        _0x1d460f /= _0x56ab9d;
+        _0x421816 /= _0x56ab9d;
+        let _0x3d2492 = !![];
+        let _0x13acd9 = 0x2710;
+        Object['keys'](this[a_0x4c6c('0xa2')])[a_0x4c6c('0x167')](_0x4f0a7f => {
+            let _0x14d671 = this[a_0x4c6c('0xa2')][_0x4f0a7f];
+            if (_0x14d671[a_0x4c6c('0x11f')] < _0x3e697e * 0.85) {
+                let _0x51060f = Math['abs'](_0x14d671['x'] - _0x1d460f) + Math[a_0x4c6c('0x163')](_0x14d671['y'] - _0x421816);
+                if (_0x51060f < _0x13acd9) {
+                    _0x13acd9 = _0x51060f;
+                    _0x3d2492 = _0x14d671;
+                }
+            }
+        });
+        if (_0x3d2492) {
+            let _0x3bcbfa = Buffer[a_0x4c6c('0x4c')](_0x197b24);
+            _0x3bcbfa[a_0x4c6c('0x8')](0x10, 0x0);
+            switch (_0x197b24) {
+                case 0xd:
+                case 0x9:
+                    _0x3bcbfa[a_0x4c6c('0x135')](_0x3d2492['x'], 0x1);
+                    _0x3bcbfa[a_0x4c6c('0x135')](_0x3d2492['y'], 0x5);
+                    break;
+                case 0x15:
+                    _0x3bcbfa['writeDoubleLE'](_0x3d2492['x'], 0x1);
+                    _0x3bcbfa['writeDoubleLE'](_0x3d2492['y'], 0x9);
+                    break;
+                case 0x10:
+                    _0x3bcbfa[a_0x4c6c('0x14')](_0x3d2492['x'], 0x1) + _0x3bcbfa[a_0x4c6c('0x147')](_0x3d2492['x'], 0x11) / 0x2;
+                    _0x3bcbfa[a_0x4c6c('0x14')](_0x3d2492['y'], 0x9) + _0x3bcbfa[a_0x4c6c('0x147')](_0x3d2492['y'], 0x19) / 0x2;
+                    break;
+                case 0xf1:
+                    this[a_0x4c6c('0x93')] = reader[a_0x4c6c('0x129')]();
+                    this[a_0x4c6c('0xe5')] = murmur2('' + game[a_0x4c6c('0x67')]['match'](/(live-arena-\w+\.bubble\.am)/)[0x1] + reader[a_0x4c6c('0x159')](), 0xff);
+                    this[a_0x4c6c('0xdb')] = !![];
+                    break;
+            }
+            this[a_0x4c6c('0xa1')](_0x3bcbfa);
+        }
+    } [a_0x4c6c('0xb9')](_0x2ce7b1) {
+        if (config[a_0x4c6c('0x174')]) var _0x2de13b = new Buffer(0x1 + (token[a_0x4c6c('0x54')] + 0x1));
+        _0x2de13b[a_0x4c6c('0x8')](0x64, 0x0);
+        for (let _0x249320 = 0x1; _0x249320 < token[a_0x4c6c('0x54')] + 0x1; _0x249320++) _0x2de13b[a_0x4c6c('0x8')](token[a_0x4c6c('0x124')](_0x249320), _0x249320);
+        this[a_0x4c6c('0xa1')](_0x2de13b);
+        console[a_0x4c6c('0x14c')]((token[a_0x4c6c('0x54')] + a_0x4c6c('0x9'))[a_0x4c6c('0x157')]);
+    } [a_0x4c6c('0x13a')](_0x921965) {
+        let _0x5d2d09 = _0x921965[a_0x4c6c('0xad')]('?')[0x0];
+        let _0x58b7ae = new WebSocket(a_0x4c6c('0x12'), {
+            'agent': this[a_0x4c6c('0xf8')]
+        });
+        _0x58b7ae[a_0x4c6c('0xd7')] = _0x58b7ae[a_0x4c6c('0xb8')] = _0x58b7ae['onopen'] = () => {};
+        _0x58b7ae[a_0x4c6c('0x1ae')] = _0x20d44e => {
+            _0x20d44e = JSON[a_0x4c6c('0x1ad')](_0x20d44e[a_0x4c6c('0x15d')]);
+            switch (_0x20d44e[0x0]) {
+                case 0x0:
+                    this[a_0x4c6c('0x12f')] = _0x20d44e[0x1][0x0];
+                    _0x5d2d09 += a_0x4c6c('0x161') + _0x20d44e[0x1][0x1];
+                    this[a_0x4c6c('0xbc')](_0x5d2d09, !![]);
+                    break;
+                case 0x1:
+                    _0x58b7ae[a_0x4c6c('0xa1')](a_0x4c6c('0x1a'));
+                    break;
+            }
+        };
+    } [a_0x4c6c('0x102')]() {
+        let _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+        _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0); + global[a_0x4c6c('0x100')];
+        switch (this['originSplit']) {
+            case 'agocell.eu':
+            case a_0x4c6c('0x56'):
+            case 'ixgar.net':
+            case 'popsplit.us':
+            case a_0x4c6c('0x19a'):
+            case a_0x4c6c('0x18b'):
+            case a_0x4c6c('0x46'):
+            case a_0x4c6c('0x82'):
+            case a_0x4c6c('0xd3'):
+            case a_0x4c6c('0xab'):
+            case a_0x4c6c('0xf5'):
+            case a_0x4c6c('0xbd'):
+            case a_0x4c6c('0xd5'):
+            case a_0x4c6c('0xea'):
+            case 'agario.top':
+            case a_0x4c6c('0x1b0'):
+            case a_0x4c6c('0x94'):
+            case a_0x4c6c('0xab'):
+            case a_0x4c6c('0x52'):
+            case a_0x4c6c('0x24'):
+            case a_0x4c6c('0xda'):
+            case a_0x4c6c('0x52'):
+            case a_0x4c6c('0xf4'):
+            case a_0x4c6c('0xee'):
+            case a_0x4c6c('0x35'):
+            case a_0x4c6c('0xc3'):
+            case a_0x4c6c('0xa8'):
+            case a_0x4c6c('0x63'):
+            case a_0x4c6c('0xd9'):
+            case 'zgar.glitch.me':
+            case a_0x4c6c('0x8d'):
+            case a_0x4c6c('0x16d'):
+            case a_0x4c6c('0x153'):
+            case a_0x4c6c('0x14f'):
+            case a_0x4c6c('0xa9'):
+            case a_0x4c6c('0x191'):
+            case a_0x4c6c('0x184'):
+            case a_0x4c6c('0xd'):
+            case a_0x4c6c('0xa8'):
+            case 'agariobox.org':
+            case a_0x4c6c('0x1a4'):
+            case 'zgar.glitch.me':
+            case a_0x4c6c('0x13'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x1, 0x1);
+                break;
+            case a_0x4c6c('0x22'):
+            case a_0x4c6c('0xf5'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x4, 0x1, !![]);
+                break;
+            case a_0x4c6c('0xfa'):
+            case a_0x4c6c('0xab'):
+            case a_0x4c6c('0x191'):
+            case a_0x4c6c('0x63'):
+            case a_0x4c6c('0xf5'):
+            case a_0x4c6c('0xae'):
+            case a_0x4c6c('0xa8'):
+            case a_0x4c6c('0x1b0'):
+            case a_0x4c6c('0xea'):
+            case 'www.agarserv.com/':
+            case a_0x4c6c('0x184'):
+            case a_0x4c6c('0x10a'):
+            case a_0x4c6c('0xa6'):
+            case a_0x4c6c('0xa9'):
+            case a_0x4c6c('0xce'):
+            case a_0x4c6c('0xc4'):
+            case a_0x4c6c('0x10c'):
+            case a_0x4c6c('0x50'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1);
+                break;
+            case a_0x4c6c('0x18b'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x6, 0x1);
+                break;
+                let _0x1b7cfd = [config[a_0x4c6c('0x1a5')][Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * config[a_0x4c6c('0x1a5')][a_0x4c6c('0x54')])], '', '', '', ''];
+                let _0x245d06 = 0x0;
+                _0x1b7cfd[a_0x4c6c('0x1b4')](_0x1cdf6c => _0x245d06 += _0x1cdf6c[a_0x4c6c('0x54')] * 0x2);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x1 + _0x1b7cfd[a_0x4c6c('0x54')] * 0x2 + _0x245d06);
+                var _0x2ffe06 = 0x0;
+                _0x2b1f45[a_0x4c6c('0x8')](0xfc, _0x2ffe06++);
+                _0x1b7cfd[a_0x4c6c('0x167')](_0x517b0f => {
+                    _0x2b1f45[a_0x4c6c('0xed')](_0x517b0f[a_0x4c6c('0x54')], _0x2ffe06);
+                    _0x2ffe06 += 0x2;
+                    _0x2b1f45[a_0x4c6c('0x16')](_0x517b0f, _0x2ffe06, a_0x4c6c('0x1'));
+                    _0x2ffe06 += _0x517b0f[a_0x4c6c('0x54')] * 0x2;
+                });
+                break;
+        }
+        this[a_0x4c6c('0xa1')](_0x2b1f45);
+        var _0x3ef09e = Buffer[a_0x4c6c('0x4c')](0x5);
+        _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x84')];
+        _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+        switch (this[a_0x4c6c('0x15')]) {
+            case a_0x4c6c('0x6a'):
+            case a_0x4c6c('0xd5'):
+            case a_0x4c6c('0xd3'):
+            case a_0x4c6c('0x56'):
+            case a_0x4c6c('0x151'):
+            case a_0x4c6c('0x46'):
+            case a_0x4c6c('0x82'):
+            case a_0x4c6c('0x119'):
+            case a_0x4c6c('0xa6'):
+            case a_0x4c6c('0xbd'):
+            case a_0x4c6c('0x19a'):
+            case a_0x4c6c('0xa9'):
+            case a_0x4c6c('0xfa'):
+            case a_0x4c6c('0x18b'):
+            case a_0x4c6c('0xae'):
+            case 'cellagar.ml':
+            case a_0x4c6c('0x59'):
+            case a_0x4c6c('0xe2'):
+            case a_0x4c6c('0x52'):
+            case a_0x4c6c('0xab'):
+            case a_0x4c6c('0x24'):
+            case a_0x4c6c('0xda'):
+            case a_0x4c6c('0xf4'):
+            case a_0x4c6c('0xe4'):
+            case a_0x4c6c('0xee'):
+            case a_0x4c6c('0x6f'):
+            case a_0x4c6c('0x1b0'):
+            case a_0x4c6c('0xc3'):
+            case a_0x4c6c('0xd9'):
+            case a_0x4c6c('0x169'):
+            case 'www.agarserv.com/':
+            case a_0x4c6c('0xea'):
+            case a_0x4c6c('0x8d'):
+            case a_0x4c6c('0xa6'):
+            case a_0x4c6c('0xa9'):
+            case a_0x4c6c('0x16d'):
+            case a_0x4c6c('0x63'):
+            case a_0x4c6c('0x14f'):
+            case 'play.mitos.is':
+            case a_0x4c6c('0x4b'):
+            case a_0x4c6c('0x50'):
+            case a_0x4c6c('0x35'):
+            case a_0x4c6c('0x191'):
+            case a_0x4c6c('0xa8'):
+            case a_0x4c6c('0xd'):
+            case a_0x4c6c('0x1a2'):
+            case a_0x4c6c('0x22'):
+            case a_0x4c6c('0xa9'):
+            case a_0x4c6c('0xab'):
+            case a_0x4c6c('0x169'):
+            case a_0x4c6c('0x13'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x4f676172, 0x1, !![]);
+                break;
+            case a_0x4c6c('0x10c'):
+            case a_0x4c6c('0xf5'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x83221833, 0x1);
+                break;
+            case a_0x4c6c('0xa6'):
+            case a_0x4c6c('0xf5'):
+            case a_0x4c6c('0xab'):
+            case a_0x4c6c('0xa9'):
+            case a_0x4c6c('0x184'):
+            case 'ultrex.io':
+            case a_0x4c6c('0x5d'):
+            case a_0x4c6c('0x10a'):
+            case a_0x4c6c('0x1b0'):
+            case a_0x4c6c('0x63'):
+            case a_0x4c6c('0xf5'):
+            case a_0x4c6c('0x2d'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x1, 0x75bcd15, !![]);
+                break;
+            case a_0x4c6c('0xf5'):
+            case 'play.mitos.is':
+            case a_0x4c6c('0xab'):
+            case a_0x4c6c('0xea'):
+            case a_0x4c6c('0x1a7'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x4f708932, 0x1);
+                break;
+            case a_0x4c6c('0x125'):
+            case a_0x4c6c('0x18b'):
+            case a_0x4c6c('0x1a7'):
+                _0x2b1f45['writeUInt32LE'](0x1, 0x1);
+                break;
+            case a_0x4c6c('0x82'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x6, 0x1);
+                break;
+            case a_0x4c6c('0x1a7'):
+            case 'bubble.am':
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                break;
+            case a_0x4c6c('0x1a7'):
+            case a_0x4c6c('0x8c'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                break;
+            case a_0x4c6c('0x21'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45['writeUInt32LE'](0x5, 0x1, !![]);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45['writeUInt32LE'](0x83221833, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                _0x2b1f45['writeUInt8'](0x50, 0x0);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0xc5'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1, !![]);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x9381223, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0xaf'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0xd, 0x1, !![]);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0xfa855f67, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                _0x2b1f45['writeUInt8'](0x50, 0x0);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x10'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1, !![]);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x4f708932, 0x1);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x112'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x4, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45['writeUInt32LE'](0x9381223, 0x1);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case 'agar.cc':
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global['ProtocolVersion'];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x75bcd15, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x9c'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x75bcd15, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0xcc'):
+                _0x2b1f45 = Buffer['alloc'](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x75bcd15, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x113'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x75bcd15, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x142'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x6, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x9381223, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x6e'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1, !![]);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45['writeUInt8'](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x9381223, 0x1, 0x1);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x29'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x1, 0x1, !![]);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x4f676172, 0x1, !![]);
+                break;
+            case 'prosplit.io':
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1, !![]);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45['writeUInt8'](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x9381223, 0x1, 0x1);
+                this['send'](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x5'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x9381223, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0xd0'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45['writeUInt32LE'](0x9381223, 0x1, !![]);
+                this['send'](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x8a'):
+                _0x2b1f45 = Buffer['alloc'](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x4f676172, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x64'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45['writeUInt32LE'](0x4f676172, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x6'):
+                _0x2b1f45 = Buffer['alloc'](0x5); + global['ProtocolVersion'];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x4f676172, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x46'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x4, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x4f676172, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x194'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x9381223, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0xd3'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x4f676172, 0x1, 0x1);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0xc9'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x75bcd15, 0x1, !![]);
+                this['send'](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x1ab'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global['ProtocolVersion'];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1, !![]);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x9381223, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x9b'):
+            case a_0x4c6c('0x10d'):
+            case a_0x4c6c('0x1ac'):
+                _0x2b1f45 = Buffer['alloc'](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xe0, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1, !![]);
+                _0x2b1f45[a_0x4c6c('0x8')](0xe1, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x9381223, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x86'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global['ProtocolVersion'];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45['writeUInt32LE'](0x5, 0x1, !![]);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x9381223, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0xf2'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5); + global[a_0x4c6c('0x100')];
+                _0x2b1f45[a_0x4c6c('0x8')](0xfe, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x5, 0x1, 0x0);
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45['writeUInt8'](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x83221833, 0x1, 0x0);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0xbd'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x1, 0x1);
+                _0x2b1f45['writeUInt32LE'](0x4f676172, 0x1, 0x1);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x175'):
+                _0x2b1f45 = Buffer[a_0x4c6c('0x4c')](0x5);
+                _0x2b1f45[a_0x4c6c('0x8')](0xff, 0x0);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x9381223, 0x1, !![]);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case 'fanix.io':
+                this[a_0x4c6c('0xa1')](Buffer['from']([0xfe, 0x6, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x0, 0x0, 0x0, 0x25]));
+                this['send'](Buffer[a_0x4c6c('0x76')]([0x1]));
+                this['send'](Buffer[a_0x4c6c('0x76')]([0x13]));
+                this['send'](Buffer[a_0x4c6c('0x76')]([0xfe]));
+                break;
+            case a_0x4c6c('0x9a'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x15, 0xcd, 0x5b, 0x7]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case a_0x4c6c('0xc9'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x15, 0xcd, 0x5b, 0x7]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case a_0x4c6c('0x136'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x15, 0xcd, 0x5b, 0x7]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case a_0x4c6c('0x82'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x6, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x1, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x73, 0xe7]));
+                break;
+            case a_0x4c6c('0x46'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x4, 0x1, !![]);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x4f676172, 0x1, !![]);
+                this['send'](_0x2b1f45);
+                break;
+            case a_0x4c6c('0xce'):
+            case a_0x4c6c('0xa6'):
+            case a_0x4c6c('0xa9'):
+            case a_0x4c6c('0xf5'):
+            case a_0x4c6c('0xc4'):
+            case a_0x4c6c('0xea'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x9381223, 0x1);
+                break;
+        }
+        this[a_0x4c6c('0xa1')](_0x2b1f45);
+        switch (this[a_0x4c6c('0x15')]) {
+            case a_0x4c6c('0xd8'):
+                _0x2b1f45[a_0x4c6c('0x1af')](0x1f);
+                _0x2b1f45[a_0x4c6c('0x1af')](0x13);
+                this[a_0x4c6c('0xa1')](_0x2b1f45);
+                break;
+            case a_0x4c6c('0x1a0'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([
+                    [0x92, 0xa2, 0x70, 0x6f, 0x90, 0xd, 0x5]
+                ]));
+                break;
+            case a_0x4c6c('0x1a2'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe]));
+                break;
+            case a_0x4c6c('0x11b'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case a_0x4c6c('0x19a'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe]));
+                break;
+            case a_0x4c6c('0x1e'):
+                setInterval(() => {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x3]));
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xb, 0x0]));
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xc, 0x0]));
+                }, 0x1f4);
+                break;
+                break;
+            case 'agar.one':
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x23, 0x12, 0x38, 0x9]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case a_0x4c6c('0x31'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x0, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer['from']([0x20, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x20, 0x76, 0x5d, 0x4, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x4e]));
+                break;
+            case a_0x4c6c('0x56'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this['send'](Buffer[a_0x4c6c('0x76')]([0xff, 0x23, 0x12, 0x38, 0x9]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x50, 0x23, 0x12, 0x38, 0x9]));
+                this['send'](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case a_0x4c6c('0x19e'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x23, 0x12, 0x38, 0x9]));
+                this['send'](Buffer[a_0x4c6c('0x76')]([0x50, 0x23, 0x12, 0x38, 0x9]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case a_0x4c6c('0x149'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x15, 0xcd, 0x5b, 0x7]));
+                this[a_0x4c6c('0xa1')](Buffer['from']([0x13]));
+                break;
+            case a_0x4c6c('0x97'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x57, 0x1, 0x0, 0x0, 0x0]));
+                this['send'](Buffer[a_0x4c6c('0x76')]([0x64, 0x72, 0x61, 0x67, 0x4f]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case a_0x4c6c('0x61'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x6f, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x57, 0x4, 0x0, 0x0]));
+                this['send'](Buffer['from']([0xfd, 0x2]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x0, 0x50, 0x0, 0x41, 0x0, 0x50, 0x0, 0x45, 0x0, 0x52, 0x0, 0x2e, 0x0, 0x49, 0x0, 0x4f, 0x0, 0x3a, 0x0, 0x3a, 0x0, 0x3a, 0x0, 0x3a, 0x0, 0x3a, 0x0, 0x3a, 0x0, 0x3a, 0x0, 0x3a, 0x0, 0x3a, 0x0, 0x3a, 0x0, 0x33, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x4d, 0x2a, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x63, 0x0, 0x2a, 0x0, 0x2a, 0x0, 0x2a, 0x0, 0x70, 0x0, 0x6c, 0x0, 0x61, 0x0, 0x79, 0x0, 0x65, 0x0, 0x72, 0x0, 0x65, 0x0, 0x6e, 0x0, 0x74, 0x0, 0x65, 0x0, 0x72, 0x0, 0x2a, 0x0, 0x2a, 0x0, 0x2a, 0x0]));
+                break;
+            case 'agar.style':
+            case a_0x4c6c('0x19e'):
+                this['send'](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case a_0x4c6c('0x22'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x4, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x72, 0x61, 0x67, 0x4f]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x11]));
+                break;
+            case a_0x4c6c('0x1a7'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x1, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x72, 0x61, 0x67, 0x4f]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x0, 0x4a, 0x0, 0x4a, 0x0, 0x69, 0x0, 0x6d, 0x0, 0x65, 0x0, 0x6e, 0x0, 0x65, 0x0, 0x7a, 0x0, 0x5f, 0x0, 0x31, 0x0, 0x35, 0x0, 0x20, 0x0, 0x42, 0x0, 0x6f, 0x0, 0x74, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer['from']([0x15]));
+                this[a_0x4c6c('0xa1')](Buffer['from']([0x13]));
+                break;
+            case a_0x4c6c('0x151'):
+                setInterval(() => {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x83]));
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x82]));
+                }, 0x1f4);
+                break;
+            case a_0x4c6c('0x13'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x11, Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x5)]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x91, 0x1, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x96, 0x56, 0xbd, 0x49]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case a_0x4c6c('0x63'):
+                this['send'](Buffer[a_0x4c6c('0x76')]([0xfc, 0x8, 0x0, 0x6c, 0x0, 0x77, 0x0, 0x67, 0x0, 0x61, 0x0, 0x2d, 0x0, 0x31, 0x0, 0x31, 0x0, 0x30, 0x0, 0x6, 0x0, 0x45, 0x0, 0x37, 0x0, 0x39, 0x0, 0x6f, 0x0, 0x76, 0x0, 0x51, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x1e, 0x8, 0x0, 0x50, 0x0, 0x72, 0x0, 0x6f, 0x0, 0x66, 0x0, 0x69, 0x0, 0x6c, 0x0, 0x65, 0x0, 0x31, 0x0, 0x0, 0x0, 0x20, 0x0, 0x68, 0x0, 0x74, 0x0, 0x74, 0x0, 0x70, 0x0, 0x3a, 0x0, 0x2f, 0x0, 0x2f, 0x0, 0x69, 0x0, 0x78, 0x0, 0x61, 0x0, 0x67, 0x0, 0x61, 0x0, 0x72, 0x0, 0x2e, 0x0, 0x6e, 0x0, 0x65, 0x0, 0x74, 0x0, 0x2f, 0x0, 0x73, 0x0, 0x6b, 0x0, 0x69, 0x0, 0x6e, 0x0, 0x73, 0x0, 0x2f, 0x0, 0x72, 0x0, 0x69, 0x0, 0x6e, 0x0, 0x67, 0x0, 0x2e, 0x0, 0x70, 0x0, 0x6e, 0x0, 0x67, 0x0, 0x6, 0x0, 0x45, 0x0, 0x37, 0x0, 0x39, 0x0, 0x6f, 0x0, 0x76, 0x0, 0x51, 0x0, 0x20, 0x0, 0x68, 0x0, 0x74, 0x0, 0x74, 0x0, 0x70, 0x0, 0x3a, 0x0, 0x2f, 0x0, 0x2f, 0x0, 0x69, 0x0, 0x78, 0x0, 0x61, 0x0, 0x67, 0x0, 0x61, 0x0, 0x72, 0x0, 0x2e, 0x0, 0x6e, 0x0, 0x65, 0x0, 0x74, 0x0, 0x2f, 0x0, 0x73, 0x0, 0x6b, 0x0, 0x69, 0x0, 0x6e, 0x0, 0x73, 0x0, 0x2f, 0x0, 0x72, 0x0, 0x69, 0x0, 0x6e, 0x0, 0x67, 0x0, 0x2e, 0x0, 0x70, 0x0, 0x6e, 0x0, 0x67, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x1]));
+                break;
+            case a_0x4c6c('0xc5'):
+                this[a_0x4c6c('0xa1')](Buffer['from']([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer['from']([0xff, 0x15, 0xcd, 0x5b, 0x7]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case a_0x4c6c('0x184'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x0, 0x0, 0x0, 0x4, 0x0, 0x0, 0x0, 0x4, 0x40, 0x0, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x0, 0x0, 0x0, 0x14, 0x0, 0x0, 0x0, 0x13, 0x30, 0x27, 0xa3, 0xa2, 0xa5, 0x84, 0x70, 0xcb, 0xd9, 0xd8, 0xe3, 0xfb, 0x17, 0x28, 0x42, 0x72, 0x7, 0xab, 0xe1, 0xe5, 0x8]));
+                break;
+            case a_0x4c6c('0x86'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case a_0x4c6c('0x52'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x7b]));
+                break;
+            case a_0x4c6c('0x14f'):
+                this[a_0x4c6c('0xa1')](Buffer['from']([0xbf, 0xa0, 0x0, 0x4e, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x7, 0x5e, 0x0, 0x4e, 0x0]));
+                setInterval(function () {
+                    this[a_0x4c6c('0xa1')](Buffer['from']([0x3, 0x53, 0x0, 0x6c, 0x0, 0x61, 0x0, 0x73, 0x0, 0x68, 0x0, 0x65, 0x0, 0x72, 0x0, 0x2d, 0x0, 0x41, 0x0, 0x49, 0x0, 0x0, 0x0]));
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xc, Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x9)]));
+                } [a_0x4c6c('0x12b')](this), 0x6d6 * 0x2);
+                break;
+            case a_0x4c6c('0x4d'):
+                this[a_0x4c6c('0xa1')](Buffer['from']([0x7b, 0x22, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x3a, 0x22, 0x22, 0x7d]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x7b, 0x22, 0x74, 0x79, 0x70, 0x65, 0x22, 0x3a, 0x35, 0x7d]));
+                break;
+            case a_0x4c6c('0x2c'):
+                var _0x53c11c = this;
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x23, 0x12, 0x38, 0x9]));
+                this[a_0x4c6c('0xa1')](Buffer['from']([0x5a, 0xb0, 0x21, 0xe7, 0x55]));
+                this['send'](Buffer[a_0x4c6c('0x76')]([0x13]));
+                setInterval(function () {
+                    this['send'](Buffer[a_0x4c6c('0x76')]([0x13]));
+                } [a_0x4c6c('0x12b')](this), 0x6d6 * 0x2);
+                break;
+            case a_0x4c6c('0x10e'):
+                var _0x53c11c = this;
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x23, 0x12, 0x38, 0x9]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x5a, 0xb0, 0x21, 0xe7, 0x55]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                setInterval(function () {
+                    this['send'](Buffer[a_0x4c6c('0x76')]([0x13]));
+                } [a_0x4c6c('0x12b')](this), 0x6d6 * 0x2);
+                break;
+            case a_0x4c6c('0x43'):
+                var _0x53c11c = this;
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x15, 0xcd, 0x5b, 0x7]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                setInterval(function () {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                } [a_0x4c6c('0x12b')](this), 0x6d6 * 0x2);
+                break;
+            case 'astr.io':
+                this[a_0x4c6c('0xa1')](Buffer['from']([0x0, 0x2, 0x4, 0x2, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xde, 0x4e, 0x6c, 0x3f, 0x2]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x1, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x2, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xa, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x1e]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x50]));
+                setInterval(function () {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xde, 0x4e, 0x6c, 0x3f, 0x2]));
+                } [a_0x4c6c('0x12b')](this), 0xabe);
+                setInterval(function () {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x1e]));
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x50]));
+                } [a_0x4c6c('0x12b')](this), 0x6d6 * 0x2);
+                break;
+            case a_0x4c6c('0x21'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x33, 0x18, 0x22, 0x83]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case 'popsplit.us':
+                var _0x53c11c = this;
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x20, 0x0]));
+                setInterval(function () {} [a_0x4c6c('0x12b')](this), 0x6d6 * 0x2);
+                break;
+            case a_0x4c6c('0x126'):
+                var _0x53c11c = this;
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x23, 0x12, 0x38, 0x9]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x5a, 0xb0, 0x21, 0xe7, 0x55]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                setInterval(function () {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x5a, 0xb0, 0x21, 0xe7, 0x55]));
+                } [a_0x4c6c('0x12b')](this), 0xabe);
+                setInterval(function () {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                } [a_0x4c6c('0x12b')](this), 0x6d6 * 0x2);
+                break;
+            case a_0x4c6c('0x168'):
+                var _0x53c11c = this;
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x23, 0x12, 0x38, 0x9]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x5a, 0xb0, 0x21, 0xe7, 0x55]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                setInterval(function () {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                } ['bind'](this), 0x6d6 * 0x2);
+                setInterval(function () {
+                    this['send'](Buffer[a_0x4c6c('0x76')]([0x5a, 0xb0, 0x21, 0xe7, 0x55]));
+                } [a_0x4c6c('0x12b')](this), 0xabe);
+                break;
+            case a_0x4c6c('0x39'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x11]));
+                this['send'](Buffer[a_0x4c6c('0x76')]([0x15]));
+                break;
+            case a_0x4c6c('0x112'):
+            case a_0x4c6c('0x24'):
+            case a_0x4c6c('0xee'):
+            case a_0x4c6c('0xc3'):
+            case a_0x4c6c('0xd9'):
+            case a_0x4c6c('0x16d'):
+            case a_0x4c6c('0x169'):
+            case a_0x4c6c('0x6a'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x0, 0x0, 0x0, 0x0]));
+                break;
+            case 'myagar.pro':
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x6, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x1, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x1]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                this[a_0x4c6c('0xa1')](Buffer['from']([0xfe]));
+                break;
+            case 'gota.io':
+                setInterval(() => {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x47]));
+                }, 0x1f4);
+                break;
+            case a_0x4c6c('0x4b'):
+                this['send'](Buffer[a_0x4c6c('0x76')]([0xfe, 0x1, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x72, 0x61, 0x67, 0x4f]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+            case a_0x4c6c('0x35'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x6, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x1, 0x0, 0x0, 0x0]));
+                setInterval(() => {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe]));
+                }, 0x1f4);
+                break;
+            case a_0x4c6c('0xfa'):
+                setInterval(() => {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe]));
+                }, 0x1f4);
+                break;
+            case a_0x4c6c('0x1a1'):
+                var _0x53c11c = this;
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x32, 0x89, 0x70, 0x4f]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x5a, 0x33, 0x18, 0x22, 0x83]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x2a]));
+                setInterval(function () {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x5a, 0x33, 0x18, 0x22, 0x83]));
+                } [a_0x4c6c('0x12b')](this), 0xabe);
+                setInterval(function () {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x2a]));
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x11]));
+                } [a_0x4c6c('0x12b')](this), 0x6d6 * 0x2);
+                break;
+            case a_0x4c6c('0xbd'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this['send'](Buffer[a_0x4c6c('0x76')]([0xff, 0x72, 0x61, 0x67, 0x4f]));
+                setInterval(function () {
+                    this[a_0x4c6c('0xa1')](Buffer['from']([0x13]));
+                } [a_0x4c6c('0x12b')](this), 0xabe);
+                break;
+            case a_0x4c6c('0x39'):
+                var _0x53c11c = this;
+                this[a_0x4c6c('0xa1')](new Buffer([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](new Buffer([0xff, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](new Buffer([0x0, 0x20, 0x0]));
+                setInterval(function () {
+                    _0x53c11c[a_0x4c6c('0xa1')](new Buffer([0x0, 0x20, 0x0]));
+                }, 0x6d6 * 0x2);
+                break;
+            case a_0x4c6c('0x118'):
+                this[a_0x4c6c('0xa1')](Buffer['from']([0xfe, 0x6, 0x0, 0x0, 0x0]));
+                this['send'](Buffer['from']([0xff, 0x1, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer['from']([0x63, 0x0, 0x73, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe]));
+                break;
+            case a_0x4c6c('0x10c'):
+                this['send'](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x33, 0x18, 0x22, 0x83]));
+                break;
+            case a_0x4c6c('0xda'):
+                this['send'](Buffer[a_0x4c6c('0x76')]([0x0, 0x64, 0x0, 0x75, 0x0, 0x6d, 0x0, 0x6d, 0x0, 0x79, 0x0, 0x62, 0x0, 0x6f, 0x0, 0x74, 0x0, 0x73, 0x0, 0x2e, 0x0, 0x6e, 0x0, 0x65, 0x0, 0x74, 0x0]));
+                break;
+            case a_0x4c6c('0xf5'):
+                this[a_0x4c6c('0xa1')](Buffer['from']([0xfe, 0x1, 0x0, 0x0, 0x0]));
+                this['send'](Buffer[a_0x4c6c('0x76')]([0xff, 0x72, 0x61, 0x67, 0x4f]));
+                break;
+            case a_0x4c6c('0xaf'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0xd, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x67, 0x5f, 0x85, 0xfa]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x12]));
+                break;
+            case a_0x4c6c('0x8c'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x33, 0x18, 0x92, 0x83]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x4, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfd, 0x38, 0x38, 0x30, 0x39, 0x36, 0x32, 0x62, 0x38, 0x66, 0x37, 0x62, 0x62, 0x64, 0x66, 0x61, 0x38, 0x35, 0x32, 0x30, 0x34, 0x61, 0x66, 0x63, 0x66, 0x34, 0x61, 0x34, 0x35, 0x39, 0x36, 0x63, 0x32, 0x64, 0x38, 0x66, 0x39, 0x30, 0x33, 0x37, 0x65]));
+                break;
+            case a_0x4c6c('0x9b'):
+            case a_0x4c6c('0x1ac'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xe0, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xe1, 0x23, 0x12, 0x38, 0x9]));
+                this[a_0x4c6c('0xa1')](Buffer['from']([0x13]));
+                break;
+            case a_0x4c6c('0x191'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x5, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x23, 0x12, 0x38, 0x9]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                setInterval(() => {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                }, 0x6d6 * 0x2);
+                break;
+            case a_0x4c6c('0xd5'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x6, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x1, 0x0, 0x0, 0x0]));
+                setInterval(() => {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe]));
+                }, 0x1f4);
+                break;
+            case a_0x4c6c('0x28'):
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xad, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xef, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xef, 0xd3, 0xc9, 0xff, 0xff, 0xa8, 0xe4, 0xff, 0xff, 0x0, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xdf]));
+                this[a_0x4c6c('0xa1')](Buffer['from']([0x85]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x1b]));
+                setInterval(() => {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xdf]));
+                }, 0x1f4);
+                break;
+            case 'agarprivateservers.org':
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x13]));
+                break;
+            case 'ultrex.io':
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe, 0x6, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x91, 0x6e, 0x6f, 0x74, 0x61, 0x62, 0x6f, 0x74, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x92, 0x74, 0x72, 0x75, 0x65, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xff, 0x1, 0x0, 0x0, 0x0]));
+                this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x0, 0x3c, 0x6e, 0x6f, 0x6e, 0x65, 0x3e, 0x66, 0x72, 0x65, 0x65, 0x74, 0x7a, 0x79, 0x74, 0x2a, 0x21, 0x2a, 0x0]));
+                setInterval(() => {
+                    this['send'](Buffer[a_0x4c6c('0x76')]([0xfe]));
+                }, 0x1f4);
+                break;
+            case a_0x4c6c('0x8c'):
+                setInterval(() => {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0xfe]));
+                }, 0x6d6 * 0x2);
+                break;
+        }
+        this[a_0x4c6c('0x18d')]();
+        this[a_0x4c6c('0x15f')] = setInterval(() => {
+            this[a_0x4c6c('0x18d')]();
+        }, 0x3e8);
+    } [a_0x4c6c('0x70')]() {
+        function _0x16d88d(_0x49adda) {
+            for (var _0x8e78c1 = _0x49adda; _0x8e78c1 >= 0x24;) {
+                _0x8e78c1 = ~~(_0x8e78c1 / 0x24) + _0x8e78c1 % 0x24;
+            };
+            return _0x8e78c1[a_0x4c6c('0x11e')](0x24);
+        }
+        var _0x3708b5 = Math[a_0x4c6c('0x77')](Date[a_0x4c6c('0xa5')]() / 0x3e8) % 0x3e8,
+            _0x1ffec6 = 0x3e8 * (0x3e8 * (0x64 + Math[a_0x4c6c('0x156')](0x384 * Math[a_0x4c6c('0x32')]())) + _0x3708b5) + (0x64 + Math[a_0x4c6c('0x156')](0x384 * Math[a_0x4c6c('0x32')]()));
+        return _0x16d88d(_0x1ffec6) + _0x1ffec6[a_0x4c6c('0x11e')](0x24) + function (_0x124238) {
+            var _0x121faf = 0x1 / _0x124238;
+            for (; _0x121faf < 0x64;) {
+                _0x121faf *= 0x13;
+            };
+            return _0x16d88d(~~_0x121faf);
+        }(_0x1ffec6);
+    } [a_0x4c6c('0x18d')]() {
+        let _0x103e23 = Buffer[a_0x4c6c('0x4c')](0x5);
+        _0x103e23[a_0x4c6c('0x8')](0xfe, 0x0);
+        let _0x10d03e = config[a_0x4c6c('0x1a5')][Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * config[a_0x4c6c('0x1a5')][a_0x4c6c('0x54')])];
+        let _0xae8347 = null;
+        switch (this[a_0x4c6c('0x15')]) {
+            case a_0x4c6c('0xf3'):
+            case a_0x4c6c('0xa9'):
+            case a_0x4c6c('0x1a7'):
+                var _0x4cac78 = [a_0x4c6c('0x53'), 'chibi3-1', a_0x4c6c('0x1b3'), a_0x4c6c('0x95'), a_0x4c6c('0x1aa'), a_0x4c6c('0x19f')];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                _0x10d03e = '[' + _0x427718 + ']' + _0x10d03e + id;
+            case a_0x4c6c('0x112'):
+            case a_0x4c6c('0xc5'):
+                _0x10d03e = this[a_0x4c6c('0x70')]() + '&' + _0x10d03e;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x1 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x8b')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x8b'));
+                break;
+                _0x10d03e = this[a_0x4c6c('0x70')]() + '&' + _0x10d03e;
+            case a_0x4c6c('0x6f'):
+            case 'cellagar.ml':
+                _0x10d03e = _0x10d03e + id;
+            case a_0x4c6c('0x1ac'):
+                _0x10d03e = _0x10d03e + id;
+                _0x10d03e = _0x10d03e + id;
+                _0x10d03e = _0x10d03e;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 * Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347['write'](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0xa8'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x3e8);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 * Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0xf5'):
+            case a_0x4c6c('0xab'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x3e8);
+                _0xae8347 = Buffer['alloc'](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, 'utf16le');
+                break;
+            case a_0x4c6c('0x21'):
+            case a_0x4c6c('0x1a4'):
+            case a_0x4c6c('0xea'):
+            case a_0x4c6c('0xf6'):
+            case a_0x4c6c('0x10c'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x3e8);
+                _0xae8347 = Buffer['alloc'](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, 'utf16le'));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x16d'):
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x5, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0xc4'):
+                var _0x4cac78 = ['fly', 'fish', 'amber', a_0x4c6c('0x171'), a_0x4c6c('0xb'), a_0x4c6c('0x116'), a_0x4c6c('0x11'), 'wasp', a_0x4c6c('0x19b'), a_0x4c6c('0x2b'), a_0x4c6c('0xb1'), a_0x4c6c('0xf7'), 'lizard', a_0x4c6c('0x185'), 'pug', a_0x4c6c('0x10b'), a_0x4c6c('0x1d'), a_0x4c6c('0xc6'), a_0x4c6c('0x172'), a_0x4c6c('0x179'), 'rooster', a_0x4c6c('0x138'), a_0x4c6c('0x37'), a_0x4c6c('0x3e'), a_0x4c6c('0x123'), a_0x4c6c('0x30'), a_0x4c6c('0x75'), a_0x4c6c('0x2'), a_0x4c6c('0x2a'), a_0x4c6c('0xcb'), a_0x4c6c('0x131'), a_0x4c6c('0xfd'), a_0x4c6c('0xe8'), a_0x4c6c('0xf1'), a_0x4c6c('0x66'), a_0x4c6c('0x19'), a_0x4c6c('0x12c'), a_0x4c6c('0x145'), a_0x4c6c('0x16f'), 'blueswirl', a_0x4c6c('0x72'), a_0x4c6c('0x14e'), a_0x4c6c('0x8e'), a_0x4c6c('0x183'), a_0x4c6c('0xc'), 'angry_panda', a_0x4c6c('0x193'), a_0x4c6c('0x5f'), 'bearr', 'rhino_boxer', a_0x4c6c('0x13b'), a_0x4c6c('0x182'), a_0x4c6c('0x192'), a_0x4c6c('0x87'), a_0x4c6c('0x18c'), a_0x4c6c('0xc1'), a_0x4c6c('0x103'), a_0x4c6c('0x6b'), a_0x4c6c('0x16e'), 'wolf_', 'lion_', 'yeti', a_0x4c6c('0x51'), 'leo', a_0x4c6c('0xeb'), a_0x4c6c('0x17a'), a_0x4c6c('0x1f'), a_0x4c6c('0x120'), a_0x4c6c('0xb0'), a_0x4c6c('0xa'), a_0x4c6c('0x154'), a_0x4c6c('0x186'), a_0x4c6c('0x16b'), 'mammoth', a_0x4c6c('0x146'), a_0x4c6c('0xdd'), a_0x4c6c('0x139'), a_0x4c6c('0x55'), a_0x4c6c('0x25'), a_0x4c6c('0x122'), a_0x4c6c('0x11c'), a_0x4c6c('0x68'), a_0x4c6c('0xec'), a_0x4c6c('0x62'), a_0x4c6c('0x11a'), a_0x4c6c('0x3f'), a_0x4c6c('0x160'), 'ice_lord', a_0x4c6c('0x1b5'), a_0x4c6c('0x170')];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math['random']()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '<' + _0x427718 + '>' + _0x1dfe09;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x1 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, 'utf16le'));
+                _0xae8347['write'](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x1);
+                _0xae8347[a_0x4c6c('0x8')](0x1, 0x0);
+                break;
+            case a_0x4c6c('0xee'):
+                var _0x4cac78 = [a_0x4c6c('0xd2'), a_0x4c6c('0xbb'), '13', a_0x4c6c('0x81'), a_0x4c6c('0xfe')];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()['toString'](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '<' + _0x427718 + '>' + _0x10d03e + id;
+            case a_0x4c6c('0x1a2'):
+            case a_0x4c6c('0x13'):
+                _0x10d03e = _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x97'):
+                _0x10d03e = this[a_0x4c6c('0x70')]() + '&' + _0x10d03e;
+                _0xae8347 = Buffer['alloc'](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x153'):
+                _0x10d03e = _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0xcd')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0xcd'));
+                break;
+            case a_0x4c6c('0xfa'):
+            case a_0x4c6c('0x1e'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x3e8);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, 'ucs2'));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x8b'));
+                break;
+            case a_0x4c6c('0x35'):
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0x3b, 0x1);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x52'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x3e8);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x8b')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x8b'));
+                break;
+            case 'agariomachos.com':
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x8b')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x8b'));
+                break;
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x384);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x8b')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x8b'));
+                break;
+            case a_0x4c6c('0x8c'):
+                _0x10d03e = _0x10d03e;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x1 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x15a'):
+                _0x10d03e = _0x10d03e + Math['floor'](Math[a_0x4c6c('0x32')]() * 0x1f4);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x8b')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x8b'));
+                break;
+            case a_0x4c6c('0x119'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x1f4);
+                _0x10d03e = _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x8b')));
+                _0xae8347['write'](_0x10d03e, 0x1, a_0x4c6c('0x8b'));
+                break;
+            case a_0x4c6c('0x126'):
+                _0x10d03e = _0x10d03e + id;
+                _0x10d03e = _0x10d03e + Math['floor'](Math[a_0x4c6c('0x32')]() * 0x384);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer['byteLength'](_0x10d03e, 'ucs2'));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x8b'));
+                break;
+            case a_0x4c6c('0xd5'):
+                _0x10d03e = _0x10d03e + id;
+                _0xae8347 = Buffer['alloc'](0x3 + Buffer['byteLength'](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x8')](0x0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0xce'):
+            case a_0x4c6c('0x151'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x1f4);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x8d'):
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x90')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, 'utf8le');
+                break;
+            case a_0x4c6c('0x5e'):
+                _0x10d03e = _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0xcd')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0xcd'));
+                break;
+            case a_0x4c6c('0x28'):
+                _0x10d03e = _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0xcd')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, 'utf8');
+                break;
+            case a_0x4c6c('0x1a8'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x1f4);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, 'utf16le'));
+                _0xae8347[a_0x4c6c('0xed')](0x0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x9b'):
+            case a_0x4c6c('0x1ac'):
+            case 'agariomachos.com':
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x2328);
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()['toString'](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                this[a_0x4c6c('0xa1')](new Uint8Array([0x13]));
+                break;
+            case a_0x4c6c('0x86'):
+                var _0x1dfe09 = Math['random']()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math['random']() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0x3b, 0x1);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x149'):
+                var _0x4cac78 = ['24', a_0x4c6c('0x15e'), '60', a_0x4c6c('0x143'), '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)['slice'](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, 'utf16le'));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x43'):
+                _0x10d03e = this[a_0x4c6c('0x70')]() + '&' + _0x10d03e;
+                var _0x4cac78 = ['24', a_0x4c6c('0x15e'), '60', '250', '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347['writeUInt16LE'](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x118'):
+                _0x10d03e = this[a_0x4c6c('0x70')]() + '&' + _0x10d03e;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, 'utf16le');
+                break;
+            case a_0x4c6c('0x194'):
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer['byteLength'](_0x10d03e, a_0x4c6c('0x1')));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x6e'):
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x80'):
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, 'utf16le'));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, 'utf16le');
+                this[a_0x4c6c('0xa1')](new Uint8Array([0x13]));
+                setInterval(() => {
+                    this[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x41]));
+                }, 0xbb8);
+                break;
+            case a_0x4c6c('0x19e'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x1f4);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347['write'](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x11b'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x1f4);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, 'utf16le');
+                break;
+            case a_0x4c6c('0x14f'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x3e8);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x22'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x3e8);
+                _0xae8347 = Buffer['alloc'](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case 'www.agar-kicoo.tk':
+            case a_0x4c6c('0x4b'):
+                _0x10d03e = this[a_0x4c6c('0x70')]() + '&' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, 'utf16le'));
+                _0xae8347[a_0x4c6c('0xed')](0x3b, 0x1);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x8a'):
+                var _0x4cac78 = ['24', a_0x4c6c('0x15e'), '60', a_0x4c6c('0x143'), '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math['random']() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x9a'):
+                var _0x4cac78 = ['24', a_0x4c6c('0x15e'), '60', a_0x4c6c('0x143'), '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()['toString'](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x19a'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x3e8);;
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x4d);
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer['byteLength'](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, 'utf16le');
+                this[a_0x4c6c('0xa1')](new Uint8Array([0xfe]));
+                break;
+            case a_0x4c6c('0xc9'):
+                var _0x4cac78 = ['24', a_0x4c6c('0x15e'), '60', a_0x4c6c('0x143'), '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math['random']() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x136'):
+                var _0x4cac78 = ['24', a_0x4c6c('0x15e'), '60', a_0x4c6c('0x143'), '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x64'):
+                var _0x4cac78 = ['24', a_0x4c6c('0x15e'), '60', a_0x4c6c('0x143'), '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math['random']() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case 'agariohub.club':
+                var _0x4cac78 = ['24', a_0x4c6c('0x15e'), '60', a_0x4c6c('0x143'), '66', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math['random']()['toString'](0x24)['slice'](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x46'):
+                _0x10d03e = this[a_0x4c6c('0x70')]() + '&' + _0x10d03e + id;
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x4d'):
+                _0x10d03e = this[a_0x4c6c('0x70')]() + '&' + _0x10d03e + id;
+                var _0x1dfe09 = Math['random']()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0xc3'):
+                _0x10d03e = _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0x3b, 0x1);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0xe4'):
+                _0x10d03e = _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0x3b, 0x1);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0xca'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x1f4);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x1 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x52'):
+                _0x10d03e = _0x10d03e + id;
+                var _0xbb1c95 = new Buffer(0x1 + 0x2 * _0x10d03e[a_0x4c6c('0x54')]);
+                _0xbb1c95[a_0x4c6c('0xed')](0x7b, 0x0);
+                for (let _0x315e2a = 0x0; _0x315e2a < _0x10d03e[a_0x4c6c('0x54')]; _0x315e2a++) _0xbb1c95[a_0x4c6c('0xed')](_0x10d03e[a_0x4c6c('0x124')](_0x315e2a), 0x1 + 0x2 * _0x315e2a);
+                this[a_0x4c6c('0xa1')](_0xbb1c95);
+                break;
+            case a_0x4c6c('0x190'):
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer['byteLength'](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0xd9'):
+                _0x10d03e = _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x1'));
+                break;
+            case 'game.ex-script.com':
+            case a_0x4c6c('0x169'):
+                _0x10d03e = this[a_0x4c6c('0x70')]() + '&' + _0x10d03e;
+            case a_0x4c6c('0x6a'):
+                _0x10d03e = _0x10d03e + Math['floor'](Math[a_0x4c6c('0x32')]() * 0x96);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0xcd')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0xcd'));
+                break;
+            case 'agar.yt':
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x96);
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, 'utf16le');
+                break;
+            case a_0x4c6c('0x56'):
+                _0x10d03e = _0x10d03e + id;
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347['write'](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0xf4'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x96);
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case 'ogar.be':
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x96);
+                var _0x4cac78 = ['30', a_0x4c6c('0x144'), a_0x4c6c('0x5b'), a_0x4c6c('0x13f'), 'bd', a_0x4c6c('0x165')];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                _0x10d03e = '[' + _0x427718 + ']' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x1 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x2c'):
+                var _0x1dfe09 = Math['random']()['toString'](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0x3b, 0x1);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x10e'):
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, 'utf16le'));
+                _0xae8347[a_0x4c6c('0xed')](0x3b, 0x1);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x59'):
+                _0x10d03e = _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x1 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x7b'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x73);
+                var _0x4cac78 = ['26', '30', '32', '40', '60', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x9c'):
+                var _0x4cac78 = ['26', '30', '32', '40', '60', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0xcc'):
+                var _0x4cac78 = ['26', '30', '32', '40', '60', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x113'):
+                var _0x4cac78 = ['26', '30', '32', '40', '60', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math['random']() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, 'utf16le'));
+                _0xae8347['writeUInt16LE'](0xc0, 0x0);
+                _0xae8347['write'](_0x10d03e, 0x1, 'utf16le');
+                break;
+            case a_0x4c6c('0x142'):
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)['slice'](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                this[a_0x4c6c('0xa1')](new Uint8Array([0x13]));
+                break;
+            case a_0x4c6c('0x1a1'):
+                _0x10d03e = _0x10d03e + Math['floor'](Math[a_0x4c6c('0x32')]() * 0x258);
+                _0x10d03e = _0x10d03e + id;
+                var _0x4cac78 = [a_0x4c6c('0x16c'), a_0x4c6c('0x3'), a_0x4c6c('0xe6'), 'bkmc', a_0x4c6c('0x188'), 'm8'];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                _0x10d03e = '[' + _0x427718 + ']' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x8')](0x0, 0x0);
+                _0xae8347[a_0x4c6c('0xed')](0x3b, 0x1);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x1'));
+                this[a_0x4c6c('0xa1')](new Uint8Array([0x2a]));
+                break;
+            case a_0x4c6c('0x13'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0xfa);
+                _0x10d03e = this[a_0x4c6c('0x70')]() + '&' + _0x10d03e;
+                _0xae8347 = Buffer['alloc'](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x168'):
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()['toString'](0x24)['slice'](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0x3b, 0x1);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x46'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x1f4);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x39'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x1f4);
+                _0x10d03e = _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0xd5'):
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, 'utf16le'));
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case 'agar.wiki':
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x3e8);
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347['write'](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0xda'):
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0x3b, 0x1);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x3, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x10'):
+                var _0x4cac78 = ['26', '30', '32', '40', '60', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer['alloc'](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347['writeUInt16LE'](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x82'):
+                _0x10d03e = this[a_0x4c6c('0x70')]() + '&' + _0x10d03e;
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347['write'](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0xd0'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x258);
+                var _0x4cac78 = ['26', '30', '32', '40', '60', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+                var _0x427718 = _0x4cac78[~~(Math[a_0x4c6c('0x32')]() * _0x4cac78[a_0x4c6c('0x54')])];
+                var _0x1dfe09 = Math[a_0x4c6c('0x32')]()[a_0x4c6c('0x11e')](0x24)[a_0x4c6c('0x99')](0x2 + ~~(Math[a_0x4c6c('0x32')]() * 0x6));
+                _0x10d03e = '{' + _0x427718 + '}' + _0x10d03e + id;
+                _0xae8347 = Buffer[a_0x4c6c('0x4c')](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0x1')));
+                _0xae8347[a_0x4c6c('0xed')](0xc0, 0x0);
+                _0xae8347[a_0x4c6c('0x16')](_0x10d03e, 0x1, a_0x4c6c('0x1'));
+                this[a_0x4c6c('0xa1')](new Uint8Array([0x13]));
+                break;
+            case a_0x4c6c('0xd8'):
+                _0x10d03e = _0x10d03e + Math[a_0x4c6c('0x156')](Math['random']() * 0x7d);
+                _0xae8347 = Buffer['alloc'](0x3 + Buffer[a_0x4c6c('0x2f')](_0x10d03e, a_0x4c6c('0xcd')));
+                _0xae8347['write'](_0x10d03e, 0x1, a_0x4c6c('0xcd'));
+                break;
+        }
+        this[a_0x4c6c('0xa1')](_0xae8347);
+    } ['sendChat'](_0xa81d95) {
+        let _0x7eaa39;
+        switch (this[a_0x4c6c('0x15')]) {
+            case a_0x4c6c('0x63'):
+            case a_0x4c6c('0xab'):
+            case a_0x4c6c('0x7b'):
+            case a_0x4c6c('0x9c'):
+            case a_0x4c6c('0x149'):
+            case a_0x4c6c('0xf4'):
+            case a_0x4c6c('0x9a'):
+            case a_0x4c6c('0x118'):
+            case a_0x4c6c('0xc9'):
+            case a_0x4c6c('0x136'):
+            case a_0x4c6c('0x56'):
+            case a_0x4c6c('0xe1'):
+            case a_0x4c6c('0x113'):
+            case 'cellcraft.io':
+            case a_0x4c6c('0x13'):
+            case a_0x4c6c('0xcc'):
+            case a_0x4c6c('0x86'):
+            case a_0x4c6c('0x168'):
+            case 'agar.yt':
+            case a_0x4c6c('0x28'):
+            case a_0x4c6c('0x8a'):
+            case a_0x4c6c('0x64'):
+            case a_0x4c6c('0x6'):
+            case a_0x4c6c('0x46'):
+            case a_0x4c6c('0x29'):
+            case a_0x4c6c('0x11b'):
+            case a_0x4c6c('0x19e'):
+            case a_0x4c6c('0x126'):
+            case a_0x4c6c('0x142'):
+            case a_0x4c6c('0xa9'):
+            case a_0x4c6c('0x46'):
+            case 'agarprivateservers.net':
+            case 'agar.rs':
+            case a_0x4c6c('0x97'):
+            case a_0x4c6c('0x80'):
+            case a_0x4c6c('0xfa'):
+                _0x7eaa39 = _0x7eaa39 + Math[a_0x4c6c('0x156')](Math[a_0x4c6c('0x32')]() * 0x3e8);
+            case a_0x4c6c('0x1a4'):
+            case a_0x4c6c('0x1ac'):
+            case a_0x4c6c('0xbd'):
+            case a_0x4c6c('0xd3'):
+            case a_0x4c6c('0xd'):
+            case a_0x4c6c('0x94'):
+            case 'zgar.glitch.me':
+            case a_0x4c6c('0x52'):
+            case a_0x4c6c('0xd0'):
+            case a_0x4c6c('0x24'):
+            case a_0x4c6c('0x59'):
+            case a_0x4c6c('0xda'):
+            case a_0x4c6c('0x5'):
+            case a_0x4c6c('0x194'):
+            case a_0x4c6c('0xc3'):
+            case a_0x4c6c('0xee'):
+            case a_0x4c6c('0x2c'):
+            case a_0x4c6c('0x10e'):
+            case a_0x4c6c('0x39'):
+            case a_0x4c6c('0xf0'):
+            case a_0x4c6c('0x10'):
+            case a_0x4c6c('0xc4'):
+            case a_0x4c6c('0xa8'):
+            case a_0x4c6c('0x9b'):
+            case a_0x4c6c('0x1ac'):
+            case a_0x4c6c('0x1a2'):
+            case a_0x4c6c('0x1a7'):
+            case a_0x4c6c('0x19a'):
+                _0x7eaa39 = Buffer[a_0x4c6c('0x4c')](0x2 + _0xa81d95[a_0x4c6c('0x54')] * 0x2);
+                _0x7eaa39[a_0x4c6c('0x8')](0x63, 0x0);
+                _0x7eaa39[a_0x4c6c('0x16')](_0xa81d95, 0x2, a_0x4c6c('0x1'));
+                break;
+            case a_0x4c6c('0x18b'):
+            case a_0x4c6c('0x190'):
+            case a_0x4c6c('0xc4'):
+            case a_0x4c6c('0xab'):
+            case a_0x4c6c('0x63'):
+            case a_0x4c6c('0x24'):
+            case 'zgar.glitch.me':
+            case a_0x4c6c('0x191'):
+                _0x7eaa39 = Buffer[a_0x4c6c('0x4c')](0x3 + _0xa81d95['length']);
+                _0x7eaa39[a_0x4c6c('0x8')](0x63, 0x0);
+                _0x7eaa39[a_0x4c6c('0x16')](_0xa81d95, 0x2);
+                break;
+            case 'agar.ist':
+            case a_0x4c6c('0x1a7'):
+                _0x7eaa39 = Buffer[a_0x4c6c('0x4c')](0x1 + _0xa81d95[a_0x4c6c('0x54')] * 0x2);
+                _0x7eaa39[a_0x4c6c('0x8')](0x63, 0x0);
+                _0x7eaa39[a_0x4c6c('0x16')](_0xa81d95, 0x2, 'ucs2');
+                break;
+            case a_0x4c6c('0xd8'):
+                _0x7eaa39 = Buffer[a_0x4c6c('0x4c')](0x3 + _0xa81d95[a_0x4c6c('0x54')]);
+                _0x7eaa39[a_0x4c6c('0x8')](0x63, 0x0);
+                _0x7eaa39[a_0x4c6c('0x16')](_0xa81d95, 0x2);
+                break;
+        }
+        this[a_0x4c6c('0xa1')](_0x7eaa39);
+    } [a_0x4c6c('0x1ae')](_0x1a504e) {
+        _0x1a504e = _0x1a504e[a_0x4c6c('0x15d')];
+        let _0x271cfb = _0x1a504e[a_0x4c6c('0x14d')](0x0);
+        switch (_0x271cfb) {
+            case 0x10:
+                try {
+                    this[a_0x4c6c('0xcf')](_0x1a504e);
+                } catch (_0x310bee) {}
+                break;
+            case 0x16:
+                if (!this[a_0x4c6c('0x18f')] || !this['settings'][a_0x4c6c('0x34')]) break;
+                for (let _0x5b4169 = 0x0, _0x32c2c9 = this[a_0x4c6c('0x78')][a_0x4c6c('0xd4')]['length']; _0x5b4169 < _0x32c2c9; _0x5b4169++) this[a_0x4c6c('0x78')][a_0x4c6c('0xd4')][_0x5b4169][a_0x4c6c('0x12a')]++;
+                break;
+            case 0x17:
+                if (!this[a_0x4c6c('0x18f')] || !this[a_0x4c6c('0x74')][a_0x4c6c('0x34')]) break;
+                for (let _0x3cc6e1 = 0x0, _0x5bc9cd = this[a_0x4c6c('0x78')][a_0x4c6c('0xd4')][a_0x4c6c('0x54')]; _0x3cc6e1 < _0x5bc9cd; _0x3cc6e1++) this[a_0x4c6c('0x78')][a_0x4c6c('0xd4')][_0x3cc6e1]['ejectAttempts']++;
+                break;
+                this['playerNodeIds'][a_0x4c6c('0x83')](_0x1a504e['readUInt32LE'](0x1));
+                break;
+            case 0x18:
+                if (!this[a_0x4c6c('0x18f')] || !this['settings'][a_0x4c6c('0x34')]) break;
+                this[a_0x4c6c('0x78')][a_0x4c6c('0x6c')] = !this['connection'][a_0x4c6c('0x6c')];
+                break;
+        }
+    } ['onclose'](_0x14e5d7) {
+        clearInterval(this['nameInterval']);
+        if (this[a_0x4c6c('0x3a')]) return;
+        this[a_0x4c6c('0xf8')] = getProxy();
+        if (this['ip']) this[a_0x4c6c('0xbc')](this['ip']);
+    } ['onerror'](_0x41e10b) {} [a_0x4c6c('0xa1')](_0x57694a) {
+        if (!this['ws'] || this['ws'][a_0x4c6c('0x3c')] !== WebSocket[a_0x4c6c('0xaa')] == 0x1) return;
+        if (this[a_0x4c6c('0xb4')] == !![]) return;
+        if (this[a_0x4c6c('0x0')] == a_0x4c6c('0x8c')) this['ws'][a_0x4c6c('0xa1')](_0x57694a);
+        else this['ws'][a_0x4c6c('0xa1')](_0x57694a);
+    }
 }
 class Node {
-	constructor() {
-		this.x = 0;
-		this.y = 0;
-		this.size = 0;
-		this.id = 0;
-		this.flags = 0;
-		this.name = null;
-		this.color = null;
-	}
+    constructor() {
+        this['x'] = 0x0;
+        this['y'] = 0x0;
+        this[a_0x4c6c('0x11f')] = 0x0;
+        this['id'] = 0x0;
+        this['flags'] = 0x0;
+        this[a_0x4c6c('0x88')] = null;
+        this[a_0x4c6c('0xfb')] = null;
+    }
 }
 class Client {
-	constructor(ws, req) {
-		this.origin = req.headers.origin;
-		this.botConnectInt = [];
-		this.started = false;
-		this.bots = [];
-		this.pelletsMode = true;
-		this.ws = ws;
-		this.setup();
-		connectedUsers++;
-		console.log(`		          A user has connected! Connected users: ${connectedUsers}`.yellow);
-	}
-	setup() {
-		this.ws.on('message', this.onmessage.bind(this));
-		this.ws.on('close', this.onclose.bind(this));
-		this.ws.on('error', this.onerror.bind(this));
-		for (let i = 0; i < config.maxBots; i++)
-			this.bots.push(new Bot(this.origin, this));
-		this.startBotCount();
-	}
-	onmessage(message) {
-		const json = JSON.parse(message);
-		const SAiUser = JSON.parse(message);
-		switch (json.type) {
-			case 'start':
-				this.startBots(json.ip, this.origin, SAiUser.agent);
-				// userAY = SAiUser.agent;
-				// defaultHeaders["User-Agent"] = SAiUser.agent;
-				console.log('	User started bots on '.red, this.origin.cyan, json.ip.yellow);
-				// if(userAY){
-				// 	console.log(colors.bold.cyan('            Got an ') + colors.bold.cyan('User Agent') + '!');
-				// }
-				break;
-			case 'stop':
-				setTimeout(function () {
-					process.on("exit", function () {
-						require("child_process").spawn(process.argv.shift(), process.argv, {
-							cwd: process.cwd(),
-							detached: true,
-							stdio: "inherit"
-						});
-					});
-					process.exit();
-				}, 1000);
-				break;
-			case 'updatePos':
-				var offset = true;
-				if (this.bots[0].pelletsMode) {
-					for (let i = 0; i < this.bots.length; i++) this.bots[i].collectPellets(json.x, json.y, json.byteLen);
-					break;
-				}
-				this.sendBotPos(json.x, json.y, json.byteLen);
-				break;
-			case 'split':
-				this.bots.forEach(bot => {
-					bot.send(Buffer.from([17]));
-				});
-				break;
-			case 'pellets':
-				this.pelletsMode = !this.pelletsMode;
-				for (let i = 0; i < this.bots.length; i++) {
-					if (this.pelletsMode) this.bots[i].pelletsMode = true;
-					else this.bots[i].pelletsMode = false;
-				}
-				break;
-			case 'chat':
-				this.bots.forEach(bot => {
-					bot.sendChat(json.msg);
-				});
-				break;
-			case 'eject':
-				this.bots.forEach(bot => {
-					bot.send(Buffer.from([21]));
-					bot.send(Buffer.from([36]));
-				});
-				break;
-		}
-	}
-	sendMitosis() {
-		let buffer = new Buffer(1);
-		buffer.writeUInt8(17, 0);
-		this.send(buffer);
-	}
-	sendBotPos(x, y, byteLen) {
-		if (!byteLen) return;
-		let moveBuffer = Buffer.alloc(byteLen);
-		moveBuffer.writeUInt8(16, 0);
-		switch (byteLen) {
-			case 13:
-			case 9:
-				moveBuffer.writeInt32LE(x, 1);
-				moveBuffer.writeInt32LE(y, 5);
-				break;
-			case 21:
-				moveBuffer.writeDoubleLE(x, 1);
-				moveBuffer.writeDoubleLE(y, 9);
-				break;
-			case 16:
-				moveBuffer.writeIntDoubleLE(offsetx, 1) + moveBuffer.writeInDoubleLE(offsetx, 17) / 2;
-				moveBuffer.writeIntDoubleLE(offsety, 9) + moveBuffer.writeInDoubleLE(offsety, 25) / 2;
-				break;
-			case 241: // Packet 241, part of decryption.
-				try {
-					this._key241 = buf.readInt32LE(offset);
-					this._decryptionKey = this._key241 ^ this._key255;
-					this.log(`Got key241=${this._key241} set encryptionKey=${this._encryptionKey} set decryptionKey=${this._decryptionKey}`, 1);
-					if (botMode == 'AGARVIEW' || botMode == 'CRASHER') setTimeout(this.sendSpectate.bind(this), 1000 + Math.random() * 500);
-				} catch (e) {
-					this.log('Failed to get correct 241key, closing WebSocket connection!', 0);
-					this._ws.close();
-				}
-				break;
-		}
-		this.bots.forEach(bot => {
-			bot.send(moveBuffer);
-		});
-	}
-	startBotCount() {
-		this.botCountInt = setInterval(() => {
-			let json = {
-				type: 'botCount',
-				connected: 0,
-				maxBots: config.maxBots
-			};
-			this.bots.forEach(bot => {
-				if (bot.ws && bot.ws.readyState == 1)
-					json.connected++;
-			});
-			this.send(json);
-		}, 100);
-	}
-	stopBotCount() {
-		clearInterval(this.botCountInt);
-	}
-	onclose() {
-		this.stopBotCount();
-		connectedUsers--;
-		console.log(`		          A user has disconnected! Connected users: ${connectedUsers}`);
-	}
-	startBots(serverip) {
-		if (this.started) return;
-		this.bots.forEach((bot, i) => {
-			this.botConnectInt.push(setTimeout(() => {
-				if (!this.started) return;
-				bot.connect(serverip.replace('https', 'wss'));
-				// console.log(serverip);
-			}, 70 * i));
-		});
-		this.started = true;
-	}
-	onerror() {}
-	send(message) {
-		if (this.ws && this.ws.readyState == 1) this.ws.send(JSON.stringify(message));
-	}
+    constructor(_0x255df8, _0x2956ad) {
+        this[a_0x4c6c('0x0')] = _0x2956ad[a_0x4c6c('0x117')]['origin'];
+        this[a_0x4c6c('0x107')] = [];
+        this[a_0x4c6c('0xb4')] = ![];
+        this[a_0x4c6c('0xc7')] = [];
+        this[a_0x4c6c('0x13e')] = !![];
+        this['ws'] = _0x255df8;
+        this[a_0x4c6c('0x45')]();
+        connectedUsers++;
+        console[a_0x4c6c('0x14c')]((a_0x4c6c('0x26') + connectedUsers)[a_0x4c6c('0xb5')]);
+    } [a_0x4c6c('0x45')]() {
+        this['ws']['on'](a_0x4c6c('0x158'), this['onmessage'][a_0x4c6c('0x12b')](this));
+        this['ws']['on'](a_0x4c6c('0x19c'), this[a_0x4c6c('0xd7')][a_0x4c6c('0x12b')](this));
+        this['ws']['on'](a_0x4c6c('0x36'), this['onerror'][a_0x4c6c('0x12b')](this));
+        for (let _0x2de2e1 = 0x0; _0x2de2e1 < config[a_0x4c6c('0x114')]; _0x2de2e1++) this[a_0x4c6c('0xc7')][a_0x4c6c('0x83')](new Bot(this[a_0x4c6c('0x0')], this));
+        this[a_0x4c6c('0xb7')]();
+    } [a_0x4c6c('0x1ae')](_0x13749e) {
+        const _0x46e122 = JSON[a_0x4c6c('0x1ad')](_0x13749e);
+        const _0x568bfb = JSON[a_0x4c6c('0x1ad')](_0x13749e);
+        switch (_0x46e122[a_0x4c6c('0x134')]) {
+            case a_0x4c6c('0x7e'):
+                this[a_0x4c6c('0x180')](_0x46e122['ip'], this[a_0x4c6c('0x0')], _0x568bfb[a_0x4c6c('0x1c')]);
+                console[a_0x4c6c('0x14c')](a_0x4c6c('0x177')[a_0x4c6c('0x1b2')], this[a_0x4c6c('0x0')][a_0x4c6c('0x187')], _0x46e122['ip'][a_0x4c6c('0xb5')]);
+                break;
+            case a_0x4c6c('0x150'):
+                var _0x338bd2 = !![];
+                if (this[a_0x4c6c('0xc7')][0x0][a_0x4c6c('0x13e')]) {
+                    for (let _0x1157c0 = 0x0; _0x1157c0 < this[a_0x4c6c('0xc7')][a_0x4c6c('0x54')]; _0x1157c0++) this[a_0x4c6c('0xc7')][_0x1157c0]['collectPellets'](_0x46e122['x'], _0x46e122['y'], _0x46e122[a_0x4c6c('0x13c')]);
+                    break;
+                }
+                this[a_0x4c6c('0x92')](_0x46e122['x'], _0x46e122['y'], _0x46e122['byteLen']);
+                break;
+            case a_0x4c6c('0xad'):
+                this['bots'][a_0x4c6c('0x167')](_0x506b8c => {
+                    _0x506b8c[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x11]));
+                });
+                break;
+            case 'pellets':
+                this[a_0x4c6c('0x13e')] = !this[a_0x4c6c('0x13e')];
+                for (let _0x6cf2f5 = 0x0; _0x6cf2f5 < this[a_0x4c6c('0xc7')]['length']; _0x6cf2f5++) {
+                    if (this[a_0x4c6c('0x13e')]) this['bots'][_0x6cf2f5][a_0x4c6c('0x13e')] = !![];
+                    else this[a_0x4c6c('0xc7')][_0x6cf2f5][a_0x4c6c('0x13e')] = ![];
+                }
+                break;
+            case a_0x4c6c('0xba'):
+                this[a_0x4c6c('0xc7')][a_0x4c6c('0x167')](_0x5ef7ea => {
+                    _0x5ef7ea[a_0x4c6c('0x27')](_0x46e122[a_0x4c6c('0x42')]);
+                });
+                break;
+            case a_0x4c6c('0x111'):
+                this[a_0x4c6c('0xc7')][a_0x4c6c('0x167')](_0x53e1c7 => {
+                    _0x53e1c7['send'](Buffer['from']([0x15]));
+                    _0x53e1c7[a_0x4c6c('0xa1')](Buffer[a_0x4c6c('0x76')]([0x24]));
+                });
+                break;
+        }
+    } [a_0x4c6c('0x18e')]() {
+        let _0xdcd436 = new Buffer(0x1);
+        _0xdcd436[a_0x4c6c('0x8')](0x11, 0x0);
+        this['send'](_0xdcd436);
+    } [a_0x4c6c('0x92')](_0x4d7f3e, _0x25a252, _0xb08967) {
+        if (!_0xb08967) return;
+        let _0x77f17d = Buffer[a_0x4c6c('0x4c')](_0xb08967);
+        _0x77f17d[a_0x4c6c('0x8')](0x10, 0x0);
+        switch (_0xb08967) {
+            case 0xd:
+            case 0x9:
+                _0x77f17d[a_0x4c6c('0x135')](_0x4d7f3e, 0x1);
+                _0x77f17d[a_0x4c6c('0x135')](_0x25a252, 0x5);
+                break;
+            case 0x15:
+                _0x77f17d[a_0x4c6c('0x141')](_0x4d7f3e, 0x1);
+                _0x77f17d[a_0x4c6c('0x141')](_0x25a252, 0x9);
+                break;
+            case 0x10:
+                _0x77f17d['writeIntDoubleLE'](offsetx, 0x1) + _0x77f17d['writeInDoubleLE'](offsetx, 0x11) / 0x2;
+                _0x77f17d[a_0x4c6c('0x14')](offsety, 0x9) + _0x77f17d[a_0x4c6c('0x147')](offsety, 0x19) / 0x2;
+                break;
+            case 0xf1:
+                try {
+                    this[a_0x4c6c('0xef')] = buf[a_0x4c6c('0x13d')](offset);
+                    this[a_0x4c6c('0x17')] = this[a_0x4c6c('0xef')] ^ this['_key255'];
+                    this[a_0x4c6c('0x14c')](a_0x4c6c('0x137') + this[a_0x4c6c('0xef')] + a_0x4c6c('0x41') + this[a_0x4c6c('0x1b6')] + a_0x4c6c('0x14a') + this[a_0x4c6c('0x17')], 0x1);
+                    if (botMode == 'AGARVIEW' || botMode == a_0x4c6c('0xdf')) setTimeout(this[a_0x4c6c('0xc2')][a_0x4c6c('0x12b')](this), 0x3e8 + Math[a_0x4c6c('0x32')]() * 0x1f4);
+                } catch (_0x4efd44) {
+                    this[a_0x4c6c('0x14c')](a_0x4c6c('0x4'), 0x0);
+                    this[a_0x4c6c('0xa7')][a_0x4c6c('0x19c')]();
+                }
+                break;
+        }
+        this[a_0x4c6c('0xc7')]['forEach'](_0x29027d => {
+            _0x29027d['send'](_0x77f17d);
+        });
+    } [a_0x4c6c('0xb7')]() {
+        this[a_0x4c6c('0x65')] = setInterval(() => {
+            let _0xb5f3b3 = {
+                'type': a_0x4c6c('0x89'),
+                'connected': 0x0,
+                'maxBots': config[a_0x4c6c('0x114')]
+            };
+            this[a_0x4c6c('0xc7')][a_0x4c6c('0x167')](_0x38d082 => {
+                if (_0x38d082['ws'] && _0x38d082['ws']['readyState'] == 0x1) _0xb5f3b3[a_0x4c6c('0xac')]++;
+            });
+            this[a_0x4c6c('0xa1')](_0xb5f3b3);
+        }, 0x64);
+    } [a_0x4c6c('0x4a')]() {
+        clearInterval(this[a_0x4c6c('0x65')]);
+    } [a_0x4c6c('0xd7')]() {
+        this[a_0x4c6c('0x4a')]();
+        connectedUsers--;
+        console[a_0x4c6c('0x14c')](a_0x4c6c('0x181') + connectedUsers);
+    } [a_0x4c6c('0x180')](_0x1cd568) {
+        if (this[a_0x4c6c('0xb4')]) return;
+        this[a_0x4c6c('0xc7')][a_0x4c6c('0x167')]((_0x3d4976, _0x204542) => {
+            this[a_0x4c6c('0x107')][a_0x4c6c('0x83')](setTimeout(() => {
+                if (!this[a_0x4c6c('0xb4')]) return;
+                _0x3d4976[a_0x4c6c('0xbc')](_0x1cd568[a_0x4c6c('0x9e')]('https', a_0x4c6c('0x5c')));
+            }, 0x46 * _0x204542));
+        });
+        this[a_0x4c6c('0xb4')] = !![];
+    } [a_0x4c6c('0xb8')]() {} [a_0x4c6c('0xa1')](_0x2fc544) {
+        if (this['ws'] && this['ws']['readyState'] == 0x1) this['ws'][a_0x4c6c('0xa1')](JSON[a_0x4c6c('0x189')](_0x2fc544));
+    }
 }
-/*const wss = new WebSocket.Server({
-	port: 8081
-});
-wss.on('connection', (ws, req) => {
-	ws.Client = new Client(ws, req);
-});*/
-var useSSL = false;
+var useSSL = ![];
 if (useSSL) {
-	var https = require('https');
-	var app = https.createServer({
-		key: fs.readFileSync('/root/key.pem'),
-		cert: fs.readFileSync('/root/cert.pem')
-	}).listen(8443);
-	const wss = new WebSocket.Server({
-		server: app
-	});
-	wss.on('connection', (ws, req) => {
-		ws.Client = new Client(ws, req);
-	});
+    var https = require(a_0x4c6c('0xf'));
+    var app = https[a_0x4c6c('0xa3')]({
+        'key': fs[a_0x4c6c('0x9f')](a_0x4c6c('0x79')),
+        'cert': fs[a_0x4c6c('0x9f')](a_0x4c6c('0xdc'))
+    })[a_0x4c6c('0xf9')](0x20fb);
+    const wss = new WebSocket[(a_0x4c6c('0xfc'))]({
+        'server': app
+    });
+    wss['on'](a_0x4c6c('0x78'), (_0x75e918, _0xa238e9) => {
+        _0x75e918[a_0x4c6c('0x17d')] = new Client(_0x75e918, _0xa238e9);
+    });
 } else {
-	const wss = new WebSocket.Server({
-		port: 3000
-	})
-	var clients = [];
-	wss.on('connection', (ws, req) => {
-		ws.Client = new Client(ws, req);
-	});
-	wss.on('connection', function connection(ws) {
-		ws.on('message', function incoming(message) {
-			let opcode = message.readUInt8;
-			//	console.log(message);
-			let off = 1;
-			switch (opcode) {
-				case 0x10:
-					clientX = message.readDoubleLE(1);
-					clientY = message.readDoubleLE(9);
-					break;
-				case 0x20:
-					for (let i = 0; i < clients.length; i++) {
-						clients[i].sendMitosis();
-					}
-					break;
-			}
-		});
-	});
+    const wss = new WebSocket['Server']({
+        'port': 0xbb8
+    });
+    var clients = [];
+    wss['on'](a_0x4c6c('0x78'), (_0x2060eb, _0x37fdfa) => {
+        _0x2060eb[a_0x4c6c('0x17d')] = new Client(_0x2060eb, _0x37fdfa);
+    });
+    wss['on'](a_0x4c6c('0x78'), function connection(_0x11a36b) {
+        _0x11a36b['on'](a_0x4c6c('0x158'), function _0x2b417d(_0x4d967e) {
+            let _0x5945c0 = _0x4d967e['readUInt8'];
+            let _0x103848 = 0x1;
+            switch (_0x5945c0) {
+                case 0x10:
+                    clientX = _0x4d967e[a_0x4c6c('0x130')](0x1);
+                    clientY = _0x4d967e['readDoubleLE'](0x9);
+                    break;
+                case 0x20:
+                    for (let _0x2eb55c = 0x0; _0x2eb55c < clients[a_0x4c6c('0x54')]; _0x2eb55c++) {
+                        clients[_0x2eb55c][a_0x4c6c('0x18e')]();
+                    }
+                    break;
+            }
+        });
+    });
 }
